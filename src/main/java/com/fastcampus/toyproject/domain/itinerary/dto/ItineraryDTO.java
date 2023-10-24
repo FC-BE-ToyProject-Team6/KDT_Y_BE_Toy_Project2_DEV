@@ -3,6 +3,7 @@ package com.fastcampus.toyproject.domain.itinerary.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.*;
@@ -30,6 +31,10 @@ public class ItineraryDTO {
 
     @NotNull
     private LocalDateTime endDate;
+
+    @NotNull
+    @Min(1)
+    private Integer order;
 
     private String departurePlace;
     private String arrivalPlace;
