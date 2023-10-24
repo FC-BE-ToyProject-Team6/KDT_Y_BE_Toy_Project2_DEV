@@ -1,5 +1,7 @@
 package com.fastcampus.toyproject.domain.trip.service;
 
+import com.fastcampus.toyproject.common.exception.DefaultException;
+import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import com.fastcampus.toyproject.domain.trip.dto.TripDTO;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
@@ -9,21 +11,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service  // 서비스 클래스임을 나타냅니다.
+@Service
 public class TripService {
 
-    @Autowired  // 리포지토리를 자동으로 주입받습니다.
+    @Autowired
     private TripRepository tripRepository;
 
-
-
-    // Trip 정보를 저장하는 메서드
     public Trip insertTrip(TripDTO tripDTO) {
-        System.out.println("isDomestic value from DTO: " + tripDTO.isDomestic());
-
-
         Trip trip = Trip.builder()
-
             .tripName(tripDTO.getTripName())
             .startDate(tripDTO.getStartDate())
             .endDate(tripDTO.getEndDate())
@@ -33,33 +28,30 @@ public class TripService {
         return tripRepository.save(trip);
     }
 
-    // Trip 정보를 업데이트하는 메서드
     public Trip updateTrip(Long id, TripDTO tripDTO) {
         Optional<Trip> oldTrip = tripRepository.findById(id);
-        if (oldTrip.isPresent()) {
-            Trip existTrip = oldTrip.get();
-            existTrip.setTripName(tripDTO.getTripName());
-            existTrip.setStartDate(tripDTO.getStartDate());
-            existTrip.setEndDate(tripDTO.getEndDate());
-            existTrip.setDomestic(tripDTO.isDomestic());
-
-            return tripRepository.save(existTrip);
+        if (!oldTrip.isPresent()) {
+            throw new DefaultException(ExceptionCode.INVALID_REQUEST, "해당하는 Trip이 없습니다.");
         }
-        return null;
+
+        Trip existTrip = oldTrip.get();
+        existTrip.setTripName(tripDTO.getTripName());
+        existTrip.setStartDate(tripDTO.getStartDate());
+        existTrip.setEndDate(tripDTO.getEndDate());
+        existTrip.setDomestic(tripDTO.isDomestic());
+
+        return tripRepository.save(existTrip);
     }
 
-
-    // Trip 정보를 삭제하는 메서드
-    public boolean deleteTrip(Long id) {
+    public void deleteTrip(Long id) {
         Optional<Trip> tripOptional = tripRepository.findById(id);
-        if(tripOptional.isPresent()){
-            Trip trip = tripOptional.get();
-            trip.setIsDeleted(true);
-            trip.setDeletedAt(LocalDateTime.now());
-            tripRepository.save(trip);
-            return true;
+        if (!tripOptional.isPresent()) {
+            throw new DefaultException(ExceptionCode.INVALID_REQUEST, "해당하는 Trip이 없습니다.");
         }
-        return false;
-    }
 
+        Trip trip = tripOptional.get();
+        trip.setIsDeleted(true);
+        trip.setDeletedAt(LocalDateTime.now());
+        tripRepository.save(trip);
+    }
 }
