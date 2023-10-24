@@ -34,7 +34,7 @@ public abstract class Itinerary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "tripId")
+    @JoinColumn(name = "id")
     private Trip tripId;
 
     @Column(nullable = false)

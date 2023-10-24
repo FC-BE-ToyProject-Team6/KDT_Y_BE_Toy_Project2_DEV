@@ -30,7 +30,7 @@ public class Trip {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "id")
     private Member memberId;
 
     @Column(nullable = false)

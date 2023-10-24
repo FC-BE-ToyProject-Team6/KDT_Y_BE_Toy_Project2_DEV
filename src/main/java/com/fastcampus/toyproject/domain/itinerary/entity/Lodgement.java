@@ -1,6 +1,5 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
-import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,10 +27,6 @@ public class Lodgement extends Itinerary {
 
     @Column(nullable = false)
     private LocalDateTime checkOut;
-
-
-
-
 
 
 }
