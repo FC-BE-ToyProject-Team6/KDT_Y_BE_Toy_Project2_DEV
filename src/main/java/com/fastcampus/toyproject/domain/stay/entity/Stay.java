@@ -1,5 +1,6 @@
 package com.fastcampus.toyproject.domain.stay.entity;
 
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -16,5 +17,7 @@ public class Stay {
 
     @Id
     private Long id;
+    private LocalDateTime departureDate;
+    private LocalDateTime arrivalDate;
 
 }
