@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/itineraries")
-public class ItineraryContoller {
+public class ItineraryController {
     private final ItineraryService itineraryService;
 
 }
