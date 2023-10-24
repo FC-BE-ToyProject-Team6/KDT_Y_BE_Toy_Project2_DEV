@@ -1,7 +1,6 @@
 package com.fastcampus.toyproject.domain.itinerary.util;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
-import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,6 +46,7 @@ class ItineraryValidationTest {
         try {
             ItineraryValidation.validateItinerariesOrder(testList1);
         } catch (DefaultException e) {
+            //where
             Assertions.assertEquals(DUPLICATE_ITINERARY_OEDER, e.getErrorCode());
         }
 
@@ -54,6 +54,7 @@ class ItineraryValidationTest {
         try {
             ItineraryValidation.validateItinerariesOrder(testList2);
         } catch (DefaultException e) {
+            //where
             Assertions.assertEquals(INCORRECT_ORDER, e.getErrorCode());
         }
     }
