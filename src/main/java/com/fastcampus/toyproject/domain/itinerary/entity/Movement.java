@@ -1,4 +1,4 @@
-package com.fastcampus.toyproject.domain.stay.entity;
+package com.fastcampus.toyproject.domain.itinerary.entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
@@ -13,11 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Stay {
+public class Movement {
 
     @Id
     private Long id;
     private LocalDateTime departureDate;
     private LocalDateTime arrivalDate;
-
+    private String departurePlace;
+    private String arrivalPlace;
 }
