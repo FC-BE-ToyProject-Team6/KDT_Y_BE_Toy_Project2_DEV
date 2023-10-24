@@ -1,8 +1,8 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,11 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Stay {
+public class Stay extends Itinerary {
 
-    @Id
-    private Long id;
+    @Column(nullable = false)
     private LocalDateTime departureDate;
+
+    @Column(nullable = false)
     private LocalDateTime arrivalDate;
 
 }
