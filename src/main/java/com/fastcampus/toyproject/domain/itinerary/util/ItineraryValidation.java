@@ -1,7 +1,6 @@
 package com.fastcampus.toyproject.domain.itinerary.util;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
-import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryDTO;
 
 import java.util.*;
@@ -14,12 +13,12 @@ public class ItineraryValidation {
     /**
      * 여정 순서가 적절하게 입력되었는지 확인하는 메소드
      * @author : 지운
-     * @param list
+     * @param : itineraryDTOList
      * @return
      */
-    public static void validateItinerariesOrder(List<ItineraryDTO> list) {
+    public static void validateItinerariesOrder(List<ItineraryDTO> itineraryDTOList) {
         //1. 순서가 중복되는지 검사하고, 순서대로 정렬. (O(NlogN))
-        Collections.sort(list, (o1, o2) -> {
+        Collections.sort(itineraryDTOList, (o1, o2) -> {
            if (o1.getOrder() == o2.getOrder()) {
                throw new DefaultException(DUPLICATE_ITINERARY_OEDER);
            }
@@ -27,8 +26,8 @@ public class ItineraryValidation {
         });
 
         //2. 순서가 1부터 차례대로 들어갔는지 확인. (O(N))
-        for (int orderIdx = 1; orderIdx <= list.size(); orderIdx++) {
-            if (list.get(orderIdx - 1).getOrder() != orderIdx) {
+        for (int orderIdx = 1; orderIdx <= itineraryDTOList.size(); orderIdx++) {
+            if (itineraryDTOList.get(orderIdx - 1).getOrder() != orderIdx) {
                 throw new DefaultException(INCORRECT_ORDER);
             }
         }
