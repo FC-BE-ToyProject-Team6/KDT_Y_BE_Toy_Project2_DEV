@@ -20,9 +20,8 @@ public class ErrorResponseDTO {
     }
 
 
-    /*
-    에러 발생시 사용 예시
-    ResponseEntity<ErrorResponse>
-    return new ResponseEntity<ErrorResponse.error(코드, 메시지)>;
-     */
+    // 사용자 지정 메시지를 위한 오버로드된 메서드 추가
+    public static ErrorResponseDTO error(String errorMsg) {
+        return new ErrorResponseDTO(INTERNAL_SERVER_ERROR, errorMsg);
+    }
 }
