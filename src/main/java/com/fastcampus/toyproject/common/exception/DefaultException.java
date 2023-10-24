@@ -1,11 +1,21 @@
 package com.fastcampus.toyproject.common.exception;
 
-public class DefaultException extends RuntimeException{
+import lombok.Getter;
 
-    public DefaultException() {
+@Getter
+public class DefaultException extends RuntimeException {
+
+    ExceptionCode errorCode;
+    String errorMsg;
+
+    public DefaultException(ExceptionCode errorCode, String errorMsg) {
+        super(errorCode.getMsg());
+        this.errorCode = errorCode;
+        this.errorMsg = errorMsg;
     }
 
-    public DefaultException(String message) {
-        super(message);
+    public DefaultException(ExceptionCode errorCode) {
+        super(errorCode.getMsg());
+        this.errorCode = errorCode;
     }
 }
