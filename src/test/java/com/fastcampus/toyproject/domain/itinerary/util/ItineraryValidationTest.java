@@ -1,7 +1,7 @@
 package com.fastcampus.toyproject.domain.itinerary.util;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
-import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryDTO;
+import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryRequestDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static com.fastcampus.toyproject.common.exception.ExceptionCode.INCORRECT
 class ItineraryValidationTest {
 
     LocalDateTime testStartDate, testEndDate;
-    List<ItineraryDTO> testList1, testList2;
+    List<ItineraryRequestDTO> testList1, testList2;
 
     public ItineraryValidationTest() {
         this.testList1 = new ArrayList<>();
@@ -27,15 +27,15 @@ class ItineraryValidationTest {
 
     @BeforeEach
     void setUp() {
-        testList1.add(ItineraryDTO.builder().type(1).name("비행기").order(1).startDate(testStartDate).endDate(testEndDate).build());
-        testList1.add(ItineraryDTO.builder().type(2).name("호텔").order(2).startDate(testStartDate).endDate(testEndDate).build());
-        testList1.add(ItineraryDTO.builder().type(3).name("롯데월드").order(2).startDate(testStartDate).endDate(testEndDate).build());
-        testList1.add(ItineraryDTO.builder().type(2).name("호텔").order(3).startDate(testStartDate).endDate(testEndDate).build());
+        testList1.add(ItineraryRequestDTO.builder().type(1).name("비행기").order(1).startDate(testStartDate).endDate(testEndDate).build());
+        testList1.add(ItineraryRequestDTO.builder().type(2).name("호텔").order(2).startDate(testStartDate).endDate(testEndDate).build());
+        testList1.add(ItineraryRequestDTO.builder().type(3).name("롯데월드").order(2).startDate(testStartDate).endDate(testEndDate).build());
+        testList1.add(ItineraryRequestDTO.builder().type(2).name("호텔").order(3).startDate(testStartDate).endDate(testEndDate).build());
 
-        testList2.add(ItineraryDTO.builder().type(1).name("비행기").order(1).startDate(testStartDate).endDate(testEndDate).build());
-        testList2.add(ItineraryDTO.builder().type(2).name("호텔").order(10).startDate(testStartDate).endDate(testEndDate).build());
-        testList2.add(ItineraryDTO.builder().type(3).name("롯데월드").order(3).startDate(testStartDate).endDate(testEndDate).build());
-        testList2.add(ItineraryDTO.builder().type(2).name("호텔").order(4).startDate(testStartDate).endDate(testEndDate).build());
+        testList2.add(ItineraryRequestDTO.builder().type(1).name("비행기").order(1).startDate(testStartDate).endDate(testEndDate).build());
+        testList2.add(ItineraryRequestDTO.builder().type(2).name("호텔").order(10).startDate(testStartDate).endDate(testEndDate).build());
+        testList2.add(ItineraryRequestDTO.builder().type(3).name("롯데월드").order(3).startDate(testStartDate).endDate(testEndDate).build());
+        testList2.add(ItineraryRequestDTO.builder().type(2).name("호텔").order(4).startDate(testStartDate).endDate(testEndDate).build());
     }
 
     @Test

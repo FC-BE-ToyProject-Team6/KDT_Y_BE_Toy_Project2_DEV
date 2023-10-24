@@ -1,7 +1,7 @@
 package com.fastcampus.toyproject.domain.itinerary.util;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
-import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryDTO;
+import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryRequestDTO;
 
 import java.util.*;
 
@@ -16,9 +16,9 @@ public class ItineraryValidation {
      * @param : itineraryDTOList
      * @return
      */
-    public static void validateItinerariesOrder(List<ItineraryDTO> itineraryDTOList) {
+    public static void validateItinerariesOrder(List<ItineraryRequestDTO> itineraryRequestDTOList) {
         //1. 순서가 중복되는지 검사하고, 순서대로 정렬. (O(NlogN))
-        Collections.sort(itineraryDTOList, (o1, o2) -> {
+        Collections.sort(itineraryRequestDTOList, (o1, o2) -> {
            if (o1.getOrder() == o2.getOrder()) {
                throw new DefaultException(DUPLICATE_ITINERARY_OEDER);
            }
@@ -26,8 +26,8 @@ public class ItineraryValidation {
         });
 
         //2. 순서가 1부터 차례대로 들어갔는지 확인. (O(N))
-        for (int orderIdx = 1; orderIdx <= itineraryDTOList.size(); orderIdx++) {
-            if (itineraryDTOList.get(orderIdx - 1).getOrder() != orderIdx) {
+        for (int orderIdx = 1; orderIdx <= itineraryRequestDTOList.size(); orderIdx++) {
+            if (itineraryRequestDTOList.get(orderIdx - 1).getOrder() != orderIdx) {
                 throw new DefaultException(INCORRECT_ORDER);
             }
         }

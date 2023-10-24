@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ItineraryDTO {
+public class ItineraryRequestDTO {
 
     @NotNull
     @Size(min = 1, max = 3)
