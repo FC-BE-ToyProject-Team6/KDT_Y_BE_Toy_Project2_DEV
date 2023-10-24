@@ -1,4 +1,4 @@
-package com.fastcampus.toyproject.domain.lodgement.entity;
+package com.fastcampus.toyproject.domain.itinerary.entity;
 
 import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import java.time.LocalDateTime;
