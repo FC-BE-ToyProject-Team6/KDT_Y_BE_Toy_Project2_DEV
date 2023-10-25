@@ -5,9 +5,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import static com.fastcampus.toyproject.common.exception.ExceptionCode.INTERNAL_SERVER_ERROR;
+
 @Getter
 @RequiredArgsConstructor
 public class ErrorResponseDTO {
+
     private final ExceptionCode exceptionCode;
     private final String errorMsg;
 
@@ -20,9 +22,4 @@ public class ErrorResponseDTO {
     }
 
 
-    /*
-    에러 발생시 사용 예시
-    ResponseEntity<ErrorResponse>
-    return new ResponseEntity<ErrorResponse.error(코드, 메시지)>;
-     */
 }
