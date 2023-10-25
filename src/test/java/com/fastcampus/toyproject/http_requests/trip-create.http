@@ -1,4 +1,4 @@
-POST http://localhost:8080/api/trip/
+POST http://localhost:8080/api/trip/1
 Content-Type: application/json
 
 {
