@@ -19,9 +19,17 @@ public class ItineraryController {
     @PostMapping("/{tripId}")
     public ResponseDTO<List<ItineraryResponse>> insertItineraries(
             @PathVariable final Long tripId,
-            @Valid @RequestBody final List<ItineraryRequest> reqeust
+            @Valid @RequestBody final List<ItineraryRequest> request
     ) {
-        return ResponseDTO.ok("여정들 삽입 완료", itineraryService.insertItineraries(tripId, reqeust));
+        return ResponseDTO.ok("여정들 삽입 완료", itineraryService.insertItineraries(tripId, request));
+    }
+
+    @DeleteMapping("/{tripId}")
+    public ResponseDTO<List<ItineraryResponse>> deleteItineraries(
+            @PathVariable final Long tripId,
+            @Valid @RequestBody final List<Long> deleteIdList
+    ) {
+        return ResponseDTO.ok("여정들 삭제 완료", itineraryService.deleteItineraries(tripId, deleteIdList));
     }
 
 }
