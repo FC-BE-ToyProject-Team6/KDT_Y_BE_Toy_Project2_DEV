@@ -21,16 +21,18 @@ public class TripDTO {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Boolean isDomestic;
+    private String itineraryNames;
 
 
     //response로 분리(response 할 때는 Trip id 반환 안 했음)
-    public static TripDTO fromEntity(Trip trip) {
+    public static TripDTO fromEntity(Trip trip, String names) {
         return TripDTO.builder()
             .tripId(trip.getTripId())
             .tripName(trip.getTripName())
             .startDate(trip.getStartDate())
             .endDate(trip.getEndDate())
             .isDomestic(trip.getIsDomestic())
+            .itineraryNames(names)
             .build();
     }
 }

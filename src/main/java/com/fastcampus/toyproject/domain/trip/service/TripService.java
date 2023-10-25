@@ -14,7 +14,6 @@ import com.fastcampus.toyproject.domain.trip.dto.TripDetailDTO;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -55,10 +54,20 @@ public class TripService {
             .orElseThrow(()->new DefaultException(NO_ITINERARY));
     }
 
+    private String getItineraryNamesByTripId(Long tripId) {
+        return itineraryRepository.findById(tripId)
+            .stream().map(Itinerary::getItineraryName)
+            .collect(Collectors.joining());
+    }
+
     @Transactional(readOnly = true)
     public List<TripDTO> getAllTrips() {
         return tripRepository.findAll()
-            .stream().map(TripDTO::fromEntity)
+            .stream().map(trip -> TripDTO.fromEntity
+                (
+                    trip, getItineraryNamesByTripId(trip.getTripId())
+                )
+            )
             .collect(Collectors.toList());
     }
 
