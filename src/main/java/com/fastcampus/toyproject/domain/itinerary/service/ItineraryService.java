@@ -1,5 +1,7 @@
 package com.fastcampus.toyproject.domain.itinerary.service;
 
+import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_SUCH_TRIP;
+
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import com.fastcampus.toyproject.domain.itinerary.dto.*;
@@ -31,7 +33,7 @@ public class ItineraryService {
             List<ItineraryRequest> request
     ) {
 
-        List<ItineraryResponse> itineraryResponses = new ArrayList<>();
+        List<ItineraryResponse> itineraryResponseList = new ArrayList<>();
 
         //0. tripid를 통한 trip 객체 찾기. (method : getTrip(tripId))
         Trip trip = getTrip(tripId);
@@ -88,24 +90,24 @@ public class ItineraryService {
                     break;
             }
             itineraries.add(itinerary);
-            itineraryResponses.add(itineraryResponse);
+            itineraryResponseList.add(itineraryResponse);
         }
 
         //3. 검증
         ItineraryValidation.validateItinerariesOrder(itineraries);
 
         //4. response 리스트 정렬. (오더 순서대로)
-        Collections.sort(itineraryResponses,
+        Collections.sort(itineraryResponseList,
                 Comparator.comparingInt(ItineraryResponse::getItineraryOrder));
 
-        return itineraryResponses;
+        return itineraryResponseList;
 
     }
 
     private Trip getTrip(Long tripId) {
         return tripRepository
                 .findById(tripId)
-                .orElseThrow(() -> new RuntimeException("해당되는 여행이 없습니다.")
+                .orElseThrow(() -> new DefaultException(NO_SUCH_TRIP)
                 );
     }
 
@@ -135,7 +137,7 @@ public class ItineraryService {
 
         List<ItineraryResponse> itineraryResponseList = new ArrayList<>();
         for (int order = 1; order <= itineraries.size(); order++) {
-            //리스트 순대로 order 재정의.
+            //리스트 순대로 order update
             Itinerary it = itineraries.get(order - 1);
             it.updateItineraryOrder(order);
             itineraryResponseList.add(ItineraryResponse.fromEntity(it));
