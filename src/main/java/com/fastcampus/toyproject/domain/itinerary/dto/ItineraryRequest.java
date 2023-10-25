@@ -1,26 +1,21 @@
 package com.fastcampus.toyproject.domain.itinerary.dto;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ItineraryRequestDTO {
+public class ItineraryRequest {
 
     @NotNull
-    @Size(min = 1, max = 3)
+    @Range(min = 1, max = 3)
     private Integer type;
 
     @NotNull
