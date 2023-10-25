@@ -1,5 +1,6 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
+import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryUpdateRequest;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,12 +22,11 @@ public class Lodgement extends Itinerary {
     @Column(nullable = false)
     private LocalDateTime checkOut;
 
-
-    public void updateCheckIn(LocalDateTime checkIn) {
-        this.checkIn = checkIn;
+    public void updateLodgement(ItineraryUpdateRequest req){
+        super.updateItineraryName(req.getName());
+        super.updateItineraryOrder(req.getOrder());
+        this.checkIn = req.getStartDate();
+        this.checkOut = req.getEndDate();
     }
 
-    public void updateCheckOut(LocalDateTime checkOut) {
-        this.checkOut = checkOut;
-    }
 }

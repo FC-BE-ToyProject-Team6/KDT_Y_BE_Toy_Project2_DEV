@@ -1,5 +1,6 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
+import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryUpdateRequest;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,19 +32,13 @@ public class Movement extends Itinerary {
     @Column(nullable = false)
     private String transportation;
 
-    public void updateDepartureDate(LocalDateTime departureDate) {
-        this.departureDate = departureDate;
-    }
-
-    public void updateArrivalDate(LocalDateTime arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
-
-    public void updateDeparturePlace(String departurePlace) {
-        this.departurePlace = departurePlace;
-    }
-
-    public void updateArrivalPlace(String arrivalPlace) {
-        this.arrivalPlace = arrivalPlace;
+    public void updateMovement(ItineraryUpdateRequest req) {
+        super.updateItineraryName(req.getMovementName());
+        super.updateItineraryOrder(req.getOrder());
+        this.transportation = req.getName();
+        this.departureDate = req.getStartDate();
+        this.departurePlace = req.getDeparturePlace();
+        this.arrivalDate = req.getEndDate();
+        this.arrivalPlace = req.getArrivalPlace();
     }
 }
