@@ -18,6 +18,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class ItineraryService {
+
     private final TripRepository tripRepository;
     private final ItineraryRepository itineraryRepository;
     private final LodgementRepository lodgementRepository;
@@ -25,7 +26,7 @@ public class ItineraryService {
     private final StayRepository stayRepository;
 
     @Transactional
-    public List<ItineraryResponse> insertItineraries (
+    public List<ItineraryResponse> insertItineraries(
             Long tripId,
             List<ItineraryRequest> request
     ) {
@@ -47,42 +48,42 @@ public class ItineraryService {
 
             switch (ir.getType()) {
                 case 1:
-                    itinerary = Movement
-                            .builder()
-                            .tripId(trip)
-                            .itineraryName(ir.getMovementName())
-                            .itineraryOrder(ir.getOrder())
-                            .departureDate(ir.getStartDate())
-                            .arrivalDate(ir.getEndDate())
-                            .departurePlace(ir.getDeparturePlace())
-                            .arrivalPlace(ir.getArrivalPlace())
-                            .transportation(ir.getName())
-                            .build();
-                    movementRepository.save((Movement) itinerary);
+                    itinerary = movementRepository.save(
+                            Movement.builder()
+                                    .tripId(trip)
+                                    .itineraryName(ir.getMovementName())
+                                    .itineraryOrder(ir.getOrder())
+                                    .departureDate(ir.getStartDate())
+                                    .arrivalDate(ir.getEndDate())
+                                    .departurePlace(ir.getDeparturePlace())
+                                    .arrivalPlace(ir.getArrivalPlace())
+                                    .transportation(ir.getName())
+                                    .build()
+                    );
                     itineraryResponse = MovementResponse.fromEntity((Movement) itinerary);
                     break;
                 case 2:
-                    itinerary = Lodgement
-                            .builder()
-                            .tripId(trip)
-                            .itineraryName(ir.getName())
-                            .itineraryOrder(ir.getOrder())
-                            .checkIn(ir.getStartDate())
-                            .checkOut(ir.getEndDate())
-                            .build();
-                    lodgementRepository.save((Lodgement) itinerary);
+                    itinerary = lodgementRepository.save(
+                            Lodgement.builder()
+                                    .tripId(trip)
+                                    .itineraryName(ir.getName())
+                                    .itineraryOrder(ir.getOrder())
+                                    .checkIn(ir.getStartDate())
+                                    .checkOut(ir.getEndDate())
+                                    .build()
+                    );
                     itineraryResponse = LodgementResponse.fromEntity((Lodgement) itinerary);
                     break;
                 case 3:
-                    itinerary = Stay
-                            .builder()
-                            .tripId(trip)
-                            .itineraryName(ir.getName())
-                            .itineraryOrder(ir.getOrder())
-                            .departureDate(ir.getStartDate())
-                            .arrivalDate(ir.getEndDate())
-                            .build();
-                    stayRepository.save((Stay) itinerary);
+                    itinerary = stayRepository.save(
+                            Stay.builder()
+                                    .tripId(trip)
+                                    .itineraryName(ir.getName())
+                                    .itineraryOrder(ir.getOrder())
+                                    .departureDate(ir.getStartDate())
+                                    .arrivalDate(ir.getEndDate())
+                                    .build()
+                    );
                     itineraryResponse = StayResponse.fromEntity((Stay) itinerary);
                     break;
             }
@@ -94,7 +95,8 @@ public class ItineraryService {
         ItineraryValidation.validateItinerariesOrder(itineraries);
 
         //4. response 리스트 정렬. (오더 순서대로)
-        Collections.sort(itineraryResponses, Comparator.comparingInt(ItineraryResponse::getItineraryOrder));
+        Collections.sort(itineraryResponses,
+                Comparator.comparingInt(ItineraryResponse::getItineraryOrder));
 
         return itineraryResponses;
 
@@ -119,8 +121,7 @@ public class ItineraryService {
                     .findById(id)
                     .orElseThrow(() -> new DefaultException(
                             ExceptionCode.NO_ITINERARY
-                    ))
-                    ;
+                    ));
             it.delete(LocalDateTime.now());
             it.updateDeleted();
         }
