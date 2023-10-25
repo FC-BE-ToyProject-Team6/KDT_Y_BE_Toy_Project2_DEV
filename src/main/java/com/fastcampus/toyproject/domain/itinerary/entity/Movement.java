@@ -28,6 +28,9 @@ public class Movement extends Itinerary {
     @Column(nullable = false)
     private String arrivalPlace;
 
+    @Column(nullable = false)
+    private String transportation;
+
     public void updateDepartureDate(LocalDateTime departureDate) {
         this.departureDate = departureDate;
     }
