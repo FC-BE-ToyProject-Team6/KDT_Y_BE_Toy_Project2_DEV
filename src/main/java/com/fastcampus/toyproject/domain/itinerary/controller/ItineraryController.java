@@ -24,7 +24,7 @@ public class ItineraryController {
         return ResponseDTO.ok("여정들 삽입 완료", itineraryService.insertItineraries(tripId, request));
     }
 
-    @DeleteMapping("/{tripId}")
+    @PutMapping("/delete/{tripId}")
     public ResponseDTO<List<ItineraryResponse>> deleteItineraries(
             @PathVariable final Long tripId,
             @Valid @RequestBody final List<Long> deleteIdList
