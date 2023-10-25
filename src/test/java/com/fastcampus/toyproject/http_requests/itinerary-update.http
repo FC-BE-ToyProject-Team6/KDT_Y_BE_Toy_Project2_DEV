@@ -1,0 +1,32 @@
+PUT http://localhost:8080/itineraries/1
+Content-Type: application/json
+
+[
+  {
+    "itineraryId": 1,
+    "type": 1,
+    "itineraryName": "지하철",
+    "startDate": "2023-10-25T17:03:10",
+    "endDate": "2023-10-25T17:03:10",
+    "itineraryOrder": 1,
+    "departurePlace": "청주 공항",
+    "arrivalPlace": "서울 공항"
+  },
+  {
+    "itineraryId": 2,
+    "type": 3,
+    "itineraryName": "유니버셜스튜디오",
+    "startDate": "2023-12-12T17:03:10",
+    "endDate": "2023-12-12T17:03:10",
+    "itineraryOrder": 3
+  },
+  {
+    "itineraryId": 3,
+    "type": 2,
+    "itineraryName": "오사카성",
+    "startDate": "2023-12-12T17:03:10",
+    "endDate": "2023-12-12T17:03:10",
+    "itineraryOrder": 2
+  }
+]
+
