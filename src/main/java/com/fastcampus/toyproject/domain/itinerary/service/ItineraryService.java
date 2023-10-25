@@ -164,43 +164,27 @@ public class ItineraryService {
                         .orElseThrow(
                             () -> new DefaultException(ExceptionCode.NO_ITINERARY));
 
-                    movement.updateItineraryName(req.getItineraryName());
-                    movement.updateItineraryOrder(req.getItineraryOrder());
-                    movement.updateDepartureDate(req.getStartDate());
-                    movement.updateDeparturePlace(req.getDeparturePlace());
-                    movement.updateArrivalDate(req.getEndDate());
-                    movement.updateArrivalPlace(req.getArrivalPlace());
-
+                    movement.updateMovement(req);
                     itineraryResponseList.add(ItineraryResponse.fromEntity(movement));
-
-                    movementRepository.flush();
 
                     break;
                 case 2:
                     Lodgement lodgement = lodgementRepository.findById(req.getItineraryId())
                         .orElseThrow(
                             () -> new DefaultException(ExceptionCode.NO_ITINERARY));
-                    lodgement.updateItineraryName(req.getItineraryName());
-                    lodgement.updateItineraryOrder(req.getItineraryOrder());
-                    lodgement.updateCheckIn(req.getStartDate());
-                    lodgement.updateCheckOut(req.getEndDate());
 
+                    lodgement.updateLodgement(req);
                     itineraryResponseList.add(ItineraryResponse.fromEntity(lodgement));
 
-                    lodgementRepository.flush();
                     break;
                 case 3:
                     Stay stay = stayRepository.findById(req.getItineraryId()).orElseThrow(
                         () -> new DefaultException(ExceptionCode.NO_SUCH_TRIP));
 
-                    stay.updateItineraryName(req.getItineraryName());
-                    stay.updateItineraryOrder(req.getItineraryOrder());
-                    stay.updateDepartureDate(req.getStartDate());
-                    stay.updateArrivalDate(req.getEndDate());
-
+                    stay.updateStay(req);
                     itineraryResponseList.add(ItineraryResponse.fromEntity(stay));
 
-                    stayRepository.flush();
+//                    stayRepository.flush();
 
                     break;
             }
