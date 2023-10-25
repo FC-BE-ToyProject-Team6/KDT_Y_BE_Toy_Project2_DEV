@@ -10,5 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface ItineraryRepository extends JpaRepository<Itinerary, Long> {
-    Optional<List<Itinerary>> findAllByTripId(Trip tripId);
+    Optional<List<Itinerary>> findAllByTripIdAndIsDeletedNull(Trip tripId);
+
 }
