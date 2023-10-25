@@ -8,6 +8,7 @@ import com.fastcampus.toyproject.domain.itinerary.repository.*;
 import com.fastcampus.toyproject.domain.itinerary.util.ItineraryValidation;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -149,4 +150,71 @@ public class ItineraryService {
 
         return itineraryResponseList;
     }
+
+    @Transactional(readOnly = false)
+    public List<ItineraryResponse> updateItinerary(Long tripId,
+        List<ItineraryUpdateRequest> itineraryUpdateRequests) {
+
+        if(itineraryUpdateRequests == null || itineraryUpdateRequests.isEmpty()){
+            throw new DefaultException(ExceptionCode.EMPTY_ITINERARY);
+        }
+
+        List<ItineraryResponse> itineraryResponseList = new ArrayList<>();
+
+        for(ItineraryUpdateRequest req : itineraryUpdateRequests){
+
+            switch (req.getType()){
+                case 1:
+                    Movement movement = movementRepository.findById(req.getItineraryId()).orElseThrow(
+                        () -> new DefaultException(ExceptionCode.NO_ITINERARY));
+
+                    movement.updateItineraryName(req.getItineraryName());
+                    movement.updateItineraryOrder(req.getItineraryOrder());
+                    movement.setDepartureDate(req.getStartDate());
+                    movement.setDeparturePlace(req.getDeparturePlace());
+                    movement.setArrivalDate(req.getEndDate());
+                    movement.setArrivalPlace(req.getArrivalPlace());
+
+                    itineraryResponseList.add(ItineraryResponse.fromEntity(movement));
+
+                    movementRepository.flush();
+
+                    break;
+                case 2:
+                    Lodgement lodgement = lodgementRepository.findById(req.getItineraryId()).orElseThrow(
+                        () -> new DefaultException(ExceptionCode.NO_ITINERARY));
+                    lodgement.updateItineraryName(req.getItineraryName());
+                    lodgement.updateItineraryOrder(req.getItineraryOrder());
+                    lodgement.setCheckIn(req.getStartDate());
+                    lodgement.setCheckOut(req.getEndDate());
+
+                    itineraryResponseList.add(ItineraryResponse.fromEntity(lodgement));
+
+                    lodgementRepository.flush();
+                    break;
+                case 3:
+                    Stay stay = stayRepository.findById(req.getItineraryId()).orElseThrow(
+                        () -> new DefaultException(ExceptionCode.NO_SUCH_TRIP));
+
+                    stay.updateItineraryName(req.getItineraryName());
+                    stay.updateItineraryOrder(req.getItineraryOrder());
+                    stay.setDepartureDate(req.getStartDate());
+                    stay.setArrivalDate(req.getEndDate());
+
+                    itineraryResponseList.add(ItineraryResponse.fromEntity(stay));
+
+                    stayRepository.flush();
+
+                    break;
+            }
+
+        }
+
+        List<Itinerary> itineraryList = itineraryRepository.findAllByTripIdOrderByItineraryOrder(getTrip(tripId));
+
+        ItineraryValidation.validateItinerariesOrder(itineraryList);
+
+        return itineraryResponseList;
+    }
+
 }
