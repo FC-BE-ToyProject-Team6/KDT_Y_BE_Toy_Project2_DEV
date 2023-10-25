@@ -43,4 +43,8 @@ public class Movement extends Itinerary {
     public void updateArrivalPlace(String arrivalPlace) {
         this.arrivalPlace = arrivalPlace;
     }
+  
+    @Column(nullable = false)
+    private String transportation;
+  
 }
