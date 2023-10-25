@@ -2,10 +2,16 @@ package com.fastcampus.toyproject.domain.itinerary.dto;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import com.fastcampus.toyproject.common.exception.DefaultException;
+import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
+
+import static com.fastcampus.toyproject.common.exception.ExceptionCode.ILLEGAL_ARGUMENT_ARRIVALPLACE;
+import static com.fastcampus.toyproject.common.exception.ExceptionCode.ILLEGAL_ARGUMENT_DEPARTUREPLACE;
 
 @Getter
 @ToString
@@ -33,5 +39,16 @@ public class ItineraryRequest {
 
     private String departurePlace;
     private String arrivalPlace;
+
+    public String getMovementName() {
+        if (this.departurePlace == null) {
+            throw new DefaultException(ILLEGAL_ARGUMENT_DEPARTUREPLACE);
+        }
+        if (this.arrivalPlace == null) {
+            throw new DefaultException(ILLEGAL_ARGUMENT_ARRIVALPLACE);
+        }
+
+        return this.departurePlace + " -> " + this.arrivalPlace;
+    }
 
 }
