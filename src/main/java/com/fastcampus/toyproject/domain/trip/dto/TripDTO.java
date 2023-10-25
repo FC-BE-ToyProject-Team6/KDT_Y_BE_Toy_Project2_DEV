@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 
 public class TripDTO {
 
-    private Long memberId;
+    private Long tripId;
     private String tripName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -26,6 +26,7 @@ public class TripDTO {
     //response로 분리(response 할 때는 Trip id 반환 안 했음)
     public static TripDTO fromEntity(Trip trip) {
         return TripDTO.builder()
+            .tripId(trip.getTripId())
             .tripName(trip.getTripName())
             .startDate(trip.getStartDate())
             .endDate(trip.getEndDate())
