@@ -48,8 +48,12 @@ public class ItineraryService {
 
             switch (ir.getType()) {
                 case 1:
-                    if (ir.getDeparturePlace() == null || ir.getArrivalPlace() == null) {
-                        throw new RuntimeException();
+                    if (ir.getDeparturePlace() == null) {
+                        throw new RuntimeException("이동의 경우 출발지 입력 하셔야 합니다.");
+                    }
+
+                    if (ir.getArrivalPlace() == null) {
+                        throw new RuntimeException("이동의 경우 도착지 입력 하셔야 합니다.");
                     }
 
                     itinerary = Movement
@@ -64,7 +68,6 @@ public class ItineraryService {
                             .build();
                     movementRepository.save((Movement) itinerary);
                     itineraryResponse = MovementResponse.fromEntity((Movement) itinerary);
-
                     break;
                 case 2:
                     itinerary = Lodgement
