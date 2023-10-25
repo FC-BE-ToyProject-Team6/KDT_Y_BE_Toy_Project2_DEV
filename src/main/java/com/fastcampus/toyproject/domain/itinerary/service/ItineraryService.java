@@ -111,7 +111,7 @@ public class ItineraryService {
     private Trip getTrip(Long tripId) {
         return tripRepository
                 .findById(tripId)
-                .orElseThrow(() -> new RuntimeException()
+                .orElseThrow(() -> new RuntimeException("해당되는 여행이 없습니다.")
                 );
     }
 }
