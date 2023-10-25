@@ -71,9 +71,14 @@ public abstract class Itinerary {
         this.isDeleted = true;
     }
 
+    public void updateItineraryName(String itineraryName){
+        this.itineraryName = itineraryName;
+    }
+
     public void updateItineraryOrder(Integer newOrder) {
         this.itineraryOrder = newOrder;
     }
+
 
 
 }
