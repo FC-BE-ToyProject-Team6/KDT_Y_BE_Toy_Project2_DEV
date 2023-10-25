@@ -17,6 +17,7 @@ public class MovementResponse extends ItineraryResponse {
     private LocalDateTime arrivalDate;
     private String departurePlace;
     private String arrivalPlace;
+    private String transportation;
 
     public static MovementResponse fromEntity(Movement entity) {
         return MovementResponse
@@ -28,6 +29,7 @@ public class MovementResponse extends ItineraryResponse {
                 .arrivalDate(entity.getArrivalDate())
                 .departurePlace(entity.getDeparturePlace())
                 .arrivalPlace(entity.getArrivalPlace())
+                .transportation(entity.getTransportation())
                 .build();
     }
 }
