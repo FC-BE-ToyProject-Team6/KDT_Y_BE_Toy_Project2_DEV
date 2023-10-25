@@ -1,6 +1,8 @@
 package com.fastcampus.toyproject.domain.trip.entity;
 
+import com.fastcampus.toyproject.common.BaseTimeEntity;
 import com.fastcampus.toyproject.domain.member.entity.Member;
+import com.fastcampus.toyproject.domain.trip.dto.TripDTO;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,20 +17,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Trip {
+public class Trip extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +34,7 @@ public class Trip {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId")
-    private Member memberId;
+    private Member member;
 
     @Column(nullable = false)
     private String tripName;
@@ -48,24 +46,27 @@ public class Trip {
     private LocalDateTime endDate;
 
     @ColumnDefault("true")
-    private boolean isDomestic;
+    private Boolean isDomestic;
 
     @ColumnDefault("false")
     private boolean isDeleted;
 
-    private LocalDateTime deletedAt;
-
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 
     public void setIsDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 
+    @Override
+    public void delete(LocalDateTime currentTime) {
+        super.delete(currentTime);
+    }
+
+    public void updateFromDTO(TripDTO tripDTO) {
+        this.tripName = tripDTO.getTripName();
+        this.startDate = tripDTO.getStartDate();
+        this.endDate = tripDTO.getEndDate();
+        this.isDomestic = tripDTO.getIsDomestic();
+    }
 
 
 }
