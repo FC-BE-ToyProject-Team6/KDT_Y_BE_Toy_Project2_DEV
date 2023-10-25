@@ -47,23 +47,16 @@ public class ItineraryService {
 
             switch (ir.getType()) {
                 case 1:
-                    if (ir.getDeparturePlace() == null) {
-                        throw new RuntimeException("이동의 경우 출발지 입력 하셔야 합니다.");
-                    }
-
-                    if (ir.getArrivalPlace() == null) {
-                        throw new RuntimeException("이동의 경우 도착지 입력 하셔야 합니다.");
-                    }
-
                     itinerary = Movement
                             .builder()
                             .tripId(trip)
-                            .itineraryName(ir.getName())
+                            .itineraryName(ir.getMovementName())
                             .itineraryOrder(ir.getOrder())
                             .departureDate(ir.getStartDate())
                             .arrivalDate(ir.getEndDate())
                             .departurePlace(ir.getDeparturePlace())
                             .arrivalPlace(ir.getArrivalPlace())
+                            .transportation(ir.getName())
                             .build();
                     movementRepository.save((Movement) itinerary);
                     itineraryResponse = MovementResponse.fromEntity((Movement) itinerary);
