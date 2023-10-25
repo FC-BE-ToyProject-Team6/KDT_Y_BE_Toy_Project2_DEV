@@ -1,13 +1,20 @@
 package com.fastcampus.toyproject.domain.trip.service;
 
+import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_ITINERARY;
+import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_SUCH_TRIP;
+
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
+import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
+import com.fastcampus.toyproject.domain.itinerary.repository.ItineraryRepository;
 import com.fastcampus.toyproject.domain.member.entity.Member;
 import com.fastcampus.toyproject.domain.member.repository.MemberRepository;
 import com.fastcampus.toyproject.domain.trip.dto.TripDTO;
+import com.fastcampus.toyproject.domain.trip.dto.TripDetailDTO;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -25,10 +32,27 @@ public class TripService {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private ItineraryRepository itineraryRepository;
+
     private Member getValidatedMember(Long memberId) {
         return memberRepository.findById(memberId)
             .orElseThrow(
                 () -> new DefaultException(ExceptionCode.INVALID_REQUEST, "해당하는 멤버가 없습니다."));
+    }
+
+    private Trip getTripByTripId(Long tripId) {
+        return tripRepository
+            .findById(tripId)
+            .orElseThrow(
+                () -> new DefaultException(NO_SUCH_TRIP)
+            );
+    }
+
+    private List<Itinerary> getItinerariesByTripId(Long tripId) {
+        return itineraryRepository
+            .findAllByTripIdAndIsDeletedNull(getTripByTripId(tripId))
+            .orElseThrow(()->new DefaultException(NO_ITINERARY));
     }
 
     @Transactional(readOnly = true)
@@ -37,6 +61,12 @@ public class TripService {
             .stream().map(TripDTO::fromEntity)
             .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public TripDetailDTO getTripDetail(Long tripId) {
+        return TripDetailDTO.fromEntity(getTripByTripId(tripId), getItinerariesByTripId(tripId));
+    }
+
 
     public Trip insertTrip(Long memberId, TripDTO tripDTO) {
         Member member = getValidatedMember(memberId);
@@ -77,4 +107,6 @@ public class TripService {
         trip.delete(LocalDateTime.now());
         tripRepository.save(trip);
     }
+
+
 }

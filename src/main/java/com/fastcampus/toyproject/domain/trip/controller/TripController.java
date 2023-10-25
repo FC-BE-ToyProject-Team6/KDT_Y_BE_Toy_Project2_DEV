@@ -3,6 +3,7 @@ package com.fastcampus.toyproject.domain.trip.controller;
 
 import com.fastcampus.toyproject.common.dto.ResponseDTO;
 import com.fastcampus.toyproject.domain.trip.dto.TripDTO;
+import com.fastcampus.toyproject.domain.trip.dto.TripDetailDTO;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import com.fastcampus.toyproject.domain.trip.service.TripService;
 import java.util.List;
@@ -21,7 +22,18 @@ public class TripController {
 
     @GetMapping("/trips")
     public ResponseDTO<List<TripDTO>> getAllTrips(){
-        return ResponseDTO.ok("모든 Trip들을 가져왔습니다.",tripService.getAllTrips());
+        return ResponseDTO.ok
+            ("모든 Trip들을 가져왔습니다.",tripService.getAllTrips()
+            );
+    }
+
+    @GetMapping("/trips/{tripId}")
+    public ResponseDTO<TripDetailDTO> getTripDetail(
+        @PathVariable Long tripId
+    ) {
+        return ResponseDTO.ok
+            ("선택한 Trip의 정보를 가져왔습니다.", tripService.getTripDetail(tripId)
+            );
     }
 
     @PostMapping
