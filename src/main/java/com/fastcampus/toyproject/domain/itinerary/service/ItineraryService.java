@@ -25,21 +25,11 @@ public class ItineraryService {
     private final MovementRepository movementRepository;
     private final StayRepository stayRepository;
 
-    private final MemberRepository memberRepository;
-
-    @Transactional
-    public void test() {
-        // test 용 메소드 (멤버, 여행 일부러 삽입) -> 추후 삭제 예정
-        Member member = Member.builder().memberId(1L).nickName("김종훈").build();
-        memberRepository.save(member);
-    }
-
     @Transactional
     public List<ItineraryResponse> insertItineraries (
             Long tripId,
             List<ItineraryRequest> request
     ) {
-        //test();
 
         List<ItineraryResponse> itineraryResponses = new ArrayList<>();
 
@@ -49,7 +39,7 @@ public class ItineraryService {
         //1. 여정 테이블에서 모든 값 가져오기.
         List<Itinerary> itineraries = itineraryRepository
                 .findAllByTripId(getTrip(tripId))
-                .orElseGet(() -> new ArrayList<>());
+                .orElseGet(ArrayList::new);
 
         //2. 현 request 에서 entity로 변환하여 리스트에 추가.
         for (ItineraryRequest ir : request) {
