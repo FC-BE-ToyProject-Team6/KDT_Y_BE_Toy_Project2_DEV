@@ -1,6 +1,5 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
-import com.fastcampus.toyproject.common.BaseTimeEntity;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -71,14 +70,13 @@ public abstract class Itinerary {
         this.isDeleted = true;
     }
 
-    public void updateItineraryName(String itineraryName){
+    public void updateItineraryName(String itineraryName) {
         this.itineraryName = itineraryName;
     }
 
     public void updateItineraryOrder(Integer newOrder) {
         this.itineraryOrder = newOrder;
     }
-
 
 
 }
