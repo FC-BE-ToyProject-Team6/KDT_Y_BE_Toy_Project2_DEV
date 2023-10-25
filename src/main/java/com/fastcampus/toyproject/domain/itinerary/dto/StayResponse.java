@@ -8,7 +8,6 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDateTime;
 
 @Getter
-@ToString
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +18,7 @@ public class StayResponse extends ItineraryResponse {
     public static StayResponse fromEntity(Stay entity) {
         return StayResponse
                 .builder()
+                .id(entity.getItineraryId())
                 .itineraryName(entity.getItineraryName())
                 .itineraryOrder(entity.getItineraryOrder())
                 .itineraryType("Stay")

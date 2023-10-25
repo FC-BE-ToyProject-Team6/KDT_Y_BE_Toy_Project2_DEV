@@ -8,7 +8,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 @Getter
-@ToString
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,10 +16,12 @@ public class MovementResponse extends ItineraryResponse {
     private LocalDateTime arrivalDate;
     private String departurePlace;
     private String arrivalPlace;
+    private String transportation;
 
     public static MovementResponse fromEntity(Movement entity) {
         return MovementResponse
                 .builder()
+                .id(entity.getItineraryId())
                 .itineraryName(entity.getItineraryName())
                 .itineraryOrder(entity.getItineraryOrder())
                 .itineraryType("Movement")
@@ -28,6 +29,7 @@ public class MovementResponse extends ItineraryResponse {
                 .arrivalDate(entity.getArrivalDate())
                 .departurePlace(entity.getDeparturePlace())
                 .arrivalPlace(entity.getArrivalPlace())
+                .transportation(entity.getTransportation())
                 .build();
     }
 }

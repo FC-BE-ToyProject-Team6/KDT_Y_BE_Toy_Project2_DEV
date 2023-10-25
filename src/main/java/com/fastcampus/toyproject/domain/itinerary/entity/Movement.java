@@ -27,4 +27,7 @@ public class Movement extends Itinerary {
 
     @Column(nullable = false)
     private String arrivalPlace;
+
+    @Column(nullable = false)
+    private String transportation;
 }
