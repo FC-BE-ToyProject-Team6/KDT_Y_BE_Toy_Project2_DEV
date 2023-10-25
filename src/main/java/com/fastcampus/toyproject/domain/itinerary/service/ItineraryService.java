@@ -170,10 +170,10 @@ public class ItineraryService {
 
                     movement.updateItineraryName(req.getItineraryName());
                     movement.updateItineraryOrder(req.getItineraryOrder());
-                    movement.setDepartureDate(req.getStartDate());
-                    movement.setDeparturePlace(req.getDeparturePlace());
-                    movement.setArrivalDate(req.getEndDate());
-                    movement.setArrivalPlace(req.getArrivalPlace());
+                    movement.updateDepartureDate(req.getStartDate());
+                    movement.updateDeparturePlace(req.getDeparturePlace());
+                    movement.updateArrivalDate(req.getEndDate());
+                    movement.updateArrivalPlace(req.getArrivalPlace());
 
                     itineraryResponseList.add(ItineraryResponse.fromEntity(movement));
 
@@ -186,8 +186,8 @@ public class ItineraryService {
                             () -> new DefaultException(ExceptionCode.NO_ITINERARY));
                     lodgement.updateItineraryName(req.getItineraryName());
                     lodgement.updateItineraryOrder(req.getItineraryOrder());
-                    lodgement.setCheckIn(req.getStartDate());
-                    lodgement.setCheckOut(req.getEndDate());
+                    lodgement.updateCheckIn(req.getStartDate());
+                    lodgement.updateCheckOut(req.getEndDate());
 
                     itineraryResponseList.add(ItineraryResponse.fromEntity(lodgement));
 
@@ -199,8 +199,8 @@ public class ItineraryService {
 
                     stay.updateItineraryName(req.getItineraryName());
                     stay.updateItineraryOrder(req.getItineraryOrder());
-                    stay.setDepartureDate(req.getStartDate());
-                    stay.setArrivalDate(req.getEndDate());
+                    stay.updateDepartureDate(req.getStartDate());
+                    stay.updateArrivalDate(req.getEndDate());
 
                     itineraryResponseList.add(ItineraryResponse.fromEntity(stay));
 

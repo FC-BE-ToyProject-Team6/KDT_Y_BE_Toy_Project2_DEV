@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -17,11 +16,16 @@ import lombok.experimental.SuperBuilder;
 public class Stay extends Itinerary {
 
     @Column(nullable = false)
-    @Setter
     private LocalDateTime departureDate;
 
     @Column(nullable = false)
-    @Setter
     private LocalDateTime arrivalDate;
 
+    public void updateDepartureDate(LocalDateTime departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public void updateArrivalDate(LocalDateTime arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
 }
