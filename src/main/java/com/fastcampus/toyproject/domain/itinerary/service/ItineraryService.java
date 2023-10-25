@@ -6,14 +6,13 @@ import com.fastcampus.toyproject.domain.itinerary.dto.*;
 import com.fastcampus.toyproject.domain.itinerary.entity.*;
 import com.fastcampus.toyproject.domain.itinerary.repository.*;
 import com.fastcampus.toyproject.domain.itinerary.util.ItineraryValidation;
-import com.fastcampus.toyproject.domain.member.entity.Member;
-import com.fastcampus.toyproject.domain.member.repository.MemberRepository;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -38,7 +37,7 @@ public class ItineraryService {
 
         //1. 여정 테이블에서 모든 값 가져오기.
         List<Itinerary> itineraries = itineraryRepository
-                .findAllByTripId(getTrip(tripId))
+                .findAllByTripIdAndIsDeletedNull(getTrip(tripId))
                 .orElseGet(ArrayList::new);
 
         //2. 현 request 에서 entity로 변환하여 리스트에 추가.
@@ -113,5 +112,41 @@ public class ItineraryService {
                 .findById(tripId)
                 .orElseThrow(() -> new RuntimeException("해당되는 여행이 없습니다.")
                 );
+    }
+
+    @Transactional
+    public List<ItineraryResponse> deleteItineraries(
+            Long tripId,
+            List<Long> deleteIdList
+    ) {
+
+        //1. 여정들 가져오기 (id만 적힌것들) -> delete 처리
+        for (Long id : deleteIdList) {
+            Itinerary it = itineraryRepository
+                    .findById(id)
+                    .orElseThrow(() -> new DefaultException(
+                            ExceptionCode.NO_ITINERARY
+                    ))
+                    ;
+            it.delete(LocalDateTime.now());
+            it.updateDeleted();
+        }
+
+        //2. 남은 여정들의 순서 재정의
+        List<Itinerary> itineraries = itineraryRepository
+                .findAllByTripIdAndIsDeletedNull(getTrip(tripId))
+                .orElseGet(ArrayList::new);
+
+        Collections.sort(itineraries, Comparator.comparingInt(Itinerary::getItineraryOrder));
+
+        List<ItineraryResponse> itineraryResponseList = new ArrayList<>();
+        for (int order = 1; order <= itineraries.size(); order++) {
+            //리스트 순대로 order 재정의.
+            Itinerary it = itineraries.get(order - 1);
+            it.updateItineraryOrder(order);
+            itineraryResponseList.add(ItineraryResponse.fromEntity(it));
+        }
+
+        return itineraryResponseList;
     }
 }

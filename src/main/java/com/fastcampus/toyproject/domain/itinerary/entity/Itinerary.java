@@ -1,5 +1,6 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
+import com.fastcampus.toyproject.common.BaseTimeEntity;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -50,12 +51,29 @@ public abstract class Itinerary {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    private LocalDateTime deletedAt;
-
     @CreatedDate
     private LocalDateTime createdAt;
 
+    @Column(insertable = false)
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Column(insertable = false)
+    private LocalDateTime deletedAt;
+
+    public void delete(LocalDateTime currentTime) {
+        if (deletedAt == null) {
+            deletedAt = currentTime;
+        }
+    }
+
+    public void updateDeleted() {
+        this.isDeleted = true;
+    }
+
+    public void updateItineraryOrder(Integer newOrder) {
+        this.itineraryOrder = newOrder;
+    }
+
 
 }
