@@ -10,6 +10,9 @@ import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -26,6 +29,13 @@ public class TripService {
         return memberRepository.findById(memberId)
             .orElseThrow(
                 () -> new DefaultException(ExceptionCode.INVALID_REQUEST, "해당하는 멤버가 없습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    public List<TripDTO> getAllTrips() {
+        return tripRepository.findAll()
+            .stream().map(TripDTO::fromEntity)
+            .collect(Collectors.toList());
     }
 
     public Trip insertTrip(Long memberId, TripDTO tripDTO) {
