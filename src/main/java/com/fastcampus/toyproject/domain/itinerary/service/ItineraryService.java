@@ -118,7 +118,7 @@ public class ItineraryService {
     private Trip getTrip(Long tripId) {
         return tripRepository
                 .findById(tripId)
-                .orElseThrow(() -> new DefaultException(ExceptionCode.NO_TRIP)
+                .orElseThrow(() -> new RuntimeException()
                 );
     }
 }
