@@ -145,4 +145,58 @@ public class ItineraryService {
 
         return itineraryResponseList;
     }
+
+    @Transactional(readOnly = false)
+    public List<ItineraryResponse> updateItinerary(Long tripId,
+        List<ItineraryUpdateRequest> itineraryUpdateRequests) {
+
+        if (itineraryUpdateRequests == null || itineraryUpdateRequests.isEmpty()) {
+            throw new DefaultException(ExceptionCode.EMPTY_ITINERARY);
+        }
+
+        List<ItineraryResponse> itineraryResponseList = new ArrayList<>();
+
+        for (ItineraryUpdateRequest req : itineraryUpdateRequests) {
+
+            switch (req.getType()) {
+                case 1:
+                    Movement movement = movementRepository.findById(req.getItineraryId())
+                        .orElseThrow(
+                            () -> new DefaultException(ExceptionCode.NO_ITINERARY));
+
+                    movement.updateMovement(req);
+                    itineraryResponseList.add(ItineraryResponse.fromEntity(movement));
+
+                    break;
+                case 2:
+                    Lodgement lodgement = lodgementRepository.findById(req.getItineraryId())
+                        .orElseThrow(
+                            () -> new DefaultException(ExceptionCode.NO_ITINERARY));
+
+                    lodgement.updateLodgement(req);
+                    itineraryResponseList.add(ItineraryResponse.fromEntity(lodgement));
+
+                    break;
+                case 3:
+                    Stay stay = stayRepository.findById(req.getItineraryId()).orElseThrow(
+                        () -> new DefaultException(ExceptionCode.NO_SUCH_TRIP));
+
+                    stay.updateStay(req);
+                    itineraryResponseList.add(ItineraryResponse.fromEntity(stay));
+
+//                    stayRepository.flush();
+
+                    break;
+            }
+
+        }
+
+        List<Itinerary> itineraryList = itineraryRepository.findAllByTripIdOrderByItineraryOrder(
+            getTrip(tripId));
+
+        ItineraryValidation.validateItinerariesOrder(itineraryList);
+
+        return itineraryResponseList;
+    }
+
 }

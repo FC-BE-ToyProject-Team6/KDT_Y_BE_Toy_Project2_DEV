@@ -5,10 +5,12 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
+@Builder
 public class ResponseDTO<T> {
     private final HttpStatus status;
     private final String msg;
     private final T data;
+
 
     public static <T> ResponseDTO<T> ok(String msg, T data) {
         return new ResponseDTO<>(HttpStatus.OK, msg, data);

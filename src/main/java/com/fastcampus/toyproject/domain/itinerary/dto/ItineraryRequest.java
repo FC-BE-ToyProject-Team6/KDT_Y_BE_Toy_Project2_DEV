@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ import static com.fastcampus.toyproject.common.exception.ExceptionCode.ILLEGAL_A
 
 @Getter
 @ToString
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItineraryRequest {

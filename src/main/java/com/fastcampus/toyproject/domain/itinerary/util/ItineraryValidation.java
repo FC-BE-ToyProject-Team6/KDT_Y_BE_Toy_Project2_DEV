@@ -25,6 +25,10 @@ public class ItineraryValidation {
             return o1.getItineraryOrder()- o2.getItineraryOrder();
         });
 
+        isItinerarySorted(itineraryList);
+    }
+
+    private static void isItinerarySorted(List<Itinerary> itineraryList) {
         //2. 순서가 1부터 차례대로 들어갔는지 확인. (O(N))
         for (int orderIdx = 1; orderIdx <= itineraryList.size(); orderIdx++) {
             if (itineraryList.get(orderIdx - 1).getItineraryOrder() != orderIdx) {
@@ -32,5 +36,6 @@ public class ItineraryValidation {
             }
         }
     }
+
 
 }
