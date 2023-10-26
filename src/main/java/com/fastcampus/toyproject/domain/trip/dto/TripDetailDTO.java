@@ -1,9 +1,9 @@
 package com.fastcampus.toyproject.domain.trip.dto;
 
+import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
 import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +22,9 @@ public class TripDetailDTO {
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isDomestic;
-    private List<Itinerary> itineraries;
+    private List<ItineraryResponse> itineraries;
 
-    public static TripDetailDTO fromEntity(Trip trip, List<Itinerary> itineraryList) {
+    public static TripDetailDTO fromEntity(Trip trip, List<ItineraryResponse> itineraryList) {
         return TripDetailDTO.builder()
             .tripId(trip.getTripId())
             .tripName(trip.getTripName())
