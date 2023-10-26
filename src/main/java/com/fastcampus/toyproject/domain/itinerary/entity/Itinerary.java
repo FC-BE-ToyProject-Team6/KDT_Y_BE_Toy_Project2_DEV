@@ -1,5 +1,6 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
+import com.fastcampus.toyproject.common.BaseTimeEntity;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
 @SuperBuilder
-public abstract class Itinerary {
+public class Itinerary extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,20 +53,9 @@ public abstract class Itinerary {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @Column(insertable = false)
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
-    @Column(insertable = false)
-    private LocalDateTime deletedAt;
-
+    @Override
     public void delete(LocalDateTime currentTime) {
-        if (deletedAt == null) {
-            deletedAt = currentTime;
-        }
+        super.delete(currentTime);
     }
 
     public void updateDeleted() {
