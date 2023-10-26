@@ -1,13 +1,12 @@
 package com.fastcampus.toyproject.domain.itinerary.dto;
 
+import com.fastcampus.toyproject.domain.itinerary.type.ItineraryType;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
-import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
@@ -22,11 +21,10 @@ import static com.fastcampus.toyproject.common.exception.ExceptionCode.ILLEGAL_A
 public class ItineraryRequest {
 
     @NotNull
-    @Range(min = 1, max = 3)
-    private Integer type;
+    private ItineraryType type;
 
     @NotNull
-    private String name;
+    private String item;
 
     @NotNull
     private LocalDateTime startDate;

@@ -49,7 +49,7 @@ public class ItineraryService {
             ItineraryResponse itineraryResponse = null;
 
             switch (ir.getType()) {
-                case 1:
+                case MOVEMENT:
                     itinerary = movementRepository.save(
                             Movement.builder()
                                     .tripId(trip)
@@ -59,16 +59,16 @@ public class ItineraryService {
                                     .arrivalDate(ir.getEndDate())
                                     .departurePlace(ir.getDeparturePlace())
                                     .arrivalPlace(ir.getArrivalPlace())
-                                    .transportation(ir.getName())
+                                    .transportation(ir.getItem())
                                     .build()
                     );
                     itineraryResponse = MovementResponse.fromEntity((Movement) itinerary);
                     break;
-                case 2:
+                case LODGEMENT:
                     itinerary = lodgementRepository.save(
                             Lodgement.builder()
                                     .tripId(trip)
-                                    .itineraryName(ir.getName())
+                                    .itineraryName(ir.getItem())
                                     .itineraryOrder(ir.getOrder())
                                     .checkIn(ir.getStartDate())
                                     .checkOut(ir.getEndDate())
@@ -76,11 +76,11 @@ public class ItineraryService {
                     );
                     itineraryResponse = LodgementResponse.fromEntity((Lodgement) itinerary);
                     break;
-                case 3:
+                case STAY:
                     itinerary = stayRepository.save(
                             Stay.builder()
                                     .tripId(trip)
-                                    .itineraryName(ir.getName())
+                                    .itineraryName(ir.getItem())
                                     .itineraryOrder(ir.getOrder())
                                     .departureDate(ir.getStartDate())
                                     .arrivalDate(ir.getEndDate())
@@ -159,7 +159,7 @@ public class ItineraryService {
         for (ItineraryUpdateRequest req : itineraryUpdateRequests) {
 
             switch (req.getType()) {
-                case 1:
+                case MOVEMENT:
                     Movement movement = movementRepository.findById(req.getItineraryId())
                         .orElseThrow(
                             () -> new DefaultException(ExceptionCode.NO_ITINERARY));
@@ -168,7 +168,7 @@ public class ItineraryService {
                     itineraryResponseList.add(ItineraryResponse.fromEntity(movement));
 
                     break;
-                case 2:
+                case LODGEMENT:
                     Lodgement lodgement = lodgementRepository.findById(req.getItineraryId())
                         .orElseThrow(
                             () -> new DefaultException(ExceptionCode.NO_ITINERARY));
@@ -177,7 +177,7 @@ public class ItineraryService {
                     itineraryResponseList.add(ItineraryResponse.fromEntity(lodgement));
 
                     break;
-                case 3:
+                case STAY:
                     Stay stay = stayRepository.findById(req.getItineraryId()).orElseThrow(
                         () -> new DefaultException(ExceptionCode.NO_SUCH_TRIP));
 
@@ -195,6 +195,9 @@ public class ItineraryService {
             getTrip(tripId));
 
         ItineraryValidation.validateItinerariesOrder(itineraryList);
+
+        Collections.sort(itineraryResponseList,
+                Comparator.comparingInt(ItineraryResponse::getItineraryOrder));
 
         return itineraryResponseList;
     }
