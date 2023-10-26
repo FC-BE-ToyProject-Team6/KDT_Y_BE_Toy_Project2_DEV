@@ -2,6 +2,7 @@ package com.fastcampus.toyproject.domain.trip.dto;
 
 import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -18,8 +19,8 @@ public class TripDetailDTO {
 
     private Long tripId;
     private String tripName;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Boolean isDomestic;
     private List<Itinerary> itineraries;
 

@@ -3,6 +3,7 @@ package com.fastcampus.toyproject.domain.trip.entity;
 import com.fastcampus.toyproject.common.BaseTimeEntity;
 import com.fastcampus.toyproject.domain.member.entity.Member;
 import com.fastcampus.toyproject.domain.trip.dto.TripRequestDTO;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,10 +41,10 @@ public class Trip extends BaseTimeEntity {
     private String tripName;
 
     @Column(nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @ColumnDefault("true")
     private Boolean isDomestic;
