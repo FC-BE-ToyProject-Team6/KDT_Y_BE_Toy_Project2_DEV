@@ -1,38 +1,36 @@
 package com.fastcampus.toyproject.domain.trip.dto;
 
+import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import java.time.LocalDateTime;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
 @AllArgsConstructor
-
 @NoArgsConstructor
-/* TripDTO도 response, request 분리하면 어떨까요 ex) 중첩 클래스 or 여정처럼 각각 클래스*/
 
-public class TripDTO {
+public class TripDetailDTO {
 
     private Long tripId;
     private String tripName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Boolean isDomestic;
-    private String itineraryNames;
+    private List<Itinerary> itineraries;
 
-
-    //response로 분리(response 할 때는 Trip id 반환 안 했음)
-    public static TripDTO fromEntity(Trip trip, String names) {
-        return TripDTO.builder()
+    public static TripDetailDTO fromEntity(Trip trip, List<Itinerary> itineraryList) {
+        return TripDetailDTO.builder()
             .tripId(trip.getTripId())
             .tripName(trip.getTripName())
             .startDate(trip.getStartDate())
             .endDate(trip.getEndDate())
             .isDomestic(trip.getIsDomestic())
-            .itineraryNames(names)
+            .itineraries(itineraryList)
             .build();
     }
 }
