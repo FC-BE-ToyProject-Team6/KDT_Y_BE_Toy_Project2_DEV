@@ -2,7 +2,7 @@ package com.fastcampus.toyproject.domain.trip.entity;
 
 import com.fastcampus.toyproject.common.BaseTimeEntity;
 import com.fastcampus.toyproject.domain.member.entity.Member;
-import com.fastcampus.toyproject.domain.trip.dto.TripDTO;
+import com.fastcampus.toyproject.domain.trip.dto.TripRequestDTO;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -61,7 +61,7 @@ public class Trip extends BaseTimeEntity {
         super.delete(currentTime);
     }
 
-    public void updateFromDTO(TripDTO tripDTO) {
+    public void updateFromDTO(TripRequestDTO tripDTO) {
         this.tripName = tripDTO.getTripName();
         this.startDate = tripDTO.getStartDate();
         this.endDate = tripDTO.getEndDate();
