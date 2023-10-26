@@ -3,6 +3,7 @@ package com.fastcampus.toyproject.domain.trip.entity;
 import com.fastcampus.toyproject.common.BaseTimeEntity;
 import com.fastcampus.toyproject.domain.member.entity.Member;
 import com.fastcampus.toyproject.domain.trip.dto.TripRequestDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -32,6 +33,7 @@ public class Trip extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long tripId;
 
     @ManyToOne(fetch = FetchType.LAZY)
