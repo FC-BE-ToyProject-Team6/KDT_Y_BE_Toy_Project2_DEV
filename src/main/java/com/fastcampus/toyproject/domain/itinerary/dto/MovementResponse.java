@@ -1,6 +1,9 @@
 package com.fastcampus.toyproject.domain.itinerary.dto;
 
+import static com.fastcampus.toyproject.domain.itinerary.type.ItineraryType.MOVEMENT;
+
 import com.fastcampus.toyproject.domain.itinerary.entity.Movement;
+import com.fastcampus.toyproject.domain.itinerary.type.ItineraryType;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
@@ -24,7 +27,7 @@ public class MovementResponse extends ItineraryResponse {
                 .id(entity.getItineraryId())
                 .itineraryName(entity.getItineraryName())
                 .itineraryOrder(entity.getItineraryOrder())
-                .itineraryType("Movement")
+                .itineraryType(MOVEMENT.getValue())
                 .departureDate(entity.getDepartureDate())
                 .arrivalDate(entity.getArrivalDate())
                 .departurePlace(entity.getDeparturePlace())

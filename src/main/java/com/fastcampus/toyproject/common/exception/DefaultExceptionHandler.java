@@ -1,9 +1,13 @@
 package com.fastcampus.toyproject.common.exception;
 
+import static com.fastcampus.toyproject.common.exception.ExceptionCode.BAD_REQUEST;
+
 import com.fastcampus.toyproject.common.dto.ErrorResponseDTO;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,20 +44,43 @@ public class DefaultExceptionHandler {
     }
 
     /**
-     * 커스텀 에러를 제외한 나머지 에러들 처리 (추후 수정 예정) -> badRequset 만 중점으로 받을지 고민됨
+     * 커스텀 에러를 제외한 badRequset 만 중점으로 처리하는 에러 핸들러
      * @param
      * @param request
      * @return
      */
     @ExceptionHandler(value = {
             HttpRequestMethodNotSupportedException.class,
+            HttpMessageNotReadableException.class,
             MethodArgumentNotValidException.class,
-            Exception.class
+            InvalidFormatException.class
     })
     public ResponseEntity<ErrorResponseDTO> handleBadRequest(
             Exception e, HttpServletRequest request
     ) {
-        log.error("error!!!! url : {}, message : {}",
+        log.error("request error url : {}, message : {}",
+                request.getRequestURI(),
+                e.getMessage()
+        );
+
+        return new ResponseEntity<>(
+                ErrorResponseDTO.error(
+                        BAD_REQUEST,
+                        BAD_REQUEST.getMsg()
+                ),
+                HttpStatus.BAD_REQUEST
+
+        );
+    }
+
+    @ExceptionHandler(value = {
+            Exception.class
+    })
+    public ResponseEntity<ErrorResponseDTO> handleException(
+            Exception e, HttpServletRequest request
+    ) {
+        log.error("exception error class : {}, url : {}, message : {}",
+                e.getClass(),
                 request.getRequestURI(),
                 e.getMessage()
         );
