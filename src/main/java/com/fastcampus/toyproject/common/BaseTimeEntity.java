@@ -23,6 +23,7 @@ public class BaseTimeEntity {
     @CreatedDate
     private LocalDateTime createdAt;
 
+
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
