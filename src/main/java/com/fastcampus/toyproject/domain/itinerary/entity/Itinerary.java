@@ -1,6 +1,7 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -39,6 +40,7 @@ public abstract class Itinerary {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tripId")
+    @JsonIgnore
     private Trip tripId;
 
     @Column(nullable = false)
