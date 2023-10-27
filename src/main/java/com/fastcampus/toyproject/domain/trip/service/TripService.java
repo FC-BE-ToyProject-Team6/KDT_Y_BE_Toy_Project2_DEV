@@ -4,13 +4,12 @@ import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_SUCH_T
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
-import com.fastcampus.toyproject.common.util.DateUtil;
 import com.fastcampus.toyproject.domain.itinerary.service.ItineraryService;
 import com.fastcampus.toyproject.domain.member.entity.Member;
 import com.fastcampus.toyproject.domain.member.repository.MemberRepository;
-import com.fastcampus.toyproject.domain.trip.dto.TripDetailDTO;
-import com.fastcampus.toyproject.domain.trip.dto.TripRequestDTO;
-import com.fastcampus.toyproject.domain.trip.dto.TripResponseDTO;
+import com.fastcampus.toyproject.domain.trip.dto.TripDetailResponse;
+import com.fastcampus.toyproject.domain.trip.dto.TripRequest;
+import com.fastcampus.toyproject.domain.trip.dto.TripResponse;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
 import java.util.List;
@@ -61,9 +60,9 @@ public class TripService {
      * @return List<TripResponseDTO>
      */
     @Transactional(readOnly = true)
-    public List<TripResponseDTO> getAllTrips() {
+    public List<TripResponse> getAllTrips() {
         return tripRepository.findAll()
-            .stream().map(trip -> TripResponseDTO.fromEntity(
+            .stream().map(trip -> TripResponse.fromEntity(
                     trip, getItineraryNamesByTrip(trip)
                 )
             )
@@ -76,9 +75,9 @@ public class TripService {
      * @return tripDetailDTO
      */
     @Transactional(readOnly = true)
-    public TripDetailDTO getTripDetail(Long tripId) {
+    public TripDetailResponse getTripDetail(Long tripId) {
         Trip trip = getTripByTripId(tripId);
-        return TripDetailDTO.fromEntity(
+        return TripDetailResponse.fromEntity(
                 trip,
                 itineraryService.getItineraryListByTrip(trip)
         );
@@ -87,32 +86,32 @@ public class TripService {
     /**
      * trip 1개 삽입하는 메소드
      * @param memberId
-     * @param tripRequestDTO
+     * @param tripRequest
      * @return tripResponseDTO
      */
-    public TripResponseDTO insertTrip(Long memberId, TripRequestDTO tripRequestDTO) {
+    public TripResponse insertTrip(Long memberId, TripRequest tripRequest) {
         Member member = getValidatedMember(memberId);
 
         Trip trip = Trip.builder()
             .member(member)
-            .tripName(tripRequestDTO.getTripName())
-            .startDate(tripRequestDTO.getStartDate())
-            .endDate(tripRequestDTO.getEndDate())
-            .isDomestic(tripRequestDTO.getIsDomestic())
+            .tripName(tripRequest.getTripName())
+            .startDate(tripRequest.getStartDate())
+            .endDate(tripRequest.getEndDate())
+            .isDomestic(tripRequest.getIsDomestic())
             .build();
 
         Trip savedTrip = tripRepository.save(trip);
-        return TripResponseDTO.fromEntity(savedTrip);
+        return TripResponse.fromEntity(savedTrip);
     }
 
     /**
      * trip 수정하는 메소드
      * @param memberId
      * @param tripId
-     * @param tripRequestDTO
+     * @param tripRequest
      * @return tripResponseDTO
      */
-    public TripResponseDTO updateTrip(Long memberId, Long tripId, TripRequestDTO tripRequestDTO) {
+    public TripResponse updateTrip(Long memberId, Long tripId, TripRequest tripRequest) {
         Member member = getValidatedMember(memberId);
         Trip existTrip = tripRepository.findById(tripId)
             .orElseThrow(() -> new DefaultException(NO_SUCH_TRIP));
@@ -121,9 +120,9 @@ public class TripService {
             throw new DefaultException(ExceptionCode.INVALID_REQUEST, "멤버의 여행 정보가 일치하지 않습니다.");
         }
 
-        existTrip.updateFromDTO(tripRequestDTO);
+        existTrip.updateFromDTO(tripRequest);
         Trip updatedTrip = tripRepository.save(existTrip);
-        return TripResponseDTO.fromEntity(updatedTrip);
+        return TripResponse.fromEntity(updatedTrip);
     }
 
     /**
