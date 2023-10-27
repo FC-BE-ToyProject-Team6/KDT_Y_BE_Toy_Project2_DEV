@@ -1,6 +1,7 @@
 package com.fastcampus.toyproject.domain.itinerary.controller;
 
 import com.fastcampus.toyproject.common.dto.ResponseDTO;
+import com.fastcampus.toyproject.common.util.DateUtil;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryRequest;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryUpdateRequest;
@@ -20,9 +21,12 @@ public class ItineraryController {
     @PostMapping("/{tripId}")
     public ResponseDTO<List<ItineraryResponse>> insertItineraries(
             @PathVariable final Long tripId,
-            @Valid @RequestBody final List<ItineraryRequest> request
+            @Valid @RequestBody final List<ItineraryRequest> itineraryRequests
     ) {
-        return ResponseDTO.ok("여정들 삽입 완료", itineraryService.insertItineraries(tripId, request));
+        for (ItineraryRequest ir : itineraryRequests) {
+            DateUtil.isStartDateEarlierThanEndDate(ir.getStartDate(), ir.getEndDate());
+        }
+        return ResponseDTO.ok("여정들 삽입 완료", itineraryService.insertItineraries(tripId, itineraryRequests));
     }
 
     @PutMapping("/delete/{tripId}")
@@ -38,7 +42,11 @@ public class ItineraryController {
         @PathVariable final Long tripId,
         @Valid @RequestBody List<ItineraryUpdateRequest> itineraryUpdateRequests) {
 
-        List<ItineraryResponse> itineraryResponses = itineraryService.updateItinerary(tripId,
+        for (ItineraryRequest ir : itineraryUpdateRequests) {
+            DateUtil.isStartDateEarlierThanEndDate(ir.getStartDate(), ir.getEndDate());
+        }
+
+        List<ItineraryResponse> itineraryResponses = itineraryService.updateItineraries(tripId,
             itineraryUpdateRequests);
 
         return ResponseDTO.ok("여정들 수정 완료", itineraryResponses);
