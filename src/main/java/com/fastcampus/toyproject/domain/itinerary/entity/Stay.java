@@ -23,7 +23,7 @@ public class Stay extends Itinerary {
     private LocalDateTime arrivalDate;
 
     public void updateStay(ItineraryUpdateRequest req){
-        super.updateItineraryName(req.getName());
+        super.updateItineraryName(req.getItem());
         super.updateItineraryOrder(req.getOrder());
         this.departureDate = req.getStartDate();
         this.arrivalDate = req.getEndDate();

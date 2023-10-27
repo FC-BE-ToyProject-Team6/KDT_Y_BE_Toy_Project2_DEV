@@ -21,8 +21,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -42,7 +40,7 @@ public class Itinerary extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tripId")
     @JsonIgnore
-    private Trip tripId;
+    private Trip trip;
 
     @Column(nullable = false)
     private String itineraryName;
@@ -53,12 +51,8 @@ public class Itinerary extends BaseTimeEntity {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    @Override
-    public void delete(LocalDateTime currentTime) {
-        super.delete(currentTime);
-    }
-
-    public void updateDeleted() {
+    public void delete() {
+        super.delete(LocalDateTime.now());
         this.isDeleted = true;
     }
 

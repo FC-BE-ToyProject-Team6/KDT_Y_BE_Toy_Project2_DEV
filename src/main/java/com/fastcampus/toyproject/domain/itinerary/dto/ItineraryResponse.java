@@ -27,7 +27,6 @@ public class ItineraryResponse {
                 .id(itinerary.getItineraryId())
                 .itineraryName(itinerary.getItineraryName())
                 .itineraryOrder(itinerary.getItineraryOrder())
-                .itineraryType(itinerary.getItineraryName())
                 .build();
     }
 

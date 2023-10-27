@@ -1,12 +1,11 @@
 package com.fastcampus.toyproject.domain.trip.service;
 
-import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_ITINERARY;
 import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_SUCH_TRIP;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
-import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
-import com.fastcampus.toyproject.domain.itinerary.repository.ItineraryRepository;
+import com.fastcampus.toyproject.common.util.DateUtil;
+import com.fastcampus.toyproject.domain.itinerary.service.ItineraryService;
 import com.fastcampus.toyproject.domain.member.entity.Member;
 import com.fastcampus.toyproject.domain.member.repository.MemberRepository;
 import com.fastcampus.toyproject.domain.trip.dto.TripDetailDTO;
@@ -14,8 +13,6 @@ import com.fastcampus.toyproject.domain.trip.dto.TripRequestDTO;
 import com.fastcampus.toyproject.domain.trip.dto.TripResponseDTO;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +25,7 @@ public class TripService {
 
     private final TripRepository tripRepository;
     private final MemberRepository memberRepository;
-    private final ItineraryRepository itineraryRepository;
+    private final ItineraryService itineraryService;
 
     private Member getValidatedMember(Long memberId) {
         return memberRepository.findById(memberId)
@@ -36,46 +33,66 @@ public class TripService {
                 () -> new DefaultException(ExceptionCode.INVALID_REQUEST, "해당하는 멤버가 없습니다."));
     }
 
-    private Trip getTripByTripId(Long tripId) {
+    /**
+     * trip 아이디를 통한 trip 객체 반환하는 메소드
+     * @param tripId
+     * @return trip
+     */
+    public Trip getTripByTripId(Long tripId) {
         return tripRepository
             .findById(tripId)
             .orElseThrow(() -> new DefaultException(NO_SUCH_TRIP));
     }
 
-    private List<ItineraryResponse> getItinerariesByTripId(Long tripId) {
-        return itineraryRepository
-            .findAllByTripIdAndIsDeletedNull(getTripByTripId(tripId))
-            .map(list->list.stream().map(ItineraryResponse::fromEntity).collect(Collectors.toList()))
-            .orElseThrow(()->new DefaultException(NO_ITINERARY));
+    /**
+     * trip 객체로 연관된 itinerary들의 이름만 반환하는 메소드
+     * @param trip
+     * @return string
+     */
+    public String getItineraryNamesByTrip(Trip trip) {
+
+        return itineraryService.getItineraryListByTrip(trip)
+                .stream().map(it -> it.getItineraryName())
+                .collect(Collectors.joining(", "));
     }
 
-    private String getItineraryNamesByTrip(Trip trip) {
-        return itineraryRepository
-            .findAllByTripIdAndIsDeletedNull(trip)
-            .orElse(new ArrayList<>())
-            .stream().map(itinerary -> ItineraryResponse.fromEntity(itinerary).getItineraryName())
-            .collect(Collectors.joining(", "));
-    }
-
+    /**
+     * trip 전부 반환하는 메소드
+     * @return List<TripResponseDTO>
+     */
     @Transactional(readOnly = true)
     public List<TripResponseDTO> getAllTrips() {
         return tripRepository.findAll()
-            .stream().map(trip -> TripResponseDTO.fromEntity
-                (
+            .stream().map(trip -> TripResponseDTO.fromEntity(
                     trip, getItineraryNamesByTrip(trip)
                 )
             )
             .collect(Collectors.toList());
     }
 
+    /**
+     * trip과 연관된 itinerary 리스트 반환 (여행 상세 조회)
+     * @param tripId
+     * @return tripDetailDTO
+     */
     @Transactional(readOnly = true)
     public TripDetailDTO getTripDetail(Long tripId) {
-        return TripDetailDTO.fromEntity(getTripByTripId(tripId), getItinerariesByTripId(tripId));
+        Trip trip = getTripByTripId(tripId);
+        return TripDetailDTO.fromEntity(
+                trip,
+                itineraryService.getItineraryListByTrip(trip)
+        );
     }
 
-
+    /**
+     * trip 1개 삽입하는 메소드
+     * @param memberId
+     * @param tripRequestDTO
+     * @return tripResponseDTO
+     */
     public TripResponseDTO insertTrip(Long memberId, TripRequestDTO tripRequestDTO) {
         Member member = getValidatedMember(memberId);
+
         Trip trip = Trip.builder()
             .member(member)
             .tripName(tripRequestDTO.getTripName())
@@ -88,6 +105,13 @@ public class TripService {
         return TripResponseDTO.fromEntity(savedTrip);
     }
 
+    /**
+     * trip 수정하는 메소드
+     * @param memberId
+     * @param tripId
+     * @param tripRequestDTO
+     * @return tripResponseDTO
+     */
     public TripResponseDTO updateTrip(Long memberId, Long tripId, TripRequestDTO tripRequestDTO) {
         Member member = getValidatedMember(memberId);
         Trip existTrip = tripRepository.findById(tripId)
@@ -102,12 +126,14 @@ public class TripService {
         return TripResponseDTO.fromEntity(updatedTrip);
     }
 
-    public void deleteTrip(Long id) {
-        Trip trip = tripRepository.findById(id)
-            .orElseThrow(() -> new DefaultException(NO_SUCH_TRIP));
-
-        trip.delete(LocalDateTime.now());
-        trip.setIsDeleted(true);
+    /**
+     * trip 삭제 및 연관된 itinerary 삭제하는 메소드
+     * @param tripId
+     */
+    public void deleteTrip(Long tripId) {
+        Trip trip = getTripByTripId(tripId);
+        trip.delete();
+        itineraryService.deleteAllItineraryByTrip(trip);
         tripRepository.save(trip);
     }
 }

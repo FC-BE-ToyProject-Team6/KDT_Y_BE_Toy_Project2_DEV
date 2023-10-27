@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ItineraryRepository extends JpaRepository<Itinerary, Long> {
-    Optional<List<Itinerary>> findAllByTripIdAndIsDeletedNull(Trip tripId);
+    Optional<List<Itinerary>> findAllByTripAndIsDeletedNull(Trip trip);
 
-    List<Itinerary> findAllByTripIdOrderByItineraryOrder(Trip tripId);
+    List<Itinerary> findAllByTripOrderByItineraryOrder(Trip trip);
 }
