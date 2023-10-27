@@ -2,9 +2,8 @@ POST http://localhost:8080/api/member/1/trip
 Content-Type: application/json
 
 {
-  "memberId" : 1,
   "tripName" : "일본 여행",
-  "startDate" : "2023-10-04",
-  "endDate" : "2023-10-25",
+  "startDate" : "2023-10-22",
+  "endDate" : "2023-10-29",
   "isDomestic" : true
 }
