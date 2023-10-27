@@ -1,6 +1,7 @@
 package com.fastcampus.toyproject.domain.itinerary.util;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
+import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
 import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 
 import java.util.*;
@@ -8,11 +9,10 @@ import java.util.*;
 import static com.fastcampus.toyproject.common.exception.ExceptionCode.DUPLICATE_ITINERARY_ORDER;
 import static com.fastcampus.toyproject.common.exception.ExceptionCode.INCORRECT_ORDER;
 
-public class ItineraryValidation {
+public class ItineraryOrderUtil {
 
     /**
      * 여정 순서가 적절하게 입력되었는지 확인하는 메소드
-     * @author : 지운
      * @param : itineraryList
      * @return
      */
@@ -35,6 +35,14 @@ public class ItineraryValidation {
                 throw new DefaultException(INCORRECT_ORDER);
             }
         }
+    }
+
+    /**
+     * 테이블에 등록된 여정 순서대로 itinerary 리스트 정렬
+     * @param itResponseList
+     */
+    public static void sortItineraryResponseListByOrder(List<ItineraryResponse> itResponseList) {
+        Collections.sort(itResponseList, Comparator.comparingInt(ItineraryResponse::getItineraryOrder));
     }
 
 
