@@ -3,26 +3,26 @@ Content-Type: application/json
 
 [
   {
-    "type" : 1,
-    "name" : "비행기",
+    "type" : "MOVEMENT",
+    "item" : "비행기",
     "startDate" : "2023-10-25T17:03:10",
-    "endDate" : "2023-10-25T17:03:10",
+    "endDate" : "2023-10-24T00:00:10",
     "order" : 1,
     "departurePlace" : "인천 공항",
     "arrivalPlace" : "도쿄 공항"
   },
   {
-    "type" : 3,
-    "name" : "디즈니월드",
-    "startDate" : "2023-10-25T17:03:10",
-    "endDate" : "2023-10-25T17:03:10",
-    "order" : 2
+    "type" : "STAY",
+    "item" : "디즈니월드",
+    "startDate" : "2023-10-26T12:00:10",
+    "endDate" : "2023-10-26T20:03:10",
+    "order" : 1
   },
   {
-    "type" : 2,
-    "name" : "도쿄 호텔",
+    "type" : "LODGEMENT",
+    "item" : "도쿄 호텔",
     "startDate" : "2023-10-25T17:03:10",
-    "endDate" : "2023-10-25T17:03:10",
+    "endDate" : "2023-10-29T10:03:10",
     "order" : 3
   }
 ]

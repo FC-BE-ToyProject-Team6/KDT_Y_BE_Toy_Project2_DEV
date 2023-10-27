@@ -1,6 +1,8 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
+import com.fastcampus.toyproject.common.BaseTimeEntity;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -19,8 +21,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -31,7 +31,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
 @SuperBuilder
-public abstract class Itinerary {
+public class Itinerary extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +39,8 @@ public abstract class Itinerary {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tripId")
-    private Trip tripId;
+    @JsonIgnore
+    private Trip trip;
 
     @Column(nullable = false)
     private String itineraryName;
@@ -50,23 +51,8 @@ public abstract class Itinerary {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @Column(insertable = false)
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-
-    @Column(insertable = false)
-    private LocalDateTime deletedAt;
-
-    public void delete(LocalDateTime currentTime) {
-        if (deletedAt == null) {
-            deletedAt = currentTime;
-        }
-    }
-
-    public void updateDeleted() {
+    public void delete() {
+        super.delete(LocalDateTime.now());
         this.isDeleted = true;
     }
 

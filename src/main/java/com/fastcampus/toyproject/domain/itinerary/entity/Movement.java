@@ -35,7 +35,7 @@ public class Movement extends Itinerary {
     public void updateMovement(ItineraryUpdateRequest req) {
         super.updateItineraryName(req.getMovementName());
         super.updateItineraryOrder(req.getOrder());
-        this.transportation = req.getName();
+        this.transportation = req.getItem();
         this.departureDate = req.getStartDate();
         this.departurePlace = req.getDeparturePlace();
         this.arrivalDate = req.getEndDate();
