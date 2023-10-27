@@ -2,6 +2,7 @@ package com.fastcampus.toyproject.domain.itinerary.dto;
 
 import static com.fastcampus.toyproject.domain.itinerary.type.ItineraryType.MOVEMENT;
 
+import com.fastcampus.toyproject.common.util.DateUtil;
 import com.fastcampus.toyproject.domain.itinerary.entity.Movement;
 import com.fastcampus.toyproject.domain.itinerary.type.ItineraryType;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -20,6 +21,7 @@ public class MovementResponse extends ItineraryResponse {
     private String departurePlace;
     private String arrivalPlace;
     private String transportation;
+    private String timeDifference;
 
     public static MovementResponse fromEntity(Movement entity) {
         return MovementResponse
@@ -33,6 +35,7 @@ public class MovementResponse extends ItineraryResponse {
                 .departurePlace(entity.getDeparturePlace())
                 .arrivalPlace(entity.getArrivalPlace())
                 .transportation(entity.getTransportation())
+                .timeDifference(DateUtil.getTimeBetweenDate(entity.getDepartureDate(), entity.getArrivalDate()))
                 .build();
     }
 }
