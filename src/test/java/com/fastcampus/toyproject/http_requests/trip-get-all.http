@@ -1,0 +1,2 @@
+GET http://localhost:8080/api/member/1/trip/all
+Accept: application/json
