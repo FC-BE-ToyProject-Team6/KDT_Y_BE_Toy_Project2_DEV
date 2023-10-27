@@ -1,6 +1,7 @@
 package com.fastcampus.toyproject.common.util;
 
-import com.fastcampus.toyproject.common.util.api.GoogleApiProperties;
+import com.fastcampus.toyproject.common.exception.DefaultException;
+import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import com.google.code.geocoder.Geocoder;
 import com.google.code.geocoder.GeocoderRequestBuilder;
 import com.google.code.geocoder.model.GeocodeResponse;
@@ -8,35 +9,48 @@ import com.google.code.geocoder.model.GeocoderRequest;
 import com.google.code.geocoder.model.GeocoderResult;
 import com.google.code.geocoder.model.GeocoderStatus;
 import com.google.code.geocoder.model.LatLng;
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LocationUtil {
 
-    private static void connectGoogleMap(String location) {
+    private static String baseUrl;
+    private static String key;
+
+    @Value("${spring.google-api.base-url}")
+    private void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    @Value("${spring.google-api.key}")
+    private void setKey(String key) {
+        this.key = key;
+    }
+
+    private static String connectGoogleMap(String location) {
         try {
-            String surl = googleApiProperties.getBaseUrl()
-                + URLEncoder.encode(location, "UTF-8")
-                + "&key=" + googleApiProperties.getKey();
+            return baseUrl + URLEncoder.encode(location, "UTF-8")
+                + "&key=" + key;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        return "";
     }
 
     public static String[] findLocation(String location) {
         connectGoogleMap(location);
-
         GeocoderRequest geocoderRequest = new GeocoderRequestBuilder()
             .setAddress(location)
             .setLanguage("ko")
             .getGeocoderRequest();
         try {
             Geocoder geocoder = new Geocoder();
-            GeocodeResponse geocoderResponse = geocoder.geocode(geocoderRequest);
+            GeocodeResponse geocoderResponse = geocoder.request(new Gson(), connectGoogleMap(location));
 
             if (geocoderResponse.getStatus() == GeocoderStatus.OK
                 & !geocoderResponse.getResults().isEmpty()) {
@@ -49,9 +63,11 @@ public class LocationUtil {
                 return coords;
             }
         } catch (IOException e) {
-            e.printStackTrace();//!!!default exception으로 바꾸기!!!!
+            throw new DefaultException(ExceptionCode.NO_LOCATION);
         }
         return new String[]{location};
     }
+
+
 
 }

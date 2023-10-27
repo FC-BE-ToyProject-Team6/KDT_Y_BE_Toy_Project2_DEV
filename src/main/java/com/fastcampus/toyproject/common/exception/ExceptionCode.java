@@ -6,6 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ExceptionCode {
+    NO_LOCATION("장소가 없습니다."),
     NO_ITINERARY("해당되는 여정이 없습니다."),
     DUPLICATE_ITINERARY_ORDER("여정 순서가 중복됩니다."),
     INCORRECT_ORDER("잘못된 여정 순서입니다."),
@@ -15,9 +16,7 @@ public enum ExceptionCode {
     EMPTY_ITINERARY("수정 할 여정 정보가 없습니다."),
     ILLEGAL_ARGUMENT_DEPARTUREPLACE("출발지를 입력하지 않았습니다."),
     ILLEGAL_ARGUMENT_ARRIVALPLACE("도착지를 입력하지 않았습니다."),
-    STARTDATE_IS_LATER_THAN_ENDDATE("출발 일정이 도착 일정보다 늦습니다.")
-  
-    ;
+    STARTDATE_IS_LATER_THAN_ENDDATE("출발 일정이 도착 일정보다 늦습니다.");
 
     private String msg;
 }
