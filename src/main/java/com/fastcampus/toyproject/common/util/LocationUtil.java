@@ -8,11 +8,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-/*공백 기준 첫 글자만 따서 검색 되므로 키워드만 넣으세요*/
+/*공백 기준 첫 글자만 따서 검색 되므로 공백 없는 키워드만 넣어주세요*/
 @Component
 public class LocationUtil {
 
@@ -37,7 +38,7 @@ public class LocationUtil {
         }
     }
 
-    public String[] findLocation(String location) {
+    public String findLocation(String location) {
         try {
             HttpURLConnection httpURLConnection =
                 (HttpURLConnection) createResultUrl(location).openConnection();
@@ -59,11 +60,9 @@ public class LocationUtil {
                 .getJSONArray("results").getJSONObject(0)
                 .getJSONObject("geometry").getJSONObject("location");
 
-            String[] coords = new String[2];
-            coords[0] = String.valueOf(jsonResponse.getDouble("lat"));
-            coords[1] = String.valueOf(jsonResponse.getDouble("lng"));
 
-            return coords;
+            return String.valueOf(jsonResponse.getDouble("lat"))
+                + ":" + String.valueOf(jsonResponse.getDouble("lng"));
 
         } catch (IOException e) {
             throw new DefaultException(ExceptionCode.NO_LOCATION);
