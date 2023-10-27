@@ -2,20 +2,17 @@ package com.fastcampus.toyproject.common.util;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
-import com.google.code.geocoder.Geocoder;
-import com.google.code.geocoder.GeocoderRequestBuilder;
-import com.google.code.geocoder.model.GeocodeResponse;
-import com.google.code.geocoder.model.GeocoderRequest;
-import com.google.code.geocoder.model.GeocoderResult;
-import com.google.code.geocoder.model.GeocoderStatus;
-import com.google.code.geocoder.model.LatLng;
-import com.google.gson.Gson;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+/*공백 기준 첫 글자만 따서 검색 되므로 키워드만 넣으세요*/
 @Component
 public class LocationUtil {
 
@@ -32,42 +29,45 @@ public class LocationUtil {
         this.key = key;
     }
 
-    private static String connectGoogleMap(String location) {
+    private URL createResultUrl(String location) {
         try {
-            return baseUrl + URLEncoder.encode(location, "UTF-8")
-                + "&key=" + key;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-    public static String[] findLocation(String location) {
-        connectGoogleMap(location);
-        GeocoderRequest geocoderRequest = new GeocoderRequestBuilder()
-            .setAddress(location)
-            .setLanguage("ko")
-            .getGeocoderRequest();
-        try {
-            Geocoder geocoder = new Geocoder();
-            GeocodeResponse geocoderResponse = geocoder.request(new Gson(), connectGoogleMap(location));
-
-            if (geocoderResponse.getStatus() == GeocoderStatus.OK
-                & !geocoderResponse.getResults().isEmpty()) {
-                GeocoderResult geocoderResult = geocoderResponse.getResults().iterator().next();
-                LatLng latitudeLongitude = geocoderResult.getGeometry().getLocation();
-
-                String[] coords = new String[2];
-                coords[0] = latitudeLongitude.getLat().toString();
-                coords[1] = latitudeLongitude.getLng().toString();
-                return coords;
-            }
+            return new URL(baseUrl + URLEncoder.encode(location, "UTF-8") + "&key=" + key);
         } catch (IOException e) {
             throw new DefaultException(ExceptionCode.NO_LOCATION);
         }
-        return new String[]{location};
     }
 
+    public String[] findLocation(String location) {
+        try {
+            HttpURLConnection httpURLConnection =
+                (HttpURLConnection) createResultUrl(location).openConnection();
+            httpURLConnection.setRequestProperty("Content-type", "application/json");
 
+            BufferedReader br =
+                new BufferedReader(new InputStreamReader
+                    (httpURLConnection.getInputStream(), "UTF-8")
+                );
+            StringBuilder response = new StringBuilder();
+
+            while (br.ready()) {
+                response.append(br.readLine());
+            }
+            br.close();
+            httpURLConnection.disconnect();
+
+            JSONObject jsonResponse = new JSONObject(response.toString())
+                .getJSONArray("results").getJSONObject(0)
+                .getJSONObject("geometry").getJSONObject("location");
+
+            String[] coords = new String[2];
+            coords[0] = String.valueOf(jsonResponse.getDouble("lat"));
+            coords[1] = String.valueOf(jsonResponse.getDouble("lng"));
+
+            return coords;
+
+        } catch (IOException e) {
+            throw new DefaultException(ExceptionCode.NO_LOCATION);
+        }
+    }
 
 }
