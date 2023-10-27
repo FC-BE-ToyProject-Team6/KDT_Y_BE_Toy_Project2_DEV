@@ -73,11 +73,12 @@ public class TripController {
     }
 
     @DeleteMapping("/{tripId}")
-    public ResponseDTO<Void> deleteTrip (
+    public ResponseDTO<TripResponse> deleteTrip (
             @PathVariable final Long memberId,
             @PathVariable final Long tripId
     ) {
-        tripService.deleteTrip(tripId);
-        return ResponseDTO.ok("여행 삭제 완료");
+        return ResponseDTO.ok("여행 삭제 완료",
+                tripService.deleteTrip(tripId)
+        );
     }
 }

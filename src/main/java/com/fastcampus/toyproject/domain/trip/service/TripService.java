@@ -4,6 +4,8 @@ import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_SUCH_T
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
+import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
+import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.itinerary.service.ItineraryService;
 import com.fastcampus.toyproject.domain.member.entity.Member;
 import com.fastcampus.toyproject.domain.member.repository.MemberRepository;
@@ -49,9 +51,9 @@ public class TripService {
      * @return string
      */
     public String getItineraryNamesByTrip(Trip trip) {
-
-        return itineraryService.getItineraryListByTrip(trip)
-                .stream().map(it -> it.getItineraryName())
+        return itineraryService.getItineraryResponseListByTrip(trip)
+                .stream()
+                .map(it -> it.getItineraryName())
                 .collect(Collectors.joining(", "));
     }
 
@@ -63,10 +65,8 @@ public class TripService {
     public List<TripResponse> getAllTrips() {
         return tripRepository.findAll()
             .stream().map(trip -> TripResponse.fromEntity(
-                    trip, getItineraryNamesByTrip(trip)
-                )
-            )
-            .collect(Collectors.toList());
+                    trip, getItineraryNamesByTrip(trip))
+            ).collect(Collectors.toList());
     }
 
     /**
@@ -78,8 +78,7 @@ public class TripService {
     public TripDetailResponse getTripDetail(Long tripId) {
         Trip trip = getTripByTripId(tripId);
         return TripDetailResponse.fromEntity(
-                trip,
-                itineraryService.getItineraryListByTrip(trip)
+                trip, itineraryService.getItineraryResponseListByTrip(trip)
         );
     }
 
@@ -90,18 +89,11 @@ public class TripService {
      * @return tripResponseDTO
      */
     public TripResponse insertTrip(Long memberId, TripRequest tripRequest) {
-        Member member = getValidatedMember(memberId);
-
-        Trip trip = Trip.builder()
-            .member(member)
-            .tripName(tripRequest.getTripName())
-            .startDate(tripRequest.getStartDate())
-            .endDate(tripRequest.getEndDate())
-            .isDomestic(tripRequest.getIsDomestic())
-            .build();
-
-        Trip savedTrip = tripRepository.save(trip);
-        return TripResponse.fromEntity(savedTrip);
+        return TripResponse.fromEntity(tripRepository.save(
+                Trip.builder().member(getValidatedMember(memberId))
+                        .tripName(tripRequest.getTripName()).startDate(tripRequest.getStartDate())
+                        .endDate(tripRequest.getEndDate()).isDomestic(tripRequest.getIsDomestic())
+                        .build()));
     }
 
     /**
@@ -113,26 +105,25 @@ public class TripService {
      */
     public TripResponse updateTrip(Long memberId, Long tripId, TripRequest tripRequest) {
         Member member = getValidatedMember(memberId);
-        Trip existTrip = tripRepository.findById(tripId)
-            .orElseThrow(() -> new DefaultException(NO_SUCH_TRIP));
+        Trip existTrip = getTripByTripId(tripId);
 
         if (!existTrip.getMember().getMemberId().equals(memberId)) {
+            // TODO 에러 코드 추가 요청
             throw new DefaultException(ExceptionCode.INVALID_REQUEST, "멤버의 여행 정보가 일치하지 않습니다.");
         }
 
         existTrip.updateFromDTO(tripRequest);
-        Trip updatedTrip = tripRepository.save(existTrip);
-        return TripResponse.fromEntity(updatedTrip);
+        return TripResponse.fromEntity(tripRepository.save(existTrip));
     }
 
     /**
      * trip 삭제 및 연관된 itinerary 삭제하는 메소드
      * @param tripId
      */
-    public void deleteTrip(Long tripId) {
+    public TripResponse deleteTrip(Long tripId) {
         Trip trip = getTripByTripId(tripId);
         trip.delete();
         itineraryService.deleteAllItineraryByTrip(trip);
-        tripRepository.save(trip);
+        return TripResponse.fromEntity(tripRepository.save(trip));
     }
 }
