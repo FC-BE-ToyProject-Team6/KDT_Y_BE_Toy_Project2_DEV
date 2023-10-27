@@ -1,4 +1,4 @@
-POST http://localhost:8080/itineraries/5
+POST http://localhost:8080/itineraries/1
 Content-Type: application/json
 
 [
@@ -6,7 +6,7 @@ Content-Type: application/json
     "type" : "MOVEMENT",
     "item" : "비행기",
     "startDate" : "2023-10-25T17:03:10",
-    "endDate" : "2023-10-25T17:03:10",
+    "endDate" : "2023-10-24T00:00:10",
     "order" : 1,
     "departurePlace" : "인천 공항",
     "arrivalPlace" : "도쿄 공항"
@@ -14,15 +14,15 @@ Content-Type: application/json
   {
     "type" : "STAY",
     "item" : "디즈니월드",
-    "startDate" : "2023-10-25T17:03:10",
-    "endDate" : "2023-10-25T17:03:10",
-    "order" : 2
+    "startDate" : "2023-10-26T12:00:10",
+    "endDate" : "2023-10-26T20:03:10",
+    "order" : 1
   },
   {
     "type" : "LODGEMENT",
     "item" : "도쿄 호텔",
     "startDate" : "2023-10-25T17:03:10",
-    "endDate" : "2023-10-25T17:03:10",
+    "endDate" : "2023-10-29T10:03:10",
     "order" : 3
   }
 ]
