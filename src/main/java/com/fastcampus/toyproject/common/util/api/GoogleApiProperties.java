@@ -1,4 +1,4 @@
-package com.fastcampus.toyproject.common.util.api;
+/*package com.fastcampus.toyproject.common.util.api;
 
 import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -17,4 +17,4 @@ public class GoogleApiProperties {
         this.key = key;
         System.out.println(this.getBaseUrl());
     }
-}
+}*/
