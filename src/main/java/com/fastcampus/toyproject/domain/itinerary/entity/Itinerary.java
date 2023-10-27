@@ -1,6 +1,8 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
 import com.fastcampus.toyproject.common.BaseTimeEntity;
+import com.fastcampus.toyproject.common.exception.DefaultException;
+import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryUpdateRequest;
 import com.fastcampus.toyproject.domain.itinerary.type.ItineraryType;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
@@ -72,6 +74,8 @@ public class Itinerary extends BaseTimeEntity {
             ((Lodgement)this).updateLodgement(req);
         }else if(this instanceof Stay){
             ((Stay)this).updateStay(req);
+        }else{
+            throw new DefaultException(ExceptionCode.ILLEGAL_ITINERARY_TYPE);
         }
     }
 }
