@@ -1,5 +1,6 @@
 package com.fastcampus.toyproject.domain.itinerary.dto;
 
+import com.fastcampus.toyproject.common.util.LocationUtil;
 import com.fastcampus.toyproject.domain.itinerary.entity.Movement;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -18,6 +19,8 @@ public class MovementResponse extends ItineraryResponse {
     private String arrivalPlace;
     private String transportation;
 
+    private static LocationUtil locationUtil = new LocationUtil();
+
     public static MovementResponse fromEntity(Movement entity) {
         return MovementResponse
                 .builder()
@@ -27,8 +30,8 @@ public class MovementResponse extends ItineraryResponse {
                 .itineraryType("Movement")
                 .departureDate(entity.getDepartureDate())
                 .arrivalDate(entity.getArrivalDate())
-                .departurePlace(entity.getDeparturePlace())
-                .arrivalPlace(entity.getArrivalPlace())
+                .departurePlace(locationUtil.findLocation(entity.getDeparturePlace()))
+                .arrivalPlace(locationUtil.findLocation(entity.getArrivalPlace()))
                 .transportation(entity.getTransportation())
                 .build();
     }

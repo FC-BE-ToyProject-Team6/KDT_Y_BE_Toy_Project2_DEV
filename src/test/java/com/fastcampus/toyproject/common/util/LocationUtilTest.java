@@ -15,11 +15,8 @@ class LocationUtilTest {
         String location1 = "청와대";
         String location2 = "백악관";
 
-        String[] result1 = locationUtil.findLocation(location1);
-        String[] result2 = locationUtil.findLocation(location2);
-
-        System.out.println("청와대: " + result1[0] + ":"+result1[1]);
-        System.out.println("백악관: " + result2[0] + ":"+result2[1]);
+        System.out.println("청와대: " + locationUtil.findLocation(location1));
+        System.out.println("백악관: " + locationUtil.findLocation(location2));
 
     }
 
