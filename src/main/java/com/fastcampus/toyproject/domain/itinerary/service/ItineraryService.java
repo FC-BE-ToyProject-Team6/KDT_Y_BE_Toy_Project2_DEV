@@ -1,5 +1,6 @@
 package com.fastcampus.toyproject.domain.itinerary.service;
 
+import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_ITINERARY;
 import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_SUCH_TRIP;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
@@ -137,9 +138,11 @@ public class ItineraryService {
      */
     private static List<Itinerary> getItineraryList(Trip trip) {
         List<Itinerary> itineraryList = trip.getItineraryList()
-                .stream().filter(it -> it.getIsDeleted() == null)
+                .stream().filter(it -> it.getIsDeleted() != null || !it.getIsDeleted())
                 .collect(Collectors.toList());
+
         if (itineraryList == null) itineraryList = new ArrayList<>();
+
         return itineraryList;
     }
 
@@ -235,42 +238,20 @@ public class ItineraryService {
             throw new DefaultException(ExceptionCode.EMPTY_ITINERARY);
         }
 
-        List<ItineraryResponse> itineraryResponseList = new ArrayList<>();
+        Trip trip = null;
 
         for (ItineraryUpdateRequest req : itineraryUpdateRequests) {
 
-            switch (req.getType()) {
-                case MOVEMENT:
-                    Movement movement = movementRepository.findById(req.getItineraryId())
-                        .orElseThrow(
-                            () -> new DefaultException(ExceptionCode.NO_ITINERARY));
+            Itinerary itinerary = itineraryRepository.findById(req.getItineraryId())
+                .orElseThrow(() -> new DefaultException(NO_ITINERARY));
 
-                    movement.updateMovement(req);
-                    itineraryResponseList.add(ItineraryResponse.fromEntity(movement));
+            trip = itinerary.getTrip();
 
-                    break;
-                case LODGEMENT:
-                    Lodgement lodgement = lodgementRepository.findById(req.getItineraryId())
-                        .orElseThrow(
-                            () -> new DefaultException(ExceptionCode.NO_ITINERARY));
-
-                    lodgement.updateLodgement(req);
-                    itineraryResponseList.add(ItineraryResponse.fromEntity(lodgement));
-
-                    break;
-                case STAY:
-                    Stay stay = stayRepository.findById(req.getItineraryId()).orElseThrow(
-                        () -> new DefaultException(ExceptionCode.NO_ITINERARY));
-
-                    stay.updateStay(req);
-                    itineraryResponseList.add(ItineraryResponse.fromEntity(stay));
-
-                    break;
-            }
+            itinerary.update(req);
 
         }
 
-        return getItineraryListByTrip(getTrip(tripId));
+        return getItineraryListByTrip(trip);
     }
 
 }
