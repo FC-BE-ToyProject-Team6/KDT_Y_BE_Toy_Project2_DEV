@@ -185,10 +185,7 @@ public class ItineraryService {
         }
 
         //2. 남은 여정들의 순서 재정의
-        List<Itinerary> itineraries = itineraryRepository
-                .findAllByTripAndIsDeletedNull(getTrip(tripId))
-                .orElseGet(ArrayList::new);
-
+        List<Itinerary> itineraries = getItineraryList(getTrip(tripId));
         Collections.sort(itineraries, Comparator.comparingInt(Itinerary::getItineraryOrder));
 
         List<ItineraryResponse> itineraryResponseList = new ArrayList<>();
@@ -263,25 +260,17 @@ public class ItineraryService {
                     break;
                 case STAY:
                     Stay stay = stayRepository.findById(req.getItineraryId()).orElseThrow(
-                        () -> new DefaultException(ExceptionCode.NO_SUCH_TRIP));
+                        () -> new DefaultException(ExceptionCode.NO_ITINERARY));
 
                     stay.updateStay(req);
                     itineraryResponseList.add(ItineraryResponse.fromEntity(stay));
-
-//                    stayRepository.flush();
 
                     break;
             }
 
         }
 
-        List<Itinerary> itineraryList = itineraryRepository.findAllByTripOrderByItineraryOrder(
-            getTrip(tripId));
-
-        ItineraryValidation.validateItinerariesOrder(itineraryList);
-        sortItineraryResponseListByOrder(itineraryResponseList);
-
-        return itineraryResponseList;
+        return getItineraryListByTrip(getTrip(tripId));
     }
 
 }
