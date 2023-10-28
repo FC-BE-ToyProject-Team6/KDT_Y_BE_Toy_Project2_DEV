@@ -2,7 +2,6 @@ package com.fastcampus.toyproject.domain.itinerary.service;
 
 import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_ITINERARY;
 import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_SUCH_TRIP;
-import static com.fastcampus.toyproject.domain.itinerary.util.ItineraryOrderUtil.sortItineraryResponseListByOrder;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
@@ -42,20 +41,25 @@ public class ItineraryService {
     private final MovementRepository movementRepository;
     private final StayRepository stayRepository;
 
+
     /**
      * trip 객체를 이용하여 연관된 itinerary 리스트 반환하는 메소드
+     *
      * @param trip
      * @return List<Itinerary>
      */
     private static List<Itinerary> getItineraryList(Trip trip) {
         List<Itinerary> itineraryList = trip.getItineraryList()
-                .stream().filter(it -> it.getIsDeleted() == null)
-                .collect(Collectors.toList());
+            .stream().filter(it -> it.getIsDeleted() == null || !it.getIsDeleted())
+            .collect(Collectors.toList());
+
         if (itineraryList == null) {
             itineraryList = new ArrayList<>();
         }
+
         return itineraryList;
     }
+
 
     /**
      * itinerary (1개 이상) 삽입하는 메소드
@@ -148,20 +152,6 @@ public class ItineraryService {
         return itineraryResponseList;
     }
 
-    /**
-     * trip 객체를 이용하여 연관된 itinerary 리스트 반환하는 메소드
-     * @param trip
-     * @return List<Itinerary>
-     */
-    private static List<Itinerary> getItineraryList(Trip trip) {
-        List<Itinerary> itineraryList = trip.getItineraryList()
-            .stream().filter(it -> it.getIsDeleted() == null || !it.getIsDeleted())
-            .collect(Collectors.toList());
-
-        if (itineraryList == null) itineraryList = new ArrayList<>();
-
-        return itineraryList;
-    }
 
     /**
      * 테이블에 등록된 여정 순서대로 itinerary 리스트 정렬
@@ -267,7 +257,7 @@ public class ItineraryService {
             itinerary.update(req);
         }
 
-        return getItineraryListByTrip(trip);
+        return getItineraryResponseListByTrip(trip);
     }
 
 }

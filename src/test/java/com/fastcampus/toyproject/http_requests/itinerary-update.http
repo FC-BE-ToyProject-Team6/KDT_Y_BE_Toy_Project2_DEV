@@ -1,4 +1,4 @@
-PUT http://localhost:8080/itineraries/1
+PUT http://localhost:8080/api/member/1/trip-itineraries/1
 Content-Type: application/json
 
 [
