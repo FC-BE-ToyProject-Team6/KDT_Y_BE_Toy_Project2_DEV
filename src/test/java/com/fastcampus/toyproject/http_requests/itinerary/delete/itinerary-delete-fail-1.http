@@ -1,0 +1,8 @@
+### itinerary-create-success-1 이후 실행할 것
+### 여정 아이디가 트립에 없을 경우 error
+PUT http://localhost:8080/api/member/1/trip-itineraries/delete/1
+Content-Type: application/json
+
+[
+  6
+]

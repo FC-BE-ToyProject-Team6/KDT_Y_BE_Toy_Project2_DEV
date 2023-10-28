@@ -1,0 +1,103 @@
+POST http://localhost:8080/api/member/1/trip-itineraries/2
+Content-Type: application/json
+
+[
+  {
+    "type" : "MOVEMENT",
+    "item" : "비행기",
+    "startDate" : "2023-03-02T03:24:10",
+    "endDate" : "2023-03-03T00:00:10",
+    "order" : 1,
+    "departurePlace" : "인천 공항",
+    "arrivalPlace" : "런던 히드로 공항"
+  },
+  {
+    "type" : "STAY",
+    "item" : "런던 네셔널 갤러리",
+    "startDate" : "2023-03-03T10:00:10",
+    "endDate" : "2023-03-03T15:00:10",
+    "order" : 3
+  },
+  {
+    "type" : "LODGEMENT",
+    "item" : "런던 브리타니아 인터내셔널 호텔",
+    "startDate" : "2023-03-02T15:00:10",
+    "endDate" : "2023-03-05T10:00:10",
+    "order" : 2
+  },
+  {
+    "type" : "STAY",
+    "item" : "런던 빅밴",
+    "startDate" : "2023-03-03T19:00:10",
+    "endDate" : "2023-03-03T21:00:10",
+    "order" : 4
+  },
+  {
+    "type" : "STAY",
+    "item" : "런던 관광명소 투어",
+    "startDate" : "2023-03-04T10:00:10",
+    "endDate" : "2023-03-04T19:00:10",
+    "order" : 5
+  },
+  {
+    "type" : "MOVEMENT",
+    "item" : "버스, 비행기",
+    "startDate" : "2023-03-05T10:00:10",
+    "endDate" : "2023-03-05T15:00:10",
+    "order" : 6,
+    "departurePlace" : "런던 브리타니아 인터내셔널 호텔",
+    "arrivalPlace" : "파리 공항"
+  },
+  {
+    "type" : "LODGEMENT",
+    "item" : "파리 북 어 베드 호스텔",
+    "startDate" : "2023-03-05T15:00:10",
+    "endDate" : "2023-03-08T10:00:10",
+    "order" : 7
+  },
+  {
+    "type" : "STAY",
+    "item" : "파리 에펠탑 관광",
+    "startDate" : "2023-03-05T18:00:10",
+    "endDate" : "2023-03-05T21:00:10",
+    "order" : 8
+  },
+  {
+    "type" : "STAY",
+    "item" : "파리 루브르 박물관",
+    "startDate" : "2023-03-06T10:00:10",
+    "endDate" : "2023-03-06T19:00:10",
+    "order" : 9
+  },
+  {
+    "type" : "STAY",
+    "item" : "파리 디즈니 랜드",
+    "startDate" : "2023-03-07T10:00:10",
+    "endDate" : "2023-03-07T21:30:10",
+    "order" : 10
+  },
+  {
+    "type" : "MOVEMENT",
+    "item" : "버스",
+    "startDate" : "2023-03-08T10:00:10",
+    "endDate" : "2023-03-08T22:00:10",
+    "order" : 11,
+    "departurePlace" : "파리 북 어 베드 호스텔",
+    "arrivalPlace" : "스위스 인터라켄"
+  },
+  {
+    "type" : "LODGEMENT",
+    "item" : "인터라켄 유스호스텔",
+    "startDate" : "2023-03-08T15:00:10",
+    "endDate" : "2023-03-10T10:00:10",
+    "order" : 12
+  },
+  {
+    "type" : "STAY",
+    "item" : "인터라켄 융푸라우 투어",
+    "startDate" : "2023-03-09T10:00:10",
+    "endDate" : "2023-03-09T16:30:10",
+    "order" : 13
+  }
+]
+
