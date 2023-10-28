@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/member/1/trip
+Content-Type: application/json
+
+{
+  "tripName" : "유럽 여행",
+  "startDate" : "2023-03-02",
+  "endDate" : "2023-04-01",
+  "isDomestic" : true
+}

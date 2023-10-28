@@ -1,0 +1,22 @@
+### 여정 movement시 출발지 or 도착지 입력 안했을 때
+POST http://localhost:8080/api/member/1/trip-itineraries/1
+Content-Type: application/json
+
+[
+  {
+    "type" : "MOVEMENT",
+    "item" : "비행기",
+    "startDate" : "2023-10-22T12:24:10",
+    "endDate" : "2023-10-22T22:00:10",
+    "order" : 1,
+    "arrivalPlace" : "도쿄 공항"
+  },
+  {
+    "type" : "MOVEMENT",
+    "item" : "비행기",
+    "startDate" : "2023-10-22T12:24:10",
+    "endDate" : "2023-10-22T22:00:10",
+    "order" : 2,
+    "departurePlace" : "인천 공항"
+  }
+]
