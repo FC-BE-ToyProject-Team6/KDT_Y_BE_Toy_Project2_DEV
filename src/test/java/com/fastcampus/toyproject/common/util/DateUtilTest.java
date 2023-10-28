@@ -1,6 +1,7 @@
 package com.fastcampus.toyproject.common.util;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
+import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ class DateUtilTest {
             LocalDate endD = LocalDate.of(2023, 10, 22);
 
             DateUtil.isStartDateEarlierThanEndDate(endD, startD);
-        } catch (DefaultException e) {
+        } catch (ItineraryException e) {
             System.out.println(e.getErrorCode() + ": " + e.getErrorMsg());
         }
     }
@@ -41,7 +42,7 @@ class DateUtilTest {
 
             //DateUtil.isStartDateEarlierThanEndDate(startDt, endDt);
             DateUtil.isStartDateEarlierThanEndDate(endDt, startDt);
-        } catch (DefaultException e) {
+        } catch (ItineraryException e) {
             System.out.println(e.getErrorCode() + ": " + e.getErrorMsg());
         }
     }
