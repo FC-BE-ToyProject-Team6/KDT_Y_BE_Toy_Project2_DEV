@@ -25,7 +25,7 @@ INSERT INTO ITINERARY VALUES ('Movement', 5, NOW(), NULL, NULL, FALSE, '친구�
 INSERT INTO MOVEMENT VALUES ('2020-10-20 10:00:00', '친구집', '2020-10-20 12:00:00', '엑스포', '기차', 5);
 INSERT INTO ITINERARY VALUES ('Lodgement', 6, NOW(), NULL, NULL, FALSE, '엑스포', 6, 'LODGEMENT', 1);
 INSERT INTO LODGEMENT VALUES ('2020-10-20 12:00:00', '2020-10-20 18:00:00', 6);
-INSERT INTO ITINERARY VALUES ('Movement', 7, NOW(), NULL,NULL,  FALSE, '대전역 -> 서울역', 6,'MOVEMENT', 1);
+INSERT INTO ITINERARY VALUES ('Movement', 7, NOW(), NULL,NULL,  FALSE, '대전역 -> 서울역', 7,'MOVEMENT', 1);
 INSERT INTO MOVEMENT VALUES ('2020-10-20 18:00:00', '대전역', '2020-10-20 20:00:00', '서울역', '기차', 7);
 
 
