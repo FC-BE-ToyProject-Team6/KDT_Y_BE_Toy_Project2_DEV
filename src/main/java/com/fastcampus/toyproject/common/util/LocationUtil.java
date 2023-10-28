@@ -36,7 +36,7 @@ public class LocationUtil {
         try {
             return new URL(baseUrl + URLEncoder.encode(location, "UTF-8") + "&key=" + key);
         } catch (IOException e) {
-            throw new DefaultException(ExceptionCode.NO_LOCATION);
+            throw new DefaultException(ExceptionCode.BAD_REQUEST);
         }
     }
 
@@ -63,11 +63,11 @@ public class LocationUtil {
                 .getJSONObject("geometry").getJSONObject("location");
 
 
-            return "위도 "+String.valueOf(jsonResponse.getDouble("lat"))
-                + "\n경도" + String.valueOf(jsonResponse.getDouble("lng"));
+            return "위도: "+String.valueOf(jsonResponse.getDouble("lat"))
+                + "\n경도: " + String.valueOf(jsonResponse.getDouble("lng"));
 
         } catch (IOException e) {
-            log.error(ExceptionCode.NO_LOCATION.getMsg());
+            log.error(ExceptionCode.BAD_REQUEST.getMsg());
             return location;
         }
     }
