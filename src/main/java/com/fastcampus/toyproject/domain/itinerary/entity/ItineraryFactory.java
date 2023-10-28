@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+/**
+ * request의 여정 타입이 들어오면 그에 따라 entity를 반환해주는
+ * 팩토리 패턴을 적용한 클래스
+ */
 public class ItineraryFactory {
     private final static Map<ItineraryType, BiFunction<Trip,
             ItineraryRequest, Itinerary>> map = new HashMap<>();
