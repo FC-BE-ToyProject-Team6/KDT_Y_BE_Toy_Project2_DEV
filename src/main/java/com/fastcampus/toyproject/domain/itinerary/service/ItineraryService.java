@@ -138,7 +138,7 @@ public class ItineraryService {
      */
     private static List<Itinerary> getItineraryList(Trip trip) {
         List<Itinerary> itineraryList = trip.getItineraryList()
-                .stream().filter(it -> it.getIsDeleted() != null || !it.getIsDeleted())
+                .stream().filter(it -> it.getIsDeleted() == null || !it.getIsDeleted())
                 .collect(Collectors.toList());
 
         if (itineraryList == null) itineraryList = new ArrayList<>();

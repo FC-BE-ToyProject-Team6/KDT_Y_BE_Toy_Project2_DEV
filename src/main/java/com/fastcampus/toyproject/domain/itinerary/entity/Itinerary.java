@@ -41,7 +41,7 @@ public class Itinerary extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itineraryId;
 
-    @ManyToOne(fetch = FetchType.EAGER )
+    @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "tripId")
     private Trip trip;
 
