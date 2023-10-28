@@ -1,6 +1,7 @@
 package com.fastcampus.toyproject.common.util;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
+import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

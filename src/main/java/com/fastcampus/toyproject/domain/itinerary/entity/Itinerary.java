@@ -1,12 +1,11 @@
 package com.fastcampus.toyproject.domain.itinerary.entity;
 
+import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.ILLEGAL_ITINERARY_TYPE;
+
 import com.fastcampus.toyproject.common.BaseTimeEntity;
-import com.fastcampus.toyproject.common.exception.DefaultException;
-import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryUpdateRequest;
-import com.fastcampus.toyproject.domain.itinerary.type.ItineraryType;
+import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -41,7 +40,7 @@ public class Itinerary extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itineraryId;
 
-    @ManyToOne(fetch = FetchType.LAZY )
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tripId")
     private Trip trip;
 
@@ -67,15 +66,15 @@ public class Itinerary extends BaseTimeEntity {
         this.itineraryOrder = newOrder;
     }
 
-    public void update(ItineraryUpdateRequest req){
-        if(this instanceof Movement){
-            ((Movement)this).updateMovement(req);
-        }else if(this instanceof Lodgement){
-            ((Lodgement)this).updateLodgement(req);
-        }else if(this instanceof Stay){
-            ((Stay)this).updateStay(req);
-        }else{
-            throw new DefaultException(ExceptionCode.ILLEGAL_ITINERARY_TYPE);
+    public void update(ItineraryUpdateRequest req) {
+        if (this instanceof Movement) {
+            ((Movement) this).updateMovement(req);
+        } else if (this instanceof Lodgement) {
+            ((Lodgement) this).updateLodgement(req);
+        } else if (this instanceof Stay) {
+            ((Stay) this).updateStay(req);
+        } else {
+            throw new ItineraryException(ILLEGAL_ITINERARY_TYPE);
         }
     }
 }

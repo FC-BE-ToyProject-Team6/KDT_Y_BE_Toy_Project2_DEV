@@ -1,18 +1,17 @@
 package com.fastcampus.toyproject.domain.itinerary.dto;
 
+import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.ILLEGAL_ARGUMENT_ARRIVALPLACE;
+import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.ILLEGAL_ARGUMENT_DEPARTUREPLACE;
+
+import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
 import com.fastcampus.toyproject.domain.itinerary.type.ItineraryType;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.fastcampus.toyproject.common.exception.DefaultException;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
-
-import static com.fastcampus.toyproject.common.exception.ExceptionCode.ILLEGAL_ARGUMENT_ARRIVALPLACE;
-import static com.fastcampus.toyproject.common.exception.ExceptionCode.ILLEGAL_ARGUMENT_DEPARTUREPLACE;
 
 @Getter
 @ToString
@@ -41,10 +40,10 @@ public class ItineraryRequest {
 
     public String getMovementName() {
         if (this.departurePlace == null) {
-            throw new DefaultException(ILLEGAL_ARGUMENT_DEPARTUREPLACE);
+            throw new ItineraryException(ILLEGAL_ARGUMENT_DEPARTUREPLACE);
         }
         if (this.arrivalPlace == null) {
-            throw new DefaultException(ILLEGAL_ARGUMENT_ARRIVALPLACE);
+            throw new ItineraryException(ILLEGAL_ARGUMENT_ARRIVALPLACE);
         }
         return this.departurePlace + " -> " + this.arrivalPlace;
     }

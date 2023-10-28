@@ -1,11 +1,10 @@
 package com.fastcampus.toyproject.domain.trip.service;
 
-import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_SUCH_TRIP;
+
+import static com.fastcampus.toyproject.domain.trip.exception.TripExceptionCode.NO_SUCH_TRIP;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
-import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
-import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.itinerary.service.ItineraryService;
 import com.fastcampus.toyproject.domain.member.entity.Member;
 import com.fastcampus.toyproject.domain.member.repository.MemberRepository;
@@ -13,6 +12,7 @@ import com.fastcampus.toyproject.domain.trip.dto.TripDetailResponse;
 import com.fastcampus.toyproject.domain.trip.dto.TripRequest;
 import com.fastcampus.toyproject.domain.trip.dto.TripResponse;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
+import com.fastcampus.toyproject.domain.trip.exception.TripException;
 import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class TripService {
     public Trip getTripByTripId(Long tripId) {
         return tripRepository
             .findById(tripId)
-            .orElseThrow(() -> new DefaultException(NO_SUCH_TRIP));
+            .orElseThrow(() -> new TripException(NO_SUCH_TRIP));
     }
 
     /**

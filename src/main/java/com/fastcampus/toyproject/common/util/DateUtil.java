@@ -6,7 +6,6 @@ import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
-import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
