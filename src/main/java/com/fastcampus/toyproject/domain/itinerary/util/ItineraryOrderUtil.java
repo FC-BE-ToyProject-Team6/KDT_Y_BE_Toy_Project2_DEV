@@ -1,14 +1,13 @@
 package com.fastcampus.toyproject.domain.itinerary.util;
 
-import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
 import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 
 import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
 import java.util.*;
 
-import static com.fastcampus.toyproject.common.exception.ExceptionCode.INCORRECT_ORDER;
 import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.DUPLICATE_ITINERARY_ORDER;
+import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.INCORRECT_ITNERARY_ORDER;
 
 public class ItineraryOrderUtil {
 
@@ -33,7 +32,7 @@ public class ItineraryOrderUtil {
         //2. 순서가 1부터 차례대로 들어갔는지 확인. (O(N))
         for (int orderIdx = 1; orderIdx <= itineraryList.size(); orderIdx++) {
             if (itineraryList.get(orderIdx - 1).getItineraryOrder() != orderIdx) {
-                throw new DefaultException(INCORRECT_ORDER);
+                throw new ItineraryException(INCORRECT_ITNERARY_ORDER);
             }
         }
     }

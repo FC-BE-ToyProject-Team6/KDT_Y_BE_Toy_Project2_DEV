@@ -29,7 +29,7 @@ class DateUtilTest {
             LocalDate endD = LocalDate.of(2023, 10, 22);
 
             DateUtil.isStartDateEarlierThanEndDate(endD, startD);
-        } catch (ItineraryException e) {
+        } catch (DefaultException e) {
             System.out.println(e.getErrorCode() + ": " + e.getErrorMsg());
         }
     }
@@ -42,7 +42,7 @@ class DateUtilTest {
 
             //DateUtil.isStartDateEarlierThanEndDate(startDt, endDt);
             DateUtil.isStartDateEarlierThanEndDate(endDt, startDt);
-        } catch (ItineraryException e) {
+        } catch (DefaultException e) {
             System.out.println(e.getErrorCode() + ": " + e.getErrorMsg());
         }
     }

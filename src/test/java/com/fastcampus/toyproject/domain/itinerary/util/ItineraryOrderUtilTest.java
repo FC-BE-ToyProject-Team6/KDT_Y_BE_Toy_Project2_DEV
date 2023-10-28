@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fastcampus.toyproject.common.exception.ExceptionCode.INCORRECT_ORDER;
 import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.DUPLICATE_ITINERARY_ORDER;
+import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.INCORRECT_ITNERARY_ORDER;
 
 class ItineraryOrderUtilTest {
 
@@ -55,7 +55,7 @@ class ItineraryOrderUtilTest {
             ItineraryOrderUtil.validateItinerariesOrder(testList2);
         } catch (DefaultException e) {
             //where
-            Assertions.assertEquals(INCORRECT_ORDER, e.getErrorCode());
+            Assertions.assertEquals(INCORRECT_ITNERARY_ORDER, e.getErrorCode());
         }
     }
 

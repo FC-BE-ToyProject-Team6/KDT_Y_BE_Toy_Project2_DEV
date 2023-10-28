@@ -1,11 +1,11 @@
 package com.fastcampus.toyproject.common.util;
 
-import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.STARTDATE_IS_LATER_THAN_ENDDATE;
+import static com.fastcampus.toyproject.common.exception.ExceptionCode.STARTDATE_IS_LATER_THAN_ENDDATE;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
-import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
+import com.fastcampus.toyproject.common.exception.DefaultException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -51,13 +51,13 @@ public class DateUtil {
     // 출발 날짜가 도착 날짜보다 빠른지 검사 -> 아니라면 예외 날림
     public static void isStartDateEarlierThanEndDate(LocalDate start, LocalDate end) {
         if (!start.isEqual(end) && start.isAfter(end)) {
-            throw new ItineraryException(STARTDATE_IS_LATER_THAN_ENDDATE);
+            throw new DefaultException(STARTDATE_IS_LATER_THAN_ENDDATE);
         }
     }
 
     public static void isStartDateEarlierThanEndDate(LocalDateTime start, LocalDateTime end) {
         if (!start.isEqual(end) && start.isAfter(end)) {
-            throw new ItineraryException(STARTDATE_IS_LATER_THAN_ENDDATE);
+            throw new DefaultException(STARTDATE_IS_LATER_THAN_ENDDATE);
         }
     }
 
