@@ -71,13 +71,11 @@ public class ItineraryService {
         0. tripid를 통한 trip 객체 찾기. (method : getTrip(tripId))
         1. 여정 테이블에서 모든 값 가져오기.
         2. 현 request 에서 entity로 변환하여 리스트에 추가.
-        3. 검증 (현재 여정에 저장된거랑 맞는지 확인)
         4. response 리스트 정렬. (오더 순서대로)
          */
         List<ItineraryResponse> itineraryResponseList = new ArrayList<>();
         Trip trip = getTrip(tripId);
 
-        //기존 db에 저장된 값이랑 방금 들어온 요청값의 여정 순서들에 중복없는지 검증하기 위해 리스트 삽입.
         validateItineraryRequestOrder(itineraryRequests, trip);
 
         for (ItineraryRequest ir : itineraryRequests) {
@@ -89,7 +87,8 @@ public class ItineraryService {
                     ItineraryResponseFactory.getItineraryResponse(itinerary)
             );
         }
-        sortItineraryResponseListByOrder(itineraryResponseList);
+
+        ItineraryOrderUtil.sortItineraryResponseListByOrder(itineraryResponseList);
         return itineraryResponseList;
     }
 
@@ -110,8 +109,8 @@ public class ItineraryService {
     }
 
     /**
-     * trip 객체로 연관된 itinerary 리스트를 정렬된 여정 응답 리스트로 변환하여 반환하는 메소드
-     *
+     * trip 객체로 연관된 itinerary response 리스트를
+     * 정렬된 여정 응답 리스트로 변환하여 반환하는 메소드
      * @param trip
      * @return
      */
@@ -125,18 +124,8 @@ public class ItineraryService {
             );
         }
 
-        sortItineraryResponseListByOrder(itineraryResponseList);
+        ItineraryOrderUtil.sortItineraryResponseListByOrder(itineraryResponseList);
         return itineraryResponseList;
-    }
-
-
-    /**
-     * 테이블에 등록된 여정 순서대로 itinerary 리스트 정렬
-     * @param itineraryResponseList
-     */
-    private static void sortItineraryResponseListByOrder(List<ItineraryResponse> itineraryResponseList) {
-        Collections.sort(itineraryResponseList,
-            Comparator.comparingInt(ItineraryResponse::getItineraryOrder));
     }
 
     /**

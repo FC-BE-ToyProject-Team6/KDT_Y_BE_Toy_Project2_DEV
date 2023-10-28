@@ -5,7 +5,7 @@ Content-Type: application/json
   {
     "type" : "MOVEMENT",
     "item" : "비행기",
-    "startDate" : "2023-10-22T10:03:10",
+    "startDate" : "2023-10-22T12:03:10",
     "endDate" : "2023-10-22T22:00:10",
     "order" : 1,
     "departurePlace" : "인천 공항",
