@@ -151,8 +151,18 @@ public class ItineraryService {
     public List<ItineraryResponse> deleteItineraries(
             Long tripId, List<Long> deleteIdList
     ) {
+        //1. 해당 트립에, 삭제할 아이디들이 일단 존재하는지 확인.
+        for (Long id : deleteIdList) {
+            Itinerary it = itineraryRepository
+                    .findById(id)
+                    .orElseThrow(() -> new ItineraryException(NO_ITINERARY));
+            if (it.getTrip().getTripId() != tripId) {
+                throw new ItineraryException(NO_ITINERARY);
+            }
+        }
+
         List<ItineraryResponse> deleteItList = new ArrayList<>();
-        //1. 여정들 가져오기 (id만 적힌것들) -> delete 처리
+        //2. 여정들 가져오기 (id만 적힌것들) -> delete 처리
         for (Long id : deleteIdList) {
             Itinerary it = itineraryRepository
                     .findById(id)
@@ -162,7 +172,7 @@ public class ItineraryService {
             deleteItList.add(ItineraryResponse.fromEntity(it));
         }
 
-        //2. 남은 여정들의 순서 재정의 - 여정 순서대로 entity 정렬
+        //3. 남은 여정들의 순서 재정의 - 여정 순서대로 entity 정렬
         sortAgainItineraryOrder(getItineraryList(getTrip(tripId)));
         return deleteItList;
     }
