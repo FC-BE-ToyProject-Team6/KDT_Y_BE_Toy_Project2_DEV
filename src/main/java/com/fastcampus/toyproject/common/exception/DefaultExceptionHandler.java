@@ -3,6 +3,8 @@ package com.fastcampus.toyproject.common.exception;
 import static com.fastcampus.toyproject.common.exception.ExceptionCode.BAD_REQUEST;
 
 import com.fastcampus.toyproject.common.dto.ErrorResponseDTO;
+import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
+import com.fastcampus.toyproject.domain.trip.exception.TripException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,7 +26,8 @@ public class DefaultExceptionHandler {
      * @param request
      * @return
      */
-    @ExceptionHandler(DefaultException.class)
+    @ExceptionHandler(
+        value ={ DefaultException.class , TripException.class, ItineraryException.class})
     public ResponseEntity<ErrorResponseDTO> handleDefaultException(
             DefaultException e,
             HttpServletRequest request
