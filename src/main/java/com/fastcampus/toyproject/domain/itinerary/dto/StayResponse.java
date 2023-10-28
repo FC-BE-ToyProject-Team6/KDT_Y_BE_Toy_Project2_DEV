@@ -26,7 +26,7 @@ public class StayResponse extends ItineraryResponse {
                 .id(entity.getItineraryId())
                 .itineraryName(entity.getItineraryName())
                 .itineraryOrder(entity.getItineraryOrder())
-                .itineraryType(STAY.getValue())
+                .itineraryType(entity.getItineraryType())
                 .departureDate(entity.getDepartureDate())
                 .arrivalDate(entity.getArrivalDate())
                 .timeDifference(DateUtil.getTimeBetweenDate(entity.getDepartureDate(), entity.getArrivalDate()))

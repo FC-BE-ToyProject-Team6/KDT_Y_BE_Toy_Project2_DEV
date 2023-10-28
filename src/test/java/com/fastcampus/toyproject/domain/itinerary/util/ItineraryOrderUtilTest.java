@@ -16,7 +16,7 @@ import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExce
 class ItineraryOrderUtilTest {
 
     LocalDateTime testStartDate, testEndDate;
-    List<Itinerary> testList1, testList2;
+    List<Integer> testList1, testList2;
 
     public ItineraryOrderUtilTest() {
         this.testList1 = new ArrayList<>();

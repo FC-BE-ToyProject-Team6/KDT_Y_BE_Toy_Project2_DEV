@@ -16,22 +16,27 @@ public class ItineraryOrderUtil {
      * @param : itineraryList
      * @return
      */
-    public static void validateItinerariesOrder(List<Itinerary> itineraryList) {
+    public static void validateItinerariesOrder(List<Integer> orderList) {
         //1. 순서가 중복되는지 검사하고, 순서대로 정렬. (O(NlogN))
-        Collections.sort(itineraryList, (o1, o2) -> {
-            if (o1.getItineraryOrder() == o2.getItineraryOrder()) {
-                throw new ItineraryException(DUPLICATE_ITINERARY_ORDER);
-            }
-            return o1.getItineraryOrder()- o2.getItineraryOrder();
-        });
-
-        isItinerarySorted(itineraryList);
+        isItineraryOrdersNotDuplicated(orderList);
+        isItineraryOrdersSorted(orderList);
     }
 
-    private static void isItinerarySorted(List<Itinerary> itineraryList) {
+
+    public static void isItineraryOrdersNotDuplicated(List<Integer> orderList) {
+        //1. 순서가 중복되는지 검사하고, 순서대로 정렬. (O(NlogN))
+        Collections.sort(orderList, (o1, o2) -> {
+            if (o1 == o2) {
+                throw new ItineraryException(DUPLICATE_ITINERARY_ORDER);
+            }
+            return o1- o2;
+        });
+    }
+
+    private static void isItineraryOrdersSorted(List<Integer> orderList) {
         //2. 순서가 1부터 차례대로 들어갔는지 확인. (O(N))
-        for (int orderIdx = 1; orderIdx <= itineraryList.size(); orderIdx++) {
-            if (itineraryList.get(orderIdx - 1).getItineraryOrder() != orderIdx) {
+        for (int orderIdx = 1; orderIdx <= orderList.size(); orderIdx++) {
+            if (orderList.get(orderIdx - 1) != orderIdx) {
                 throw new ItineraryException(INCORRECT_ITNERARY_ORDER);
             }
         }
