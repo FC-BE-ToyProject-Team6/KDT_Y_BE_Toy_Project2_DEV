@@ -159,6 +159,9 @@ public class ItineraryService {
             if (it.getTrip().getTripId() != tripId) {
                 throw new ItineraryException(NO_ITINERARY);
             }
+            if (it.getIsDeleted() != null) {
+                throw new ItineraryException(ITINERARY_ALREADY_DELETED);
+            }
         }
 
         List<ItineraryResponse> deleteItList = new ArrayList<>();
