@@ -9,12 +9,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /*공백 기준 첫 글자만 따서 검색 되므로 공백 없는 키워드만 넣어주세요*/
 @Component
+@Slf4j
 public class LocationUtil {
 
     private static String baseUrl;
@@ -61,11 +63,12 @@ public class LocationUtil {
                 .getJSONObject("geometry").getJSONObject("location");
 
 
-            return String.valueOf(jsonResponse.getDouble("lat"))
-                + ":" + String.valueOf(jsonResponse.getDouble("lng"));
+            return "위도 "+String.valueOf(jsonResponse.getDouble("lat"))
+                + "\n경도" + String.valueOf(jsonResponse.getDouble("lng"));
 
         } catch (IOException e) {
-            throw new DefaultException(ExceptionCode.NO_LOCATION);
+            log.error(ExceptionCode.NO_LOCATION.getMsg());
+            return location;
         }
     }
 

@@ -9,6 +9,7 @@ class LocationUtilTest {
 
     @Autowired
     LocationUtil locationUtil;
+
     @Test
     void 위치_변환() {
 
@@ -17,6 +18,14 @@ class LocationUtilTest {
 
         System.out.println("청와대: " + locationUtil.findLocation(location1));
         System.out.println("백악관: " + locationUtil.findLocation(location2));
+
+    }
+
+    @Test
+    void 실패() {
+
+        String location3 = "";
+        locationUtil.findLocation(location3);
 
     }
 
