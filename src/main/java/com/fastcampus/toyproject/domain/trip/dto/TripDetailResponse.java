@@ -1,7 +1,6 @@
 package com.fastcampus.toyproject.domain.trip.dto;
 
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
-import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import java.time.LocalDate;
 import java.util.List;
@@ -10,28 +9,30 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * trip 상세 조회시 사용할 tripDetailResponse
+ */
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class TripDetailDTO {
+public class TripDetailResponse {
 
     private Long tripId;
     private String tripName;
     private LocalDate startDate;
     private LocalDate endDate;
     private Boolean isDomestic;
-    private List<ItineraryResponse> itineraries;
+    private List<ItineraryResponse> itineraryList;
 
-    public static TripDetailDTO fromEntity(Trip trip, List<ItineraryResponse> itineraryList) {
-        return TripDetailDTO.builder()
+    public static TripDetailResponse fromEntity(Trip trip, List<ItineraryResponse> itineraryList) {
+        return TripDetailResponse.builder()
             .tripId(trip.getTripId())
             .tripName(trip.getTripName())
             .startDate(trip.getStartDate())
             .endDate(trip.getEndDate())
             .isDomestic(trip.getIsDomestic())
-            .itineraries(itineraryList)
+            .itineraryList(itineraryList)
             .build();
     }
 }

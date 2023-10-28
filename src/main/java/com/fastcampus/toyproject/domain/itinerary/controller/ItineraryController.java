@@ -12,43 +12,61 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * 여정과 관련된 Itinerary Rest Controller
+ * itinerary 삽입, 수정, 삭제 기능
+ */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/itineraries")
+@RequestMapping("api/member/{memberId}/trip-itineraries")
 public class ItineraryController {
     private final ItineraryService itineraryService;
 
     @PostMapping("/{tripId}")
     public ResponseDTO<List<ItineraryResponse>> insertItineraries(
+            @PathVariable final Long memberId,
             @PathVariable final Long tripId,
-            @Valid @RequestBody final List<ItineraryRequest> itineraryRequests
+            @Valid @RequestBody final List<ItineraryRequest> itRequestList
     ) {
-        for (ItineraryRequest ir : itineraryRequests) {
-            DateUtil.isStartDateEarlierThanEndDate(ir.getStartDate(), ir.getEndDate());
+        // 출발 시간 < 도착 시간인지 확인
+        for (ItineraryRequest ir : itRequestList) {
+            DateUtil.isStartDateEarlierThanEndDate(
+                    ir.getStartDate(),
+                    ir.getEndDate()
+            );
         }
-        return ResponseDTO.ok("여정들 삽입 완료", itineraryService.insertItineraries(tripId, itineraryRequests));
+        return ResponseDTO.ok("여정들 삽입 완료",
+                itineraryService.insertItineraries(tripId, itRequestList)
+        );
     }
 
     @PutMapping("/delete/{tripId}")
     public ResponseDTO<List<ItineraryResponse>> deleteItineraries(
+            @PathVariable final Long memberId,
             @PathVariable final Long tripId,
-            @Valid @RequestBody final List<Long> deleteIdList
+            @Valid @RequestBody final List<Long> itineraryIdList
     ) {
-        return ResponseDTO.ok("여정들 삭제 완료", itineraryService.deleteItineraries(tripId, deleteIdList));
+        return ResponseDTO.ok("여정들 삭제 완료",
+                itineraryService.deleteItineraries(tripId, itineraryIdList)
+        );
     }
 
     @PutMapping("/{tripId}")
-    public ResponseDTO<List<ItineraryResponse>> updateItinerary(
-        @PathVariable final Long tripId,
-        @Valid @RequestBody List<ItineraryUpdateRequest> itineraryUpdateRequests) {
+    public ResponseDTO<List<ItineraryResponse>> updateItineraries(
+            @PathVariable final Long memberId,
+            @PathVariable final Long tripId,
+            @Valid @RequestBody final List<ItineraryUpdateRequest> itUpdateRequestList) {
 
-        for (ItineraryRequest ir : itineraryUpdateRequests) {
-            DateUtil.isStartDateEarlierThanEndDate(ir.getStartDate(), ir.getEndDate());
+        // 출발 시간 < 도착 시간인지 확인
+        for (ItineraryRequest ir : itUpdateRequestList) {
+            DateUtil.isStartDateEarlierThanEndDate(
+                    ir.getStartDate(),
+                    ir.getEndDate()
+            );
         }
 
-        List<ItineraryResponse> itineraryResponses = itineraryService.updateItineraries(tripId,
-            itineraryUpdateRequests);
-
-        return ResponseDTO.ok("여정들 수정 완료", itineraryResponses);
+        return ResponseDTO.ok("여정들 수정 완료",
+                itineraryService.updateItineraries(tripId, itUpdateRequestList)
+        );
     }
 }

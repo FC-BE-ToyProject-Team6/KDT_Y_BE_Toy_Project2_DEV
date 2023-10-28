@@ -4,13 +4,14 @@ import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_SUCH_T
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
-import com.fastcampus.toyproject.common.util.DateUtil;
+import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
+import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.itinerary.service.ItineraryService;
 import com.fastcampus.toyproject.domain.member.entity.Member;
 import com.fastcampus.toyproject.domain.member.repository.MemberRepository;
-import com.fastcampus.toyproject.domain.trip.dto.TripDetailDTO;
-import com.fastcampus.toyproject.domain.trip.dto.TripRequestDTO;
-import com.fastcampus.toyproject.domain.trip.dto.TripResponseDTO;
+import com.fastcampus.toyproject.domain.trip.dto.TripDetailResponse;
+import com.fastcampus.toyproject.domain.trip.dto.TripRequest;
+import com.fastcampus.toyproject.domain.trip.dto.TripResponse;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
 import java.util.List;
@@ -50,9 +51,9 @@ public class TripService {
      * @return string
      */
     public String getItineraryNamesByTrip(Trip trip) {
-
-        return itineraryService.getItineraryListByTrip(trip)
-                .stream().map(it -> it.getItineraryName())
+        return itineraryService.getItineraryResponseListByTrip(trip)
+                .stream()
+                .map(it -> it.getItineraryName())
                 .collect(Collectors.joining(", "));
     }
 
@@ -61,13 +62,11 @@ public class TripService {
      * @return List<TripResponseDTO>
      */
     @Transactional(readOnly = true)
-    public List<TripResponseDTO> getAllTrips() {
+    public List<TripResponse> getAllTrips() {
         return tripRepository.findAll()
-            .stream().map(trip -> TripResponseDTO.fromEntity(
-                    trip, getItineraryNamesByTrip(trip)
-                )
-            )
-            .collect(Collectors.toList());
+            .stream().map(trip -> TripResponse.fromEntity(
+                    trip, getItineraryNamesByTrip(trip))
+            ).collect(Collectors.toList());
     }
 
     /**
@@ -76,64 +75,55 @@ public class TripService {
      * @return tripDetailDTO
      */
     @Transactional(readOnly = true)
-    public TripDetailDTO getTripDetail(Long tripId) {
+    public TripDetailResponse getTripDetail(Long tripId) {
         Trip trip = getTripByTripId(tripId);
-        return TripDetailDTO.fromEntity(
-                trip,
-                itineraryService.getItineraryListByTrip(trip)
+        return TripDetailResponse.fromEntity(
+                trip, itineraryService.getItineraryResponseListByTrip(trip)
         );
     }
 
     /**
      * trip 1개 삽입하는 메소드
      * @param memberId
-     * @param tripRequestDTO
+     * @param tripRequest
      * @return tripResponseDTO
      */
-    public TripResponseDTO insertTrip(Long memberId, TripRequestDTO tripRequestDTO) {
-        Member member = getValidatedMember(memberId);
-
-        Trip trip = Trip.builder()
-            .member(member)
-            .tripName(tripRequestDTO.getTripName())
-            .startDate(tripRequestDTO.getStartDate())
-            .endDate(tripRequestDTO.getEndDate())
-            .isDomestic(tripRequestDTO.getIsDomestic())
-            .build();
-
-        Trip savedTrip = tripRepository.save(trip);
-        return TripResponseDTO.fromEntity(savedTrip);
+    public TripResponse insertTrip(Long memberId, TripRequest tripRequest) {
+        return TripResponse.fromEntity(tripRepository.save(
+                Trip.builder().member(getValidatedMember(memberId))
+                        .tripName(tripRequest.getTripName()).startDate(tripRequest.getStartDate())
+                        .endDate(tripRequest.getEndDate()).isDomestic(tripRequest.getIsDomestic())
+                        .build()));
     }
 
     /**
      * trip 수정하는 메소드
      * @param memberId
      * @param tripId
-     * @param tripRequestDTO
+     * @param tripRequest
      * @return tripResponseDTO
      */
-    public TripResponseDTO updateTrip(Long memberId, Long tripId, TripRequestDTO tripRequestDTO) {
+    public TripResponse updateTrip(Long memberId, Long tripId, TripRequest tripRequest) {
         Member member = getValidatedMember(memberId);
-        Trip existTrip = tripRepository.findById(tripId)
-            .orElseThrow(() -> new DefaultException(NO_SUCH_TRIP));
+        Trip existTrip = getTripByTripId(tripId);
 
         if (!existTrip.getMember().getMemberId().equals(memberId)) {
+            // TODO 에러 코드 추가 요청
             throw new DefaultException(ExceptionCode.INVALID_REQUEST, "멤버의 여행 정보가 일치하지 않습니다.");
         }
 
-        existTrip.updateFromDTO(tripRequestDTO);
-        Trip updatedTrip = tripRepository.save(existTrip);
-        return TripResponseDTO.fromEntity(updatedTrip);
+        existTrip.updateFromDTO(tripRequest);
+        return TripResponse.fromEntity(tripRepository.save(existTrip));
     }
 
     /**
      * trip 삭제 및 연관된 itinerary 삭제하는 메소드
      * @param tripId
      */
-    public void deleteTrip(Long tripId) {
+    public TripResponse deleteTrip(Long tripId) {
         Trip trip = getTripByTripId(tripId);
         trip.delete();
         itineraryService.deleteAllItineraryByTrip(trip);
-        tripRepository.save(trip);
+        return TripResponse.fromEntity(tripRepository.save(trip));
     }
 }
