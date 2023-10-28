@@ -29,7 +29,7 @@ public class MovementResponse extends ItineraryResponse {
                 .id(entity.getItineraryId())
                 .itineraryName(entity.getItineraryName())
                 .itineraryOrder(entity.getItineraryOrder())
-                .itineraryType(MOVEMENT.getValue())
+                .itineraryType(entity.getItineraryType())
                 .departureDate(entity.getDepartureDate())
                 .arrivalDate(entity.getArrivalDate())
                 .departurePlace(entity.getDeparturePlace())

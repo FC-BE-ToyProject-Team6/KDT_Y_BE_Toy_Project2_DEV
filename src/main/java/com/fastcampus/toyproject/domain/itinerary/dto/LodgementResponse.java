@@ -26,7 +26,7 @@ public class LodgementResponse extends ItineraryResponse{
                 .id(entity.getItineraryId())
                 .itineraryName(entity.getItineraryName())
                 .itineraryOrder(entity.getItineraryOrder())
-                .itineraryType(LODGEMENT.getValue())
+                .itineraryType(entity.getItineraryType())
                 .checkIn(entity.getCheckIn())
                 .checkOut(entity.getCheckOut())
                 .dayDifference(DateUtil.getDaysBetweenDate(entity.getCheckIn(), entity.getCheckOut()))
