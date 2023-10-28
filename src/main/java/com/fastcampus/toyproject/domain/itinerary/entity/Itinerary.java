@@ -5,12 +5,15 @@ import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExce
 import com.fastcampus.toyproject.common.BaseTimeEntity;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryUpdateRequest;
 import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
+import com.fastcampus.toyproject.domain.itinerary.type.ItineraryType;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,6 +49,10 @@ public class Itinerary extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String itineraryName;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ItineraryType itineraryType;
 
     @Column(nullable = false)
     private Integer itineraryOrder;
