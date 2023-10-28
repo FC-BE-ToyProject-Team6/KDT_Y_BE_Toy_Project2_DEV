@@ -1,4 +1,4 @@
-POST http://localhost:8080/itineraries/5
+POST http://localhost:8080/api/member/1/trip-itineraries/1
 Content-Type: application/json
 
 [
@@ -7,7 +7,7 @@ Content-Type: application/json
     "item": "버스",
     "startDate": "2023-10-25T17:03:10",
     "endDate": "2023-10-25T17:03:10",
-    "order": 5,
+    "order": 4,
     "departurePlace": "도쿄 타워",
     "arrivalPlace": "도쿄 디즈니랜드"
   },
@@ -16,14 +16,14 @@ Content-Type: application/json
     "item": "도쿄 타워",
     "startDate": "2023-10-25T17:03:10",
     "endDate": "2023-10-25T17:03:10",
-    "order": 4
+    "order": 3
   },
   {
     "type": "LODGEMENT",
     "item": "도쿄 온천있는 호텔",
     "startDate": "2023-10-25T17:03:10",
     "endDate": "2023-10-25T17:03:10",
-    "order": 6
+    "order": 5
   }
 ]
 

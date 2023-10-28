@@ -1,6 +1,7 @@
 package com.fastcampus.toyproject.domain.itinerary.dto;
 
 import com.fastcampus.toyproject.domain.itinerary.type.ItineraryType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -32,8 +33,7 @@ public class ItineraryRequest {
     @NotNull
     private LocalDateTime endDate;
 
-    @NotNull
-    @Min(1)
+    @NotNull @Min(1)
     private Integer order;
 
     private String departurePlace;
@@ -46,7 +46,6 @@ public class ItineraryRequest {
         if (this.arrivalPlace == null) {
             throw new DefaultException(ILLEGAL_ARGUMENT_ARRIVALPLACE);
         }
-
         return this.departurePlace + " -> " + this.arrivalPlace;
     }
 

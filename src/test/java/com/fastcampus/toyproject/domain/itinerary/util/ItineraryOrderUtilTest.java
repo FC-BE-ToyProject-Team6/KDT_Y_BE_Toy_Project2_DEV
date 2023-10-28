@@ -13,12 +13,12 @@ import java.util.List;
 import static com.fastcampus.toyproject.common.exception.ExceptionCode.DUPLICATE_ITINERARY_ORDER;
 import static com.fastcampus.toyproject.common.exception.ExceptionCode.INCORRECT_ORDER;
 
-class ItineraryValidationTest {
+class ItineraryOrderUtilTest {
 
     LocalDateTime testStartDate, testEndDate;
     List<Itinerary> testList1, testList2;
 
-    public ItineraryValidationTest() {
+    public ItineraryOrderUtilTest() {
         this.testList1 = new ArrayList<>();
         this.testList2 = new ArrayList<>();
         this.testStartDate = LocalDateTime.now();
@@ -44,7 +44,7 @@ class ItineraryValidationTest {
 
         //when 1) 중복 순서 검사
         try {
-            ItineraryValidation.validateItinerariesOrder(testList1);
+            ItineraryOrderUtil.validateItinerariesOrder(testList1);
         } catch (DefaultException e) {
             //where
             Assertions.assertEquals(DUPLICATE_ITINERARY_ORDER, e.getErrorCode());
@@ -52,7 +52,7 @@ class ItineraryValidationTest {
 
         //when 2) 여정 번호 순서대로인지 검사
         try {
-            ItineraryValidation.validateItinerariesOrder(testList2);
+            ItineraryOrderUtil.validateItinerariesOrder(testList2);
         } catch (DefaultException e) {
             //where
             Assertions.assertEquals(INCORRECT_ORDER, e.getErrorCode());
