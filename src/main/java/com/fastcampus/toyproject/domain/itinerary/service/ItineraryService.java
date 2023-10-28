@@ -1,10 +1,8 @@
 package com.fastcampus.toyproject.domain.itinerary.service;
 
-import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_ITINERARY;
-import static com.fastcampus.toyproject.common.exception.ExceptionCode.NO_SUCH_TRIP;
+import static com.fastcampus.toyproject.domain.trip.exception.TripExceptionCode.NO_SUCH_TRIP;
+import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.*;
 
-import com.fastcampus.toyproject.common.exception.DefaultException;
-import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryRequest;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryUpdateRequest;
@@ -15,12 +13,14 @@ import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.itinerary.entity.Lodgement;
 import com.fastcampus.toyproject.domain.itinerary.entity.Movement;
 import com.fastcampus.toyproject.domain.itinerary.entity.Stay;
+import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
 import com.fastcampus.toyproject.domain.itinerary.repository.ItineraryRepository;
 import com.fastcampus.toyproject.domain.itinerary.repository.LodgementRepository;
 import com.fastcampus.toyproject.domain.itinerary.repository.MovementRepository;
 import com.fastcampus.toyproject.domain.itinerary.repository.StayRepository;
 import com.fastcampus.toyproject.domain.itinerary.util.ItineraryOrderUtil;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
+import com.fastcampus.toyproject.domain.trip.exception.TripException;
 import com.fastcampus.toyproject.domain.trip.repository.TripRepository;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -171,7 +171,7 @@ public class ItineraryService {
     private Trip getTrip(Long tripId) {
         return tripRepository
                 .findById(tripId)
-                .orElseThrow(() -> new DefaultException(NO_SUCH_TRIP));
+                .orElseThrow(() -> new TripException(NO_SUCH_TRIP));
     }
 
     /**
@@ -190,9 +190,7 @@ public class ItineraryService {
         for (Long id : deleteIdList) {
             Itinerary it = itineraryRepository
                     .findById(id)
-                    .orElseThrow(() -> new DefaultException(
-                            ExceptionCode.NO_ITINERARY
-                    ));
+                    .orElseThrow(() -> new ItineraryException(NO_ITINERARY));
             it.delete();
             itineraryRepository.save(it);
             deleteItList.add(ItineraryResponse.fromEntity(it));
@@ -243,7 +241,7 @@ public class ItineraryService {
             List<ItineraryUpdateRequest> itineraryUpdateRequests) {
 
         if (itineraryUpdateRequests == null || itineraryUpdateRequests.isEmpty()) {
-            throw new DefaultException(ExceptionCode.EMPTY_ITINERARY);
+            throw new ItineraryException(EMPTY_ITINERARY);
         }
 
         Trip trip = null;
@@ -252,7 +250,7 @@ public class ItineraryService {
 
 
             Itinerary itinerary = itineraryRepository.findById(req.getItineraryId())
-                .orElseThrow(() -> new DefaultException(NO_ITINERARY));
+                .orElseThrow(() -> new ItineraryException(NO_ITINERARY));
             trip = itinerary.getTrip();
             itinerary.update(req);
         }
