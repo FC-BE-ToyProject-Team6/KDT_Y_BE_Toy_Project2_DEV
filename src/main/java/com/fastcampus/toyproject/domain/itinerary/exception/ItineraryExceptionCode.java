@@ -1,5 +1,6 @@
 package com.fastcampus.toyproject.domain.itinerary.exception;
 
+import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,10 +14,10 @@ public enum ItineraryExceptionCode {
     EMPTY_ITINERARY("수정 할 여정 정보가 없습니다."),
     ILLEGAL_ARGUMENT_DEPARTUREPLACE("출발지를 입력하지 않았습니다."),
     ILLEGAL_ARGUMENT_ARRIVALPLACE("도착지를 입력하지 않았습니다."),
-    ILLEGAL_ITINERARY_TYPE("잘 못 된 여정 타입입니다.")
+    ILLEGAL_ITINERARY_TYPE("잘 못 된 여정 타입입니다."),
+    ITINERARY_ALREADY_DELETED("이미 삭제된 여정입니다.")
 
     ;
-
     private final String msg;
 
 }
