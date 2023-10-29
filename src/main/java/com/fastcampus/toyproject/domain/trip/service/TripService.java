@@ -63,7 +63,7 @@ public class TripService {
      */
     @Transactional(readOnly = true)
     public List<TripResponse> getAllTrips() {
-        return tripRepository.findAll()
+        return tripRepository.findAllByIsDeletedIsFalseOrderByTripId()
             .stream().map(TripResponse::fromEntity)
             .collect(Collectors.toList());
     }
