@@ -41,7 +41,7 @@ public class TripService {
      */
     public Trip getTripByTripId(Long tripId) {
         return tripRepository
-            .findById(tripId)
+            .findByTripIdAndIsDeletedIsFalse(tripId)
             .orElseThrow(() -> new TripException(NO_SUCH_TRIP));
     }
 
@@ -93,6 +93,7 @@ public class TripService {
             .startDate(tripRequest.getStartDate())
             .endDate(tripRequest.getEndDate())
             .isDomestic(tripRequest.getIsDomestic())
+            .isDeleted(false)
             .build();
 
         return TripResponse.fromEntity(tripRepository.save(trip));
@@ -110,7 +111,6 @@ public class TripService {
         Trip existTrip = getTripByTripId(tripId);
 
         if (!existTrip.getMember().getMemberId().equals(memberId)) {
-            // TODO 에러 코드 추가 요청
             throw new DefaultException(ExceptionCode.INVALID_REQUEST, "멤버의 여행 정보가 일치하지 않습니다.");
         }
 
