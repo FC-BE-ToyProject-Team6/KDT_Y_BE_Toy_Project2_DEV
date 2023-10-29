@@ -79,12 +79,13 @@ public class ItineraryService {
         validateItineraryRequestOrder(itineraryRequests, trip);
 
         for (ItineraryRequest ir : itineraryRequests) {
-            Itinerary itinerary = itineraryRepository.save(
-                    ItineraryFactory.getItineraryEntity(trip, ir)
-            );
+
+            Itinerary itinerary = ItineraryFactory.getItineraryEntity(trip, ir);
+
+            Itinerary savedItinerary = itineraryRepository.save(itinerary);
 
             itineraryResponseList.add(
-                    ItineraryResponseFactory.getItineraryResponse(itinerary)
+                    ItineraryResponseFactory.getItineraryResponse(savedItinerary)
             );
         }
 
