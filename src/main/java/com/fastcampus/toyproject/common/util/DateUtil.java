@@ -25,12 +25,12 @@ public class DateUtil {
 
     // 몇 일 여행인지 계산 -> LocalDate
     public static String getDaysBetweenDate(LocalDate start, LocalDate end) {
-        return String.valueOf(DAYS.toChronoUnit().between(start, end)) + days;
+        return DAYS.toChronoUnit().between(start, end) + days;
     }
 
     // 몇 일 여행(숙박)인지 계산 -> LocalDateTime
     public static String getDaysBetweenDate(LocalDateTime start, LocalDateTime end) {
-        return String.valueOf(getDaysBetweenDate(start.toLocalDate(), end.toLocalDate()));
+        return getDaysBetweenDate(start.toLocalDate(), end.toLocalDate());
     }
 
     // 몇 시간 소모되는지 계산 -> LocalDateTime

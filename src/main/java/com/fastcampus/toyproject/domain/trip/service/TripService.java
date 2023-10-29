@@ -40,8 +40,9 @@ public class TripService {
      * @return trip
      */
     public Trip getTripByTripId(Long tripId) {
+
         return tripRepository
-            .findById(tripId)
+            .findByTripIdAndItineraryDeletedIsFalse(tripId)
             .orElseThrow(() -> new TripException(NO_SUCH_TRIP));
     }
 
@@ -64,10 +65,8 @@ public class TripService {
     @Transactional(readOnly = true)
     public List<TripResponse> getAllTrips() {
         return tripRepository.findAll()
-            .stream().filter(trip -> !trip.isDeleted())
-            .map(trip -> TripResponse.fromEntity(
-                    trip, getItineraryNamesByTrip(trip))
-            ).
+            .stream().filter(trip -> !trip.getIsDeleted())
+            .map(TripResponse::fromEntity).
             collect(Collectors.toList());
     }
 
@@ -79,9 +78,7 @@ public class TripService {
     @Transactional(readOnly = true)
     public TripDetailResponse getTripDetail(Long tripId) {
         Trip trip = getTripByTripId(tripId);
-        return TripDetailResponse.fromEntity(
-                trip, itineraryService.getItineraryResponseListByTrip(trip)
-        );
+        return TripDetailResponse.fromEntity(trip);
     }
 
     /**
@@ -91,11 +88,17 @@ public class TripService {
      * @return tripResponseDTO
      */
     public TripResponse insertTrip(Long memberId, TripRequest tripRequest) {
-        return TripResponse.fromEntity(tripRepository.save(
-                Trip.builder().member(getValidatedMember(memberId))
-                        .tripName(tripRequest.getTripName()).startDate(tripRequest.getStartDate())
-                        .endDate(tripRequest.getEndDate()).isDomestic(tripRequest.getIsDomestic())
-                        .build()));
+
+        Trip trip = Trip.builder()
+            .member(getValidatedMember(memberId))
+            .tripName(tripRequest.getTripName())
+            .startDate(tripRequest.getStartDate())
+            .endDate(tripRequest.getEndDate())
+            .isDomestic(tripRequest.getIsDomestic())
+            .isDeleted(false)
+            .build();
+
+        return TripResponse.fromEntity(tripRepository.save(trip));
     }
 
     /**
@@ -110,7 +113,6 @@ public class TripService {
         Trip existTrip = getTripByTripId(tripId);
 
         if (!existTrip.getMember().getMemberId().equals(memberId)) {
-            // TODO 에러 코드 추가 요청
             throw new DefaultException(ExceptionCode.INVALID_REQUEST, "멤버의 여행 정보가 일치하지 않습니다.");
         }
 

@@ -28,8 +28,8 @@
     </rollingPolicy>
   </appender>
 
-  <root level="ERROR">
-    <appender-ref ref="Console" />
+  <root level="DEBUG">
+    <appender-ref ref="CONSOLE" />
     <appender-ref ref="RollingFile" />
   </root>
 </configuration>

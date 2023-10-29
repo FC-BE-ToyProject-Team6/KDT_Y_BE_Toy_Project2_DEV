@@ -13,5 +13,8 @@ spring:
     base-url: https://maps.googleapis.com/maps/api/geocode/json?address=
     key: "APIKEY!!"
 
+server:
+  error:
+    include-stacktrace: never
 
 

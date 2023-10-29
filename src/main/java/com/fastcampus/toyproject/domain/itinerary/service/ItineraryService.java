@@ -79,12 +79,13 @@ public class ItineraryService {
         validateItineraryRequestOrder(itineraryRequests, trip);
 
         for (ItineraryRequest ir : itineraryRequests) {
-            Itinerary itinerary = itineraryRepository.save(
-                    ItineraryFactory.getItineraryEntity(trip, ir)
-            );
+
+            Itinerary itinerary = ItineraryFactory.getItineraryEntity(trip, ir);
+
+            Itinerary savedItinerary = itineraryRepository.save(itinerary);
 
             itineraryResponseList.add(
-                    ItineraryResponseFactory.getItineraryResponse(itinerary)
+                    ItineraryResponseFactory.getItineraryResponse(savedItinerary)
             );
         }
 
@@ -159,7 +160,7 @@ public class ItineraryService {
             if (it.getTrip().getTripId() != tripId) {
                 throw new ItineraryException(NO_ITINERARY);
             }
-            if (it.getIsDeleted() != null) {
+            if (it.getIsDeleted() == null || it.getIsDeleted()) {
                 throw new ItineraryException(ITINERARY_ALREADY_DELETED);
             }
         }

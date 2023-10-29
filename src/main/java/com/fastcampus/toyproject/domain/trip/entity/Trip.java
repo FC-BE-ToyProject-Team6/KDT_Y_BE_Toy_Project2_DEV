@@ -42,6 +42,7 @@ public class Trip extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId")
+    @JsonIgnore
     private Member member;
 
     @Column(nullable = false)
@@ -57,7 +58,7 @@ public class Trip extends BaseTimeEntity {
     private Boolean isDomestic;
 
     @ColumnDefault("false")
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     @OneToMany(mappedBy = "trip", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, orphanRemoval = true)
     List<Itinerary> itineraryList = new ArrayList<>();

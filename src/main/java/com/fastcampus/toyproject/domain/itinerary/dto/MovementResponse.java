@@ -8,11 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
 @Getter
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class MovementResponse extends ItineraryResponse {
+
     private static LocationUtil locationUtil = new LocationUtil();
 
     private LocalDateTime departureDate;
@@ -21,20 +23,25 @@ public class MovementResponse extends ItineraryResponse {
     private String arrivalPlace;
     private String transportation;
     private String timeDifference;
+    private String departureLocation;
+    private String arrivalLocation;
 
     public static MovementResponse fromEntity(Movement entity) {
         return MovementResponse
-                .builder()
-                .id(entity.getItineraryId())
-                .itineraryName(entity.getItineraryName())
-                .itineraryOrder(entity.getItineraryOrder())
-                .itineraryType(entity.getItineraryType())
-                .departureDate(entity.getDepartureDate())
-                .arrivalDate(entity.getArrivalDate())
-                .departurePlace(locationUtil.findLocation(entity.getDeparturePlace()))
-                .arrivalPlace(locationUtil.findLocation(entity.getArrivalPlace()))
-                .transportation(entity.getTransportation())
-                .timeDifference(DateUtil.getTimeBetweenDate(entity.getDepartureDate(), entity.getArrivalDate()))
-                .build();
+            .builder()
+            .id(entity.getItineraryId())
+            .itineraryName(entity.getItineraryName())
+            .itineraryOrder(entity.getItineraryOrder())
+            .itineraryType(entity.getItineraryType())
+            .departureDate(entity.getDepartureDate())
+            .arrivalDate(entity.getArrivalDate())
+            .departurePlace(entity.getDeparturePlace())
+            .arrivalPlace(entity.getArrivalPlace())
+            .transportation(entity.getTransportation())
+            .timeDifference(
+                DateUtil.getTimeBetweenDate(entity.getDepartureDate(), entity.getArrivalDate()))
+            .departureLocation(locationUtil.findLocation(entity.getDeparturePlace()))
+            .arrivalLocation(locationUtil.findLocation(entity.getArrivalPlace()))
+            .build();
     }
 }
