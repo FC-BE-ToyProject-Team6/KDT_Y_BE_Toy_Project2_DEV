@@ -64,9 +64,8 @@ public class TripService {
     @Transactional(readOnly = true)
     public List<TripResponse> getAllTrips() {
         return tripRepository.findAll()
-            .stream().map(trip -> TripResponse.fromEntity(
-                    trip, getItineraryNamesByTrip(trip))
-            ).collect(Collectors.toList());
+            .stream().map(TripResponse::fromEntity)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -77,9 +76,7 @@ public class TripService {
     @Transactional(readOnly = true)
     public TripDetailResponse getTripDetail(Long tripId) {
         Trip trip = getTripByTripId(tripId);
-        return TripDetailResponse.fromEntity(
-                trip, itineraryService.getItineraryResponseListByTrip(trip)
-        );
+        return TripDetailResponse.fromEntity(trip);
     }
 
     /**
@@ -89,11 +86,16 @@ public class TripService {
      * @return tripResponseDTO
      */
     public TripResponse insertTrip(Long memberId, TripRequest tripRequest) {
-        return TripResponse.fromEntity(tripRepository.save(
-                Trip.builder().member(getValidatedMember(memberId))
-                        .tripName(tripRequest.getTripName()).startDate(tripRequest.getStartDate())
-                        .endDate(tripRequest.getEndDate()).isDomestic(tripRequest.getIsDomestic())
-                        .build()));
+
+        Trip trip = Trip.builder()
+            .member(getValidatedMember(memberId))
+            .tripName(tripRequest.getTripName())
+            .startDate(tripRequest.getStartDate())
+            .endDate(tripRequest.getEndDate())
+            .isDomestic(tripRequest.getIsDomestic())
+            .build();
+
+        return TripResponse.fromEntity(tripRepository.save(trip));
     }
 
     /**

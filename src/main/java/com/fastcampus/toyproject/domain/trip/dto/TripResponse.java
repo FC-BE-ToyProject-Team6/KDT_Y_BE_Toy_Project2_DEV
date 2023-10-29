@@ -1,8 +1,12 @@
 package com.fastcampus.toyproject.domain.trip.dto;
 
 import com.fastcampus.toyproject.common.util.DateUtil;
+import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.trip.entity.Trip;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,27 +32,20 @@ public class TripResponse {
 
     public static TripResponse fromEntity(Trip trip) {
         return TripResponse.builder()
-                .tripId(trip.getTripId())
-                .memberId(trip.getMember().getMemberId())
-                .tripName(trip.getTripName())
-                .startDate(trip.getStartDate())
-                .endDate(trip.getEndDate())
-                .isDomestic(trip.getIsDomestic())
-                .tripPeriod(DateUtil.getDaysBetweenDate(trip.getStartDate(), trip.getEndDate()))
-                .build();
-    }
-
-    public static TripResponse fromEntity(Trip trip, String names) {
-        return TripResponse.builder()
-                .tripId(trip.getTripId())
-                .memberId(trip.getMember().getMemberId())
-                .tripName(trip.getTripName())
-                .startDate(trip.getStartDate())
-                .endDate(trip.getEndDate())
-                .isDomestic(trip.getIsDomestic())
-                .itineraryNameList(names)
-                .tripPeriod(DateUtil.getDaysBetweenDate(trip.getStartDate(), trip.getEndDate()))
-                .build();
+            .tripId(trip.getTripId())
+            .memberId(trip.getMember().getMemberId())
+            .tripName(trip.getTripName())
+            .startDate(trip.getStartDate())
+            .endDate(trip.getEndDate())
+            .isDomestic(trip.getIsDomestic())
+            .itineraryNameList(
+                Optional.ofNullable(trip.getItineraryList())
+                    .orElse(new ArrayList<>())
+                    .stream()
+                    .map(Itinerary::getItineraryName)
+                    .collect(Collectors.joining(", ")))
+            .tripPeriod(DateUtil.getDaysBetweenDate(trip.getStartDate(), trip.getEndDate()))
+            .build();
     }
 
 }
