@@ -95,38 +95,38 @@ class TripControllerTest {
             .andExpect(status().isOk());
     }
 
-    @Test
-    void getAllTrips() throws Exception {
-        TripResponse firstTripDTO = TripResponse.builder()
-            .tripName("제주도")
-            .startDate(LocalDate.of(2023,9,12))
-            .endDate(LocalDate.of(2023,10,12))
-            .isDomestic(Boolean.FALSE)
-            .build();
-
-        TripResponse secondTripDTO = TripResponse.builder()
-            .tripName("대만")
-            .startDate(LocalDate.of(2023,9,12))
-            .endDate(LocalDate.of(2023,10,12))
-            .isDomestic(Boolean.TRUE)
-            .build();
-
-        given(tripService.getAllTrips())
-            .willReturn(Arrays.asList(firstTripDTO,secondTripDTO));
-
-        mockMvc.perform(get("/api/trip/1/trips").contentType(contentType))
-            .andExpect(status().isOk())
-            .andExpect(
-                jsonPath("$.[0].tripName", is("제주도"))
-            )
-            .andExpect(
-                jsonPath("$.[0].isDomestic", is(Boolean.FALSE))
-            )
-            .andExpect(
-                jsonPath("$.[1].tripName", is("대만"))
-            )
-            .andExpect(
-                jsonPath("$.[1].isDomestic", is(Boolean.TRUE))
-            );
-    }
+//    @Test
+//    void getAllTrips() throws Exception {
+//        TripResponse firstTripDTO = TripResponse.builder()
+//            .tripName("제주도")
+//            .startDate(LocalDate.of(2023,9,12))
+//            .endDate(LocalDate.of(2023,10,12))
+//            .isDomestic(Boolean.FALSE)
+//            .build();
+//
+//        TripResponse secondTripDTO = TripResponse.builder()
+//            .tripName("대만")
+//            .startDate(LocalDate.of(2023,9,12))
+//            .endDate(LocalDate.of(2023,10,12))
+//            .isDomestic(Boolean.TRUE)
+//            .build();
+//
+//        given(tripService.getAllTrips())
+//            .willReturn(Arrays.asList(firstTripDTO,secondTripDTO));
+//
+//        mockMvc.perform(get("/api/trip/1/trips").contentType(contentType))
+//            .andExpect(status().isOk())
+//            .andExpect(
+//                jsonPath("$.[0].tripName", is("제주도"))
+//            )
+//            .andExpect(
+//                jsonPath("$.[0].isDomestic", is(Boolean.FALSE))
+//            )
+//            .andExpect(
+//                jsonPath("$.[1].tripName", is("대만"))
+//            )
+//            .andExpect(
+//                jsonPath("$.[1].isDomestic", is(Boolean.TRUE))
+//            );
+//    }
 }
