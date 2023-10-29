@@ -30,7 +30,6 @@ public class TripController {
 
     @GetMapping("/all")
     public ResponseDTO<List<TripResponse>> getAllTrips(
-        @PathVariable final Long memberId
     ) {
         return ResponseDTO.ok("모든 여행 조회 완료",
             tripService.getAllTrips()
@@ -40,7 +39,6 @@ public class TripController {
 
     @GetMapping("/{tripId}")
     public ResponseDTO<TripDetailResponse> getTripDetail(
-        @PathVariable final Long memberId,
         @PathVariable Long tripId
     ) {
         return ResponseDTO.ok("상세 여행 조회 완료",
@@ -79,7 +77,6 @@ public class TripController {
 
     @DeleteMapping("/{tripId}")
     public ResponseDTO<TripResponse> deleteTrip(
-        @PathVariable final Long memberId,
         @PathVariable final Long tripId
     ) {
         return ResponseDTO.ok("여행 삭제 완료",
