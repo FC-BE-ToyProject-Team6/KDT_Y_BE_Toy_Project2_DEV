@@ -9,6 +9,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+  google-api:
+    base-url: https://maps.googleapis.com/maps/api/geocode/json?address=
+    key: AIzaSyD0NYtx2GBR13YA5mMB0UL82I9VfFbXyR4
 
 
 

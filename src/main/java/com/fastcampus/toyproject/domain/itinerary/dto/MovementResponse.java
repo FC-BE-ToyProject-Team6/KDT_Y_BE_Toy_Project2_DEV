@@ -1,21 +1,20 @@
 package com.fastcampus.toyproject.domain.itinerary.dto;
 
-import static com.fastcampus.toyproject.domain.itinerary.type.ItineraryType.MOVEMENT;
-
 import com.fastcampus.toyproject.common.util.DateUtil;
+import com.fastcampus.toyproject.common.util.LocationUtil;
 import com.fastcampus.toyproject.domain.itinerary.entity.Movement;
-import com.fastcampus.toyproject.domain.itinerary.type.ItineraryType;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class MovementResponse extends ItineraryResponse {
+    private static LocationUtil locationUtil = new LocationUtil();
+
     private LocalDateTime departureDate;
     private LocalDateTime arrivalDate;
     private String departurePlace;
@@ -32,8 +31,8 @@ public class MovementResponse extends ItineraryResponse {
                 .itineraryType(entity.getItineraryType())
                 .departureDate(entity.getDepartureDate())
                 .arrivalDate(entity.getArrivalDate())
-                .departurePlace(entity.getDeparturePlace())
-                .arrivalPlace(entity.getArrivalPlace())
+                .departurePlace(locationUtil.findLocation(entity.getDeparturePlace()))
+                .arrivalPlace(locationUtil.findLocation(entity.getArrivalPlace()))
                 .transportation(entity.getTransportation())
                 .timeDifference(DateUtil.getTimeBetweenDate(entity.getDepartureDate(), entity.getArrivalDate()))
                 .build();

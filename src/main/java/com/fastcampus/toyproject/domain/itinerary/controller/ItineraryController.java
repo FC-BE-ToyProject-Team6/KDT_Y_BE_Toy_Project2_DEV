@@ -24,7 +24,6 @@ public class ItineraryController {
 
     @PostMapping("/{tripId}")
     public ResponseDTO<List<ItineraryResponse>> insertItineraries(
-            @PathVariable final Long memberId,
             @PathVariable final Long tripId,
             @Valid @RequestBody final List<ItineraryRequest> itRequestList
     ) {
@@ -42,7 +41,6 @@ public class ItineraryController {
 
     @PutMapping("/delete/{tripId}")
     public ResponseDTO<List<ItineraryResponse>> deleteItineraries(
-            @PathVariable final Long memberId,
             @PathVariable final Long tripId,
             @Valid @RequestBody final List<Long> itineraryIdList
     ) {
@@ -53,7 +51,6 @@ public class ItineraryController {
 
     @PutMapping("/{tripId}")
     public ResponseDTO<List<ItineraryResponse>> updateItineraries(
-            @PathVariable final Long memberId,
             @PathVariable final Long tripId,
             @Valid @RequestBody final List<ItineraryUpdateRequest> itUpdateRequestList) {
 

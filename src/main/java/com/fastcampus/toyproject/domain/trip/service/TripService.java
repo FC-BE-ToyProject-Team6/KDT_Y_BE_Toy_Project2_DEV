@@ -58,15 +58,17 @@ public class TripService {
     }
 
     /**
-     * trip 전부 반환하는 메소드
+     * 삭제 되지 않은 trip 전부를 반환하는 메소드
      * @return List<TripResponseDTO>
      */
     @Transactional(readOnly = true)
     public List<TripResponse> getAllTrips() {
         return tripRepository.findAll()
-            .stream().map(trip -> TripResponse.fromEntity(
+            .stream().filter(trip -> !trip.isDeleted())
+            .map(trip -> TripResponse.fromEntity(
                     trip, getItineraryNamesByTrip(trip))
-            ).collect(Collectors.toList());
+            ).
+            collect(Collectors.toList());
     }
 
     /**
