@@ -40,8 +40,9 @@ public class TripService {
      * @return trip
      */
     public Trip getTripByTripId(Long tripId) {
+
         return tripRepository
-            .findById(tripId)
+            .findByTripIdAndItineraryDeletedIsFalse(tripId)
             .orElseThrow(() -> new TripException(NO_SUCH_TRIP));
     }
 
