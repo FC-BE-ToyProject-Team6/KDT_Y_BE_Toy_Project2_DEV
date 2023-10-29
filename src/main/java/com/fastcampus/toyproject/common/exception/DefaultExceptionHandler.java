@@ -83,10 +83,11 @@ public class DefaultExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleException(
             Exception e, HttpServletRequest request
     ) {
-        log.error("exception error class : {}, url : {}, message : {}",
+        log.error("exception error class : {}, url : {}, message : {}, trace : {}" ,
                 e.getClass(),
                 request.getRequestURI(),
-                e.getMessage()
+                e.getMessage(),
+                e.getStackTrace()
         );
 
         return new ResponseEntity<>(
