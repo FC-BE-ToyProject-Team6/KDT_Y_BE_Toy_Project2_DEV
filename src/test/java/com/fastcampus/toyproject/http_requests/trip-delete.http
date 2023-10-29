@@ -1,2 +1,2 @@
-DELETE http://localhost:8080/api/trip/2
+DELETE http://localhost:8080/api/member/1/trip/1
 Content-Type: application/json

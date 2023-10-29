@@ -41,7 +41,7 @@ public class TripService {
      */
     public Trip getTripByTripId(Long tripId) {
         return tripRepository
-            .findByTripIdAndIsDeletedIsFalse(tripId)
+            .findById(tripId)
             .orElseThrow(() -> new TripException(NO_SUCH_TRIP));
     }
 
@@ -58,14 +58,17 @@ public class TripService {
     }
 
     /**
-     * trip 전부 반환하는 메소드
+     * 삭제 되지 않은 trip 전부를 반환하는 메소드
      * @return List<TripResponseDTO>
      */
     @Transactional(readOnly = true)
     public List<TripResponse> getAllTrips() {
-        return tripRepository.findAllByIsDeletedIsFalseOrderByTripId()
-            .stream().map(TripResponse::fromEntity)
-            .collect(Collectors.toList());
+        return tripRepository.findAll()
+            .stream().filter(trip -> !trip.isDeleted())
+            .map(trip -> TripResponse.fromEntity(
+                    trip, getItineraryNamesByTrip(trip))
+            ).
+            collect(Collectors.toList());
     }
 
     /**
