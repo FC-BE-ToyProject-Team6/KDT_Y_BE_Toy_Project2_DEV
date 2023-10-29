@@ -1,0 +1,16 @@
+### 출발 시간과 도착 시간이 같을 때
+PUT http://localhost:8080/api/member/1/trip-itineraries/1
+Content-Type: application/json
+
+{
+    "itineraryId": 1,
+    "type": "MOVEMENT",
+    "item": "지하철",
+    "startDate": "2023-10-25T17:03:10",
+    "endDate": "2023-10-25T17:03:10",
+    "order": 1,
+    "departurePlace": "청주 공항",
+    "arrivalPlace": "서울 공항"
+}
+
+
