@@ -1,4 +1,4 @@
-POST http://localhost:8080/api/member/1/trip-itineraries/1
+POST http://localhost:8080/api/member/1/trip-itineraries/3
 Content-Type: application/json
 
 [
