@@ -22,7 +22,7 @@ public class Stay extends Itinerary {
     @Column(nullable = false)
     private LocalDateTime arrivalDate;
 
-    public void updateStay(ItineraryUpdateRequest req){
+    public void updateStay(ItineraryUpdateRequest req) {
         super.updateItineraryName(req.getItem());
         super.updateItineraryOrder(req.getOrder());
         this.departureDate = req.getStartDate();

@@ -4,13 +4,13 @@ Content-Type: application/json
 
 [
   {
-    "type" : "MOVEMENT",
-    "item" : "비행기",
-    "startDate" : "2023-10-29T12:24:10",
-    "endDate" : "2023-10-22T22:00:10",
-    "order" : 1,
-    "departurePlace" : "인천 공항",
-    "arrivalPlace" : "도쿄 공항"
+    "type": "MOVEMENT",
+    "item": "비행기",
+    "startDate": "2023-10-29T12:24:10",
+    "endDate": "2023-10-22T22:00:10",
+    "order": 1,
+    "departurePlace": "인천 공항",
+    "arrivalPlace": "도쿄 공항"
   }
 ]
 

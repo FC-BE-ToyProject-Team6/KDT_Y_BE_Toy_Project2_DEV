@@ -1,10 +1,10 @@
 package com.fastcampus.toyproject.common.dto;
 
+import static com.fastcampus.toyproject.common.exception.ExceptionCode.INTERNAL_SERVER_ERROR;
+
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import static com.fastcampus.toyproject.common.exception.ExceptionCode.INTERNAL_SERVER_ERROR;
 
 @Getter
 @RequiredArgsConstructor

@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryUpdateRequest;
 import com.fastcampus.toyproject.domain.itinerary.service.ItineraryService;
 import com.fastcampus.toyproject.domain.itinerary.type.ItineraryType;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.time.LocalDateTime;
@@ -43,7 +42,7 @@ public class ItineraryControllerTest {
     private List<ItineraryUpdateRequest> reqList;
 
     @BeforeEach
-    private void setup(){
+    private void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(itineraryController).build();
         this.objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());

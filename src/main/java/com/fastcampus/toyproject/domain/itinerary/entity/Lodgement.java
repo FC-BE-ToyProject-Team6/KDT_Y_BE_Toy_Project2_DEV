@@ -22,7 +22,7 @@ public class Lodgement extends Itinerary {
     @Column(nullable = false)
     private LocalDateTime checkOut;
 
-    public void updateLodgement(ItineraryUpdateRequest req){
+    public void updateLodgement(ItineraryUpdateRequest req) {
         super.updateItineraryName(req.getItem());
         super.updateItineraryOrder(req.getOrder());
         this.checkIn = req.getStartDate();

@@ -1,12 +1,15 @@
 package com.fastcampus.toyproject.common.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
 @Builder
 public class ResponseDTO<T> {
+
     private final HttpStatus status;
     private final String msg;
     private final T data;
