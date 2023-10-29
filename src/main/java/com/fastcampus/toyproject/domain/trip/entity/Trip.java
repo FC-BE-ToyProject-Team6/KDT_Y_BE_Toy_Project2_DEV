@@ -42,6 +42,7 @@ public class Trip extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId")
+    @JsonIgnore
     private Member member;
 
     @Column(nullable = false)
