@@ -183,18 +183,18 @@ POST /api/member/1/trip-itineraries/delete/{tripId}
    │  │  │  ├─ 📂dto: 공통으로 사용하는 Response의 DTO
    │  │  │  ├─ 📂exception: 도메인 공통으로 발생하는 에러 처리 
    │  │  │  └─ 📂util: 날짜,시간과 장소 유틸
-   │  │  └─ 📂domain: 컨텍스트 별로 도메인 설정
-   │  │  ├─ 📂itinerary
-   │  │  │  ├─ 📂dto: 요청과 응답 진행시 Entity를 사용하지 않고 Request, Response 사용
-   │  │  │  │  └─ 📜ItineraryResponseFactory.java: 상속 관계의 자식 클래스 종류에 따른 Response 생성 
-   │  │  │  ├─ 📂entity: Itinerary와 Lodgement, Movement, Stay는 상속 관계
-   │  │  │  │  └─ 📜ItineraryFactory.java: 상속 관계의 자식 클래스 종류에 따른 Entity 생성 
-   │  │  │  ├─ 📂type: 자식 클래스의 타입을 Enum으로 처리
-   │  │  │  └─ 📂util: 여정 관련 공통 메소드
-   │  │  ├─ 📂member: 여행과 여정을 가지는 멤버 컨텍스트 정의
-   │  │      └─ 📂dto: 여정과 마찬가지로 Request와 Response에 따라 DTO 정리
-   │  │  └─ 📂trip
-   │  │      └─ 📂dto: 여정과 마찬가지로 Request와 Response에 따라 DTO 정리
+   │  │  ├─ 📂domain: 컨텍스트 별로 도메인 설정
+   │  │     ├─ 📂itinerary
+   │  │     │  ├─ 📂dto: 요청과 응답 진행시 Entity를 사용하지 않고 Request, Response 사용
+   │  │     │  │  └─ 📜ItineraryResponseFactory.java: 상속 관계의 자식 클래스 종류에 따른 Response 생성 
+   │  │     │  ├─ 📂entity: Itinerary와 Lodgement, Movement, Stay는 상속 관계
+   │  │     │  │  └─ 📜ItineraryFactory.java: 상속 관계의 자식 클래스 종류에 따른 Entity 생성 
+   │  │     │  ├─ 📂type: 자식 클래스의 타입을 Enum으로 처리
+   │  │     │  └─ 📂util: 여정 관련 공통 메소드
+   │  │     ├─ 📂member: 여행과 여정을 가지는 멤버 컨텍스트 정의
+   │  │        └─ 📂dto: 여정과 마찬가지로 Request와 Response에 따라 DTO 정리
+   │  │     └─ 📂trip
+   │  │        └─ 📂dto: 여정과 마찬가지로 Request와 Response에 따라 DTO 정리
    │  └─ 📂resources
    │     ├─ 📜application.yml
    │     ├─ 📜import.sql: 프로그램 실행과 동시에 기본 테이블 생성하는 SQL
