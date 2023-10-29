@@ -1,0 +1,10 @@
+### 시작 일자가 종료 일자보다 늦을 때
+POST http://localhost:8080/api/member/1/trip
+Content-Type: application/json
+
+{
+  "tripName": "화성 여행",
+  "startDate": "3023-11-01",
+  "endDate": "1023-11-05",
+  "isDomestic": false
+}
