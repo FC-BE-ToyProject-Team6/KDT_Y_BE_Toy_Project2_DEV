@@ -81,8 +81,7 @@ public class TripService {
      */
     @Transactional(readOnly = true)
     public TripDetailResponse getTripDetail(Long tripId) {
-        Trip trip = getTripByTripId(tripId);
-        return TripDetailResponse.fromEntity(trip);
+        return TripDetailResponse.fromEntity(getTripByTripId(tripId));
     }
 
     /**
