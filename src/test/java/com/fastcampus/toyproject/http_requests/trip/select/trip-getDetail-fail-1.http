@@ -1,0 +1,3 @@
+### 잘못된 TripId로 요청했을 때
+GET http://localhost:8080/api/member/1/trip/9999
+Accept: application/json

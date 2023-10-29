@@ -1,0 +1,3 @@
+### 올바르지 않은 tripID로 요청 했을 때
+DELETE http://localhost:8080/api/member/1/trip/9999
+Content-Type: application/json

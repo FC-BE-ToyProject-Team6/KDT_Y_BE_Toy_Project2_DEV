@@ -1,0 +1,9 @@
+PUT http://localhost:8080/api/member/1/trip/1
+Content-Type: application/json
+
+{
+  "tripName": "제주도 여행",
+  "startDate": "2023-11-01",
+  "endDate": "2023-11-05",
+  "isDomestic": true
+}

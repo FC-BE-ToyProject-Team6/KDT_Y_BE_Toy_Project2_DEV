@@ -81,8 +81,7 @@ public class TripService {
      */
     @Transactional(readOnly = true)
     public TripDetailResponse getTripDetail(Long tripId) {
-        Trip trip = getTripByTripId(tripId);
-        return TripDetailResponse.fromEntity(trip);
+        return TripDetailResponse.fromEntity(getTripByTripId(tripId));
     }
 
     /**
@@ -115,7 +114,6 @@ public class TripService {
      * @return tripResponseDTO
      */
     public TripResponse updateTrip(Long memberId, Long tripId, TripRequest tripRequest) {
-        Member member = getValidatedMember(memberId);
         Trip existTrip = getTripByTripId(tripId);
 
         if (!existTrip.getMember().getMemberId().equals(memberId)) {
