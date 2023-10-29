@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,19 +51,33 @@ public class LocationUtil {
                 );
             StringBuilder response = new StringBuilder();
 
-            while (br.ready()) {
-                response.append(br.readLine());
+            if(br.ready()){
+                String str = "";
+                while((str = br.readLine()) != null){
+                    response.append(str);
+                }
             }
+
             br.close();
             httpURLConnection.disconnect();
 
-            JSONObject jsonResponse = new JSONObject(response.toString())
-                .getJSONArray("results").getJSONObject(0)
-                .getJSONObject("geometry").getJSONObject("location");
+            JSONObject jsonResponse = new JSONObject(response.toString());
+
+            if("OK".equals(jsonResponse.get("status"))){
+                JSONObject okResponse = new JSONObject(response.toString())
+                    .getJSONArray("results").getJSONObject(0)
+                    .getJSONObject("geometry").getJSONObject("location");
 
 
-            return "위도: "+String.valueOf(jsonResponse.getDouble("lat"))
-                + "\n경도: " + String.valueOf(jsonResponse.getDouble("lng"));
+                return "위도: "+String.valueOf(okResponse.getDouble("lat"))
+                    + System.lineSeparator()
+                    +"경도: " + String.valueOf(okResponse.getDouble("lng"));
+            }else{
+                return "좌표가 없습니다.";
+            }
+
+
+
 
         } catch (IOException e) {
             log.error(ExceptionCode.BAD_REQUEST.getMsg());
