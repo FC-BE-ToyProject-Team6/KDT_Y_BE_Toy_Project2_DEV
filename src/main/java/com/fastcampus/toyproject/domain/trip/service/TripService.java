@@ -36,6 +36,7 @@ public class TripService {
 
     /**
      * trip 아이디를 통한 trip 객체 반환하는 메소드
+     *
      * @param tripId
      * @return trip
      */
@@ -48,18 +49,20 @@ public class TripService {
 
     /**
      * trip 객체로 연관된 itinerary들의 이름만 반환하는 메소드
+     *
      * @param trip
      * @return string
      */
     public String getItineraryNamesByTrip(Trip trip) {
         return itineraryService.getItineraryResponseListByTrip(trip)
-                .stream()
-                .map(it -> it.getItineraryName())
-                .collect(Collectors.joining(", "));
+            .stream()
+            .map(it -> it.getItineraryName())
+            .collect(Collectors.joining(", "));
     }
 
     /**
      * 삭제 되지 않은 trip 전부를 반환하는 메소드
+     *
      * @return List<TripResponseDTO>
      */
     @Transactional(readOnly = true)
@@ -72,6 +75,7 @@ public class TripService {
 
     /**
      * trip과 연관된 itinerary 리스트 반환 (여행 상세 조회)
+     *
      * @param tripId
      * @return tripDetailDTO
      */
@@ -83,6 +87,7 @@ public class TripService {
 
     /**
      * trip 1개 삽입하는 메소드
+     *
      * @param memberId
      * @param tripRequest
      * @return tripResponseDTO
@@ -103,6 +108,7 @@ public class TripService {
 
     /**
      * trip 수정하는 메소드
+     *
      * @param memberId
      * @param tripId
      * @param tripRequest
@@ -122,6 +128,7 @@ public class TripService {
 
     /**
      * trip 삭제 및 연관된 itinerary 삭제하는 메소드
+     *
      * @param tripId
      */
     public TripResponse deleteTrip(Long tripId) {

@@ -1,18 +1,19 @@
 package com.fastcampus.toyproject.domain.itinerary.util;
 
-import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
-import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
-
-import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
-import java.util.*;
-
 import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.DUPLICATE_ITINERARY_ORDER;
 import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.INCORRECT_ITNERARY_ORDER;
+
+import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
+import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ItineraryOrderUtil {
 
     /**
      * 여정 순서가 적절하게 입력되었는지 확인하는 메소드
+     *
      * @param : itineraryList
      * @return
      */
@@ -29,7 +30,7 @@ public class ItineraryOrderUtil {
             if (o1 == o2) {
                 throw new ItineraryException(DUPLICATE_ITINERARY_ORDER);
             }
-            return o1- o2;
+            return o1 - o2;
         });
     }
 
@@ -44,10 +45,12 @@ public class ItineraryOrderUtil {
 
     /**
      * 테이블에 등록된 여정 순서대로 itinerary 리스트 정렬
+     *
      * @param itResponseList
      */
     public static void sortItineraryResponseListByOrder(List<ItineraryResponse> itResponseList) {
-        Collections.sort(itResponseList, Comparator.comparingInt(ItineraryResponse::getItineraryOrder));
+        Collections.sort(itResponseList,
+            Comparator.comparingInt(ItineraryResponse::getItineraryOrder));
     }
 
 

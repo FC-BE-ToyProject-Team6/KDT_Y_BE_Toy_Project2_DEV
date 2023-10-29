@@ -1,20 +1,16 @@
 package com.fastcampus.toyproject.domain.itinerary.service;
 
+import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.EMPTY_ITINERARY;
+import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.ITINERARY_ALREADY_DELETED;
+import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.NO_ITINERARY;
 import static com.fastcampus.toyproject.domain.trip.exception.TripExceptionCode.NO_SUCH_TRIP;
-import static com.fastcampus.toyproject.domain.itinerary.exception.ItineraryExceptionCode.*;
 
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryRequest;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponse;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryResponseFactory;
 import com.fastcampus.toyproject.domain.itinerary.dto.ItineraryUpdateRequest;
-import com.fastcampus.toyproject.domain.itinerary.dto.LodgementResponse;
-import com.fastcampus.toyproject.domain.itinerary.dto.MovementResponse;
-import com.fastcampus.toyproject.domain.itinerary.dto.StayResponse;
 import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.itinerary.entity.ItineraryFactory;
-import com.fastcampus.toyproject.domain.itinerary.entity.Lodgement;
-import com.fastcampus.toyproject.domain.itinerary.entity.Movement;
-import com.fastcampus.toyproject.domain.itinerary.entity.Stay;
 import com.fastcampus.toyproject.domain.itinerary.exception.ItineraryException;
 import com.fastcampus.toyproject.domain.itinerary.repository.ItineraryRepository;
 import com.fastcampus.toyproject.domain.itinerary.util.ItineraryOrderUtil;
@@ -57,6 +53,22 @@ public class ItineraryService {
     }
 
     /**
+     * itinerary 리스트 순서 재정의 및 여정 response List에 담아 반환하는 메소드
+     *
+     * @param itineraries
+     * @return itineraryResponseList
+     */
+    private static void sortAgainItineraryOrder(List<Itinerary> itineraries) {
+        Collections.sort(itineraries, Comparator.comparingInt(Itinerary::getItineraryOrder));
+
+        for (int order = 1; order <= itineraries.size(); order++) {
+            //리스트 순대로 order update
+            Itinerary it = itineraries.get(order - 1);
+            it.updateItineraryOrder(order);
+        }
+    }
+
+    /**
      * itinerary (1개 이상) 삽입하는 메소드
      *
      * @param tripId
@@ -65,7 +77,7 @@ public class ItineraryService {
      */
     @Transactional
     public List<ItineraryResponse> insertItineraries(
-            Long tripId, List<ItineraryRequest> itineraryRequests
+        Long tripId, List<ItineraryRequest> itineraryRequests
     ) {
         /*
         0. tripid를 통한 trip 객체 찾기. (method : getTrip(tripId))
@@ -85,7 +97,7 @@ public class ItineraryService {
             Itinerary savedItinerary = itineraryRepository.save(itinerary);
 
             itineraryResponseList.add(
-                    ItineraryResponseFactory.getItineraryResponse(savedItinerary)
+                ItineraryResponseFactory.getItineraryResponse(savedItinerary)
             );
         }
 
@@ -95,13 +107,15 @@ public class ItineraryService {
 
     /**
      * 요청으로 들어온 itinerary 리스트의 순서가 맞는지 확인
+     *
      * @param itineraryRequests
      * @param trip
      */
-    private void validateItineraryRequestOrder(List<ItineraryRequest> itineraryRequests, Trip trip) {
+    private void validateItineraryRequestOrder(List<ItineraryRequest> itineraryRequests,
+        Trip trip) {
         List<Integer> orderList = getItineraryList(trip)
-                .stream().map(Itinerary::getItineraryOrder)
-                .collect(Collectors.toList());
+            .stream().map(Itinerary::getItineraryOrder)
+            .collect(Collectors.toList());
 
         for (ItineraryRequest ir : itineraryRequests) {
             orderList.add(ir.getOrder());
@@ -110,8 +124,8 @@ public class ItineraryService {
     }
 
     /**
-     * trip 객체로 연관된 itinerary response 리스트를
-     * 정렬된 여정 응답 리스트로 변환하여 반환하는 메소드
+     * trip 객체로 연관된 itinerary response 리스트를 정렬된 여정 응답 리스트로 변환하여 반환하는 메소드
+     *
      * @param trip
      * @return
      */
@@ -121,7 +135,7 @@ public class ItineraryService {
         List<ItineraryResponse> itineraryResponseList = new ArrayList<>();
         for (Itinerary itinerary : itineraryList) {
             itineraryResponseList.add(
-                    ItineraryResponseFactory.getItineraryResponse(itinerary)
+                ItineraryResponseFactory.getItineraryResponse(itinerary)
             );
         }
 
@@ -137,8 +151,8 @@ public class ItineraryService {
      */
     private Trip getTrip(Long tripId) {
         return tripRepository
-                .findById(tripId)
-                .orElseThrow(() -> new TripException(NO_SUCH_TRIP));
+            .findById(tripId)
+            .orElseThrow(() -> new TripException(NO_SUCH_TRIP));
     }
 
     /**
@@ -150,13 +164,13 @@ public class ItineraryService {
      */
     @Transactional
     public List<ItineraryResponse> deleteItineraries(
-            Long tripId, List<Long> deleteIdList
+        Long tripId, List<Long> deleteIdList
     ) {
         //1. 해당 트립에, 삭제할 아이디들이 일단 존재하는지 확인.
         for (Long id : deleteIdList) {
             Itinerary it = itineraryRepository
-                    .findById(id)
-                    .orElseThrow(() -> new ItineraryException(NO_ITINERARY));
+                .findById(id)
+                .orElseThrow(() -> new ItineraryException(NO_ITINERARY));
             if (it.getTrip().getTripId() != tripId) {
                 throw new ItineraryException(NO_ITINERARY);
             }
@@ -169,8 +183,8 @@ public class ItineraryService {
         //2. 여정들 가져오기 (id만 적힌것들) -> delete 처리
         for (Long id : deleteIdList) {
             Itinerary it = itineraryRepository
-                    .findById(id)
-                    .orElseThrow(() -> new ItineraryException(NO_ITINERARY));
+                .findById(id)
+                .orElseThrow(() -> new ItineraryException(NO_ITINERARY));
             it.delete();
             itineraryRepository.save(it);
             deleteItList.add(ItineraryResponse.fromEntity(it));
@@ -179,22 +193,6 @@ public class ItineraryService {
         //3. 남은 여정들의 순서 재정의 - 여정 순서대로 entity 정렬
         sortAgainItineraryOrder(getItineraryList(getTrip(tripId)));
         return deleteItList;
-    }
-
-    /**
-     * itinerary 리스트 순서 재정의 및 여정 response List에 담아 반환하는 메소드
-     *
-     * @param itineraries
-     * @return  itineraryResponseList
-     */
-    private static void sortAgainItineraryOrder(List<Itinerary> itineraries) {
-        Collections.sort(itineraries, Comparator.comparingInt(Itinerary::getItineraryOrder));
-
-        for (int order = 1; order <= itineraries.size(); order++) {
-            //리스트 순대로 order update
-            Itinerary it = itineraries.get(order - 1);
-            it.updateItineraryOrder(order);
-        }
     }
 
     /**
@@ -218,7 +216,7 @@ public class ItineraryService {
      */
     @Transactional(readOnly = false)
     public List<ItineraryResponse> updateItineraries(Long tripId,
-            List<ItineraryUpdateRequest> itineraryUpdateRequests) {
+        List<ItineraryUpdateRequest> itineraryUpdateRequests) {
 
         if (itineraryUpdateRequests == null || itineraryUpdateRequests.isEmpty()) {
             throw new ItineraryException(EMPTY_ITINERARY);
@@ -227,7 +225,6 @@ public class ItineraryService {
         Trip trip = null;
 
         for (ItineraryUpdateRequest req : itineraryUpdateRequests) {
-
 
             Itinerary itinerary = itineraryRepository.findById(req.getItineraryId())
                 .orElseThrow(() -> new ItineraryException(NO_ITINERARY));

@@ -21,7 +21,8 @@ public class MemberController {
     @PostMapping
     public ResponseDTO<MemberResponseDTO> insert(@RequestBody MemberRequestDTO memberRequestDTO) {
         Member savedMember = memberService.insertMember(memberRequestDTO);
-        MemberResponseDTO responseData = new MemberResponseDTO(savedMember.getMemberId(), savedMember.getNickName());
+        MemberResponseDTO responseData = new MemberResponseDTO(savedMember.getMemberId(),
+            savedMember.getNickName());
         return ResponseDTO.ok("회원 등록 성공!", responseData);
     }
 

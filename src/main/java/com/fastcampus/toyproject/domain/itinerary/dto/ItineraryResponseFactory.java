@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * 여정의 타입이 들어오면 그에 따라 response를 반환해주는
- * 팩토리 패턴을 적용한 클래스
+ * 여정의 타입이 들어오면 그에 따라 response를 반환해주는 팩토리 패턴을 적용한 클래스
  */
 public class ItineraryResponseFactory {
+
     private final static Map<ItineraryType, Function<Itinerary, ItineraryResponse>> map = new HashMap<>();
 
     static {

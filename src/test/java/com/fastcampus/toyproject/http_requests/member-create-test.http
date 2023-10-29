@@ -2,6 +2,6 @@ POST http://localhost:8080/member/
 Content-Type: application/json
 
 {
-  "memberId" : 1,
-  "nickName" : "김종훈"
+  "memberId": 1,
+  "nickName": "김종훈"
 }

@@ -8,8 +8,7 @@ import lombok.Getter;
 public enum ItineraryType {
     MOVEMENT("이동"),
     LODGEMENT("숙박"),
-    STAY("체류")
-    ;
-    private String value;
+    STAY("체류");
+    private final String value;
 
 }

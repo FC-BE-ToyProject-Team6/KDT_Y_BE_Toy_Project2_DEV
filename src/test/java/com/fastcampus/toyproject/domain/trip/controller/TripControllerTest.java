@@ -11,16 +11,14 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(TripController.class)
 class TripControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private TripService tripService;
-
     protected MediaType contentType =
         new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             StandardCharsets.UTF_8);
+    @Autowired
+    private MockMvc mockMvc;
+    @MockBean
+    private TripService tripService;
 
     /*@Test
     void getAllTrips() throws Exception {
