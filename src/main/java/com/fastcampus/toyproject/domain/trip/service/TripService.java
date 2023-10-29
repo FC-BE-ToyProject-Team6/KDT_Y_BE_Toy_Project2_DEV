@@ -64,10 +64,8 @@ public class TripService {
     @Transactional(readOnly = true)
     public List<TripResponse> getAllTrips() {
         return tripRepository.findAll()
-            .stream().filter(trip -> !trip.isDeleted())
-            .map(trip -> TripResponse.fromEntity(
-                    trip, getItineraryNamesByTrip(trip))
-            ).
+            .stream().filter(trip -> !trip.getIsDeleted())
+            .map(TripResponse::fromEntity).
             collect(Collectors.toList());
     }
 
