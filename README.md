@@ -39,6 +39,13 @@
 - 코드 리뷰를 통해 적극적으로 의견 표출 [link:코드 리뷰](https://github.com/FC-BE-ToyProject-Team6/KDT_Y_BE_Toy_Project2_DEV/pulls?q=is%3Apr+is%3Aclosed)
 - - -
 
+### 기능 구현
+
+- 여행과 여정의 엔티티를 나눠서 관리
+- 여정은 '이동', '숙박', '체류' 셋으로 나눠지므로 여정을 상속받은 세 엔티티로 관리
+- 일시에 대한 공통 유틸리티 : 출발일-종료일등 여행, 여정 기간을 계산하는 유틸리티 생성(DateUtil)
+- 여행 일정 장소에 대한 정보 구현 : 국내외의 여정 장소에 대해 Google GeoAPI를 이용해 좌표 검색
+
 ### API EndPoint
 
  간단한 수준의 회원 기능을 구현했습니다.(테스트 용 사용자의 id는 1)
