@@ -22,12 +22,147 @@
 
 ### 프로젝트 목표
 
-1. 모듈링 & 객체 지향 설계: 계층 별 변수와 메소드 명 통일
-2. [코드 리뷰 적극적으로 진행](https://github.com/FC-BE-ToyProject-Team6/KDT_Y_BE_Toy_Project2_DEV/pulls?q=is%3Apr+is%3Aclosed)
-3. DDD 패키지 구성: DDD 클래스 별로 역할 분담 & 최종 리팩터링 진행
-4. API 문서: Java Docs
+1. 모듈링 & 객체 지향 설계:
+2. DDD 패키지 구성: DDD 클래스 별로 역할 분담 & 최종 리팩터링 진행
+3. Spring - JPA - DB 간의 관계와 그 이해.
+4. 예외처리 핸들러의 활용
+
+등 Spring 프레임워크를 적극적으로 활용 하려 하였습니다.
+
 
 - - -
+
+### 프로젝트 진행
+
+- GitHub Repository [link:GitHub](https://github.com/FC-BE-ToyProject-Team6/KDT_Y_BE_Toy_Project2_DEV)
+- 프로젝트의 이슈를 적극적으로 활용 [link:프로젝트 이슈](https://github.com/FC-BE-ToyProject-Team6/KDT_Y_BE_Toy_Project2_DEV/issues?q=is%3Aissue+is%3Aclosed)
+- 코드 리뷰를 통해 적극적으로 의견 표출 [link:코드 리뷰](https://github.com/FC-BE-ToyProject-Team6/KDT_Y_BE_Toy_Project2_DEV/pulls?q=is%3Apr+is%3Aclosed)
+- - -
+
+### API EndPoint
+
+ 간단한 수준의 회원 기능을 구현했습니다.(테스트 용 사용자의 id는 1)
+
+- 사용자 추가
+```
+ POST /member
+```
+```
+{ nickname : '회원명' }
+```
+
+----
+
+아래 API 부터는 {memberId} PathVariable을 1로 표시하였습니다.
+
+
+- 전체 여행 조회
+```
+GET /api/member/1/trip/all
+```
+```
+파라미터 없음
+```
+---
+
+- 단일 여행 상세 조회
+```
+GET /api/member/1/trip/{tripId}
+```
+```
+파라미터 없음
+```
+---
+
+- 여행 입력
+``` 
+POST /api/member/1/trip
+```    
+``` 
+{  
+  "tripName" : "제주도 여행",
+  "startDate" : "2023-11-01",
+  "endDate" : "2023-11-10",
+  "isDomestic" : false
+} 
+```
+---
+- 여행 수정
+```
+PUT /api/member/1/trip/{tripId}
+```
+```
+{
+    "tripName" : "서울 여행",
+    "startDate" : "2023-12-01",
+    "endDate" : "2023-12-10",
+    "isDomestic" : true
+}
+```
+---
+
+- 여행 삭제
+```
+DELETE /api/member/1/trip/{tripId}
+```
+```
+파라미터 없음
+```
+---
+
+
+
+- 여정 입력
+```
+POST api/member/1/trip-itineraries/{tripId}
+```
+```
+[
+  {
+    "type" : "MOVEMENT",
+    "item" : "비행기",
+    "startDate" : "2023-10-22T12:03:10",
+    "endDate" : "2023-10-22T22:00:10",
+    "order" : 8,
+    "departurePlace" : "인천 공항",
+    "arrivalPlace" : "도쿄 공항"
+  },
+  ...
+]
+```
+---
+
+- 여정 수정
+```
+PUT /api/member/1/trip-itineraries/{tripId}
+```
+```
+[
+  {
+    "itineraryId" : 11,
+    "type" : "MOVEMENT",
+    "item" : "로켓",
+    "startDate" : "2023-10-23T17:03:10",
+    "endDate" : "2023-10-24T00:00:10",
+    "order" : 8,
+    "departurePlace" : "우주센터",
+    "arrivalPlace" : "어쩌구저쩌구"
+  },
+  ...
+]
+```
+---
+
+- 여정 삭제
+```
+POST /api/member/1/trip-itineraries/delete/{tripId}
+```
+```
+[ 3, 4 ... ]
+
+```
+---
+
 
 ### 프로젝트 설명
 - 패키지 구조 및 기능
@@ -68,8 +203,6 @@
  ```
  
 
-- [프로젝트 관련 진행했던 이슈](https://github.com/FC-BE-ToyProject-Team6/KDT_Y_BE_Toy_Project2_DEV/issues?q=is%3Aissue+is%3Aclosed)
-- - -
 
 ### 기타 정보
 > 내장 H2 URL : [localhost:8080/h2-console](http://localhost:8080/h2-console)
