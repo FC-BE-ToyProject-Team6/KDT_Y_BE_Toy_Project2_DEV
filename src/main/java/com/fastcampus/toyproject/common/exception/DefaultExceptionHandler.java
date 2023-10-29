@@ -27,15 +27,16 @@ public class DefaultExceptionHandler {
      * @return
      */
     @ExceptionHandler(
-        value ={ DefaultException.class , TripException.class, ItineraryException.class})
+        value ={  TripException.class, ItineraryException.class, DefaultException.class})
     public ResponseEntity<ErrorResponseDTO> handleDefaultException(
             DefaultException e,
             HttpServletRequest request
     ) {
-        log.error("error!!!! errorCode : {}, url : {}, message : {}",
+        log.error("error!!!! errorCode : {}, url : {}, message : {}, trace : {}",
                 e.getErrorCode(),
+                e.getErrorMsg(),
                 request.getRequestURI(),
-                e.getErrorMsg()
+                e.getStackTrace()
         );
 
         return new ResponseEntity<>(
