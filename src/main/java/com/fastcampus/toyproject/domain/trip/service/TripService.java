@@ -5,6 +5,7 @@ import static com.fastcampus.toyproject.domain.trip.exception.TripExceptionCode.
 
 import com.fastcampus.toyproject.common.exception.DefaultException;
 import com.fastcampus.toyproject.common.exception.ExceptionCode;
+import com.fastcampus.toyproject.domain.itinerary.entity.Itinerary;
 import com.fastcampus.toyproject.domain.itinerary.service.ItineraryService;
 import com.fastcampus.toyproject.domain.member.entity.Member;
 import com.fastcampus.toyproject.domain.member.repository.MemberRepository;
@@ -42,9 +43,20 @@ public class TripService {
      */
     public Trip getTripByTripId(Long tripId) {
 
-        return tripRepository
-            .findByTripIdAndItineraryDeletedIsFalse(tripId)
+        Trip trip = tripRepository
+            .findById(tripId)
             .orElseThrow(() -> new TripException(NO_SUCH_TRIP));
+
+        List<Itinerary> list = trip.getItineraryList();
+
+        for(int i = 0 ; i < list.size() ; i++){
+            if(list.get(i).getIsDeleted()){
+                list.remove(i);
+                i--;
+            }
+        }
+
+        return trip;
     }
 
     /**
